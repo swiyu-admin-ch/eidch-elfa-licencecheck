@@ -1,0 +1,32 @@
+{
+  "name": "astra-licencecheck-e2e",
+  "version": "1.7.0-SNAPSHOT",
+  "license": "All Rights Reserved",
+  "organization": {
+    "name": "Federal Office of Information Technology, Systems and Telecommunication FOITT",
+    "url": "https://www.bit.admin.ch/"
+  },
+  "private": true,
+  "scripts": {
+    "cypress:test" : "npm run cy:headless:dev",
+    "cy:open:local": "cypress open --env stage=local --e2e --browser chrome",
+    "cy:open:dev": "cypress open --env stage=dev --e2e --browser chrome",
+    "cy:open:ref": "cypress open --env stage=ref --e2e --browser chrome",
+    "cy:headless:local": "cypress run --env stage=local --browser chrome",
+    "cy:headless:dev": "cypress run --env stage=dev --browser chrome",
+    "cy:headless:ref": "cypress run --env stage=ref --browser chrome",
+    "cy:install": "cypress install",
+    "prettier": "./node_modules/.bin/prettier --write **/{*.ts,*.html,*.scss,*.json,*.js}"
+  },
+  "author": "",
+  "devDependencies": {
+    "cypress": "13.13.3",
+    "cypress-localstorage-commands": "^2.2.6",
+    "typescript": "^5.4.5",
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "npm": ">=9.6.7",
+    "node": ">=18.17.1"
+  }
+}

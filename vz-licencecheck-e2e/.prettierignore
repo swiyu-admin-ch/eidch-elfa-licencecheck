@@ -1,0 +1,9 @@
+**/dist
+**/coverage
+**/.vscode
+**/.nyc_output
+**/.github
+**/node_modules
+**/target
+.angular
+package-lock.json

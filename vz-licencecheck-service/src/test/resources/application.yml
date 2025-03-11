@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: vz-licencecheck-scs
+
+verifier:
+  use-case-folderPath: "use-cases"

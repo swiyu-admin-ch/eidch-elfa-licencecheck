@@ -1,0 +1,86 @@
+{
+  "i18n.title": "LicenceCheck",
+  "i18n.title.home": "Home",
+  "i18n.title.proof": "Verify licence",
+  "i18n.title.allData": "Request all data",
+  "i18n.title.validity": "Request validity",
+  "i18n.title.verification": "Verification result",
+  "i18n.title.licenceValid": "Provisional driving licence valid",
+  "i18n.title.requestFailed": "Request failed",
+  "i18n.title.requestRejected": "Request rejected",
+  "i18n.title.licenceInvalid": "Provisional driving licence invalid",
+
+  "i18n.application.description": "Application to verify electronic learner driver's licences.",
+  "i18n.application.organization.name": "Federal Roads Office FEDRO",
+  "i18n.application.version": "Version",
+  "i18n.support.title": "Support",
+  "i18n.support.feedback": "Feedback",
+  "i18n.support.help": "Help",
+  "i18n.support.contact": "Contact",
+  "i18n.support.more-information": "Further project information",
+
+  "i18n.verifier.home.tab": "Home",
+  "i18n.verifier.home.title": "Check the validity of an electronic provisional driving licence",
+  "i18n.verifier.home.description": "Electronic provisional driving licences are a federal pilot project.",
+  "i18n.verifier.home.policy": "I have read the <a href='https://www.eid.admin.ch/en/lcheck-privacyandterms-e' target='_blank'>privacy statement and terms of use<img class='icon' src='assets/images/external.svg' alt='Icon'></img></a> and accept them.",
+  "i18n.verifier.home.confirm-policy.button": "Verify licence",
+  "i18n.verifier.home.confirm-policy.message": "Please read the privacy statement and terms of use, and accept them if you agree.",
+
+  "i18n.verifier.tab.home": "Home",
+  "i18n.verifier.tab.use-case": "Verification",
+
+  "i18n.core.button.cancel": "Cancel",
+
+  "i18n.verifier.use-case-selector.title": "Licence verification",
+  "i18n.verifier.use-case-selector.description": "Select how you would like to verify this electronic provisional driving licence credential.",
+
+  "i18n.verifier.use-cases.validity": "Validity",
+  "i18n.verifier.use-cases.validity.info-dialog.text": "It is usually sufficient to check the validity. Detailed information such as the date of birth is not necessary for an accompanying driver, for example.",
+  "i18n.verifier.use-cases.allData": "All data",
+  "i18n.verifier.use-cases.allData.info-dialog.text": "In some cases, validity alone is not enough. Detailed information such as the date of birth is required for police checks or driving school registration, for example.",
+  "i18n.verifier.use-cases.validity.description": "Minimum check of the credential (standard)",
+  "i18n.verifier.use-cases.allData.description": "Maximum check, e.g. for creating the file for driving school admission",
+  "i18n.verifier.use-cases.postfix.request": "request",
+
+  "i18n.verifier.use-case.info-dialog.info": "The following data is requested:",
+
+  "i18n.verifier.start-verification.title": "Show the QR code to the person whose credential is to be verified. They can then scan the code with pilotWallet and review your request.",
+
+  "i18n.verifier.verification-result.title": "Request validity",
+  "i18n.verifier.verification-result.lfa.label": "Provisional driving licence",
+  "i18n.verifier.verification-result.status.valid": "Valid",
+  "i18n.verifier.verification-result.status.invalid": "Invalid/Blocked",
+
+  "i18n.verifier.verification-result.attribute.firstName": "First name",
+  "i18n.verifier.verification-result.attribute.lastName": "Surname",
+  "i18n.verifier.verification-result.attribute.hometown": "Place of origin",
+  "i18n.verifier.verification-result.attribute.dateOfExpiration": "Expiry date",
+  "i18n.verifier.verification-result.attribute.categoryCode": "Category",
+  "i18n.verifier.verification-result.attribute.categoryIcon": "Category Icon",
+  "i18n.verifier.verification-result.attribute.categoryRestrictions": "Additional information on the category",
+  "i18n.verifier.verification-result.attribute.restrictionsA": "Additional information (A)",
+  "i18n.verifier.verification-result.attribute.restrictionsB": "Additional information (B)",
+  "i18n.verifier.verification-result.attribute.faberPin": "FABER PIN",
+  "i18n.verifier.verification-result.attribute.licenceNumber": "Provisional driving licence number",
+  "i18n.verifier.verification-result.attribute.dateOfBirth": "Date of birth",
+  "i18n.verifier.verification-result.attribute.issuerEntity": "Issuing authority",
+  "i18n.verifier.verification-result.attribute.issuerEntityDate": "Date of issue",
+  "i18n.verifier.verification-result.attribute.photoImage": "Photo",
+  "i18n.verifier.verification-result.attributeGroup.validity": "Validity",
+  "i18n.verifier.verification-result.attributeGroup.validity.status": "Licence is valid",
+  "i18n.verifier.verification-result.attributeGroup.validity.invalidityExpiration": "blocked until {{date}}",
+  "i18n.verifier.verification-result.attributeGroup.learningPerson": "Learning person",
+  "i18n.verifier.verification-result.attributeGroup.additionalInformation": "Additional information",
+
+  "i18n.verifier.verification-result.rejection.description": "Your verification request has been rejected by the credential holder.",
+  "i18n.verifier.verification-result.timeout.description": "The data transmission failed. The credential could not be verified. Please try a new QR code.",
+  "i18n.verifier.verification-result.invalid.description": "This provisional driving licence is not valid.",
+
+  "i18n.verifier.verification-result.button.understood": "OK",
+
+  "i18n.exception.technical": "An unexpected technical error has occurred.",
+  "i18n.exception.image-handling": "Invalid call. Please check your information and try again.",
+  "i18n.exception.vam": "Error accessing the trust infrastructure",
+  "i18n.exception.file-storage": "File system error. Please contact the administrator.",
+  "i18n.exception.file-mapping": "Error loading verification methods. Please contact the administrator."
+}

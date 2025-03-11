@@ -1,0 +1,86 @@
+{
+  "i18n.title": "LicenceCheck",
+  "i18n.title.home": "Home",
+  "i18n.title.proof": "Verificaziun d'in permiss",
+  "i18n.title.allData": "Requestar tut las datas",
+  "i18n.title.validity": "Verifitgar la valaivladad",
+  "i18n.title.verification": "Resultat da la verificaziun",
+  "i18n.title.licenceValid": "Permiss da manischar è valid",
+  "i18n.title.requestFailed": "Dumonda betg reussida",
+  "i18n.title.requestRejected": "Dumonda refusada",
+  "i18n.title.licenceInvalid": "Permiss da manischar è invalid",
+
+  "i18n.application.description": "Applicaziun per verifitgar electronic permiss per emprender a manischar.",
+  "i18n.application.organization.name": "Uffizi federal da vias UVIAS",
+  "i18n.application.version": "Versiun",
+  "i18n.support.title": "Support",
+  "i18n.support.feedback": "Feedback",
+  "i18n.support.help": "Agid",
+  "i18n.support.contact": "Contact",
+  "i18n.support.more-information": "Ulteriuras infurmaziuns davart il project",
+
+  "i18n.verifier.home.tab": "Home",
+  "i18n.verifier.home.title": "Verifitgar la valaivladad d’in permiss electronic per emprender a manischar",
+  "i18n.verifier.home.description": "Permiss electronics per emprender a manischar èn in project da pilot da la Confederaziun.",
+  "i18n.verifier.home.policy": "Jau hai legì las <a href='https://www.eid.admin.ch/de/lcheck-privacyandterms' target='_blank'>decleraziuns davart la protecziun da datas e las cundiziuns d'utilisaziun<img class='icon' src='assets/images/external.svg' alt='Icon'></img></a> ed accept quellas.",
+  "i18n.verifier.home.confirm-policy.button": "Verifitgar in permiss",
+  "i18n.verifier.home.confirm-policy.message": "Per plaschair legiai las decleraziuns davart la protecziun da datas e las cundiziuns d’utilisaziun ed acceptai quellas, sche Vus essas d’accord cun ellas.",
+
+  "i18n.verifier.tab.home": "Home",
+  "i18n.verifier.tab.use-case": "Verificaziun",
+
+  "i18n.core.button.cancel": "Interrumper",
+
+  "i18n.verifier.use-case-selector.title": "Verificaziun d'in permiss",
+  "i18n.verifier.use-case-selector.description": "Selecziunai, co che Vus vulais verifitgar la cumprova dal permiss electronic per emprender a manischar.",
+
+  "i18n.verifier.use-cases.validity": "Valaivladad",
+  "i18n.verifier.use-cases.validity.info-dialog.text": "Il pli tanscha la verificaziun da la valaivladad. Infurmaziuns detagliadas sco la data da naschientscha n’èn per exempel betg necessarias tar in accumpagnament da manischar.",
+  "i18n.verifier.use-cases.allData": "Tut las datas",
+  "i18n.verifier.use-cases.allData.info-dialog.text": "Mintgatant na tanscha betg be la valaivladad. Infurmaziuns detagliadas èn per exempel necessarias tar controllas da la polizia u tar l’annunzia per la scola da manischar.",
+  "i18n.verifier.use-cases.validity.description": "Verificaziun minimala da la cumprova (standard)",
+  "i18n.verifier.use-cases.allData.description": "Verificaziun maximala, p.ex. per crear il dossier d’access a la scola da manischar",
+  "i18n.verifier.use-cases.postfix.request": "dumandar",
+
+  "i18n.verifier.use-case.info-dialog.info": "Las suandantas datas vegnan dumandadas en quest connex:",
+
+  "i18n.verifier.start-verification.title": "Mussai il code QR a la persuna che vul s’identifitgar. Quella po scannar il code cun la pilotWallet e verifitgar Vossa dumonda.",
+
+  "i18n.verifier.verification-result.title": "Dumandar la valaivladad",
+  "i18n.verifier.verification-result.lfa.label": "Permiss per emprender a manischar",
+  "i18n.verifier.verification-result.status.valid": "Valaivel",
+  "i18n.verifier.verification-result.status.invalid": "Nunvalaivel/Bloccà",
+
+  "i18n.verifier.verification-result.attribute.firstName": "Prenum",
+  "i18n.verifier.verification-result.attribute.lastName": "Num",
+  "i18n.verifier.verification-result.attribute.hometown": "Lieu d’origin",
+  "i18n.verifier.verification-result.attribute.dateOfExpiration": "Termin da scadenza",
+  "i18n.verifier.verification-result.attribute.categoryCode": "Categoria",
+  "i18n.verifier.verification-result.attribute.categoryIcon": "Categoria icona",
+  "i18n.verifier.verification-result.attribute.categoryRestrictions": "Indicaziuns supplementaras da la categoria",
+  "i18n.verifier.verification-result.attribute.restrictionsA": "Indicaziuns supplementaras (A)",
+  "i18n.verifier.verification-result.attribute.restrictionsB": "Indicaziuns supplementaras (B)",
+  "i18n.verifier.verification-result.attribute.faberPin": "Faber pin",
+  "i18n.verifier.verification-result.attribute.licenceNumber": "Numer dal permiss per emprender a manischar",
+  "i18n.verifier.verification-result.attribute.dateOfBirth": "Data da naschientscha",
+  "i18n.verifier.verification-result.attribute.issuerEntity": "Autoritad d’emissiun",
+  "i18n.verifier.verification-result.attribute.issuerEntityDate": "Data d’emissiun",
+  "i18n.verifier.verification-result.attribute.photoImage": "Foto",
+  "i18n.verifier.verification-result.attributeGroup.validity": "Valiavladad",
+  "i18n.verifier.verification-result.attributeGroup.validity.status": "Il permiss è valaivel",
+  "i18n.verifier.verification-result.attributeGroup.validity.invalidityExpiration": "bloccà fin a {{date}}",
+  "i18n.verifier.verification-result.attributeGroup.learningPerson": "Persuna en furmaziun",
+  "i18n.verifier.verification-result.attributeGroup.additionalInformation": "Infurmaziuns supplementaras",
+
+  "i18n.verifier.verification-result.rejection.description": "Vossa dumonda da verificaziun è vegnida refusada da tschella persuna.",
+  "i18n.verifier.verification-result.timeout.description": "La transmissiun da datas n’è betg reussida. La cumprova n’ha betg pudì vegnir verifitgada. Per plaschair empruvai anc ina giada cun in nov code QR.",
+  "i18n.verifier.verification-result.invalid.description": "Quest permiss per emprender a manischar è nunvalaivel.",
+
+  "i18n.verifier.verification-result.button.understood": "Chapì",
+
+  "i18n.exception.technical": "Ina errur tecnical è capità.",
+  "i18n.exception.image-handling": "Inclamaziun nunvalaivla. Per plaschair controllai Vossas indicaziuns ed emprova da far quai danovamain.",
+  "i18n.exception.vam": "Errur durant l'access a l'infrastructura da confidenza",
+  "i18n.exception.file-storage": "Errur dal sistem da file. Per plaschair contactai l'administratur.",
+  "i18n.exception.file-mapping": "Errur durant chargiar las metodas da verificaziun. Per plaschair contactai l'administratur."
+}

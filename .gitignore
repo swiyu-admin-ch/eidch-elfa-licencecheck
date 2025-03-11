@@ -1,0 +1,32 @@
+# Created by .ignore support plugin (hsz.mobi)
+target/
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+.idea/*
+!.idea/runConfigurations/
+!.idea/codeStyles
+!.idea/codeStyles/*.xml
+/.idea/codeStyles/
+
+### Custom Ignore
+/vz-licencecheck-ui/coverage/
+*.versionsBackup
+/vz-licencecheck-e2e/node_modules
+/vz-licencecheck-e2e/cypress/screenshots
+/vz-licencecheck-e2e/cypress/videos
+/vz-licencecheck-e2e/cypress/downloads
+/vz-licencecheck-e2e/cypress/fixtures/screeningresultate.txt

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: vz-licencecheck-scs
+
+server:
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+  #Increase the max header size as token can be quite big. 4MB should be enough for ~100'000 Roles for one user, normally this should be plenty
+  max-http-request-header-size: 4MB
+
+verifier:
+  use-case-folderPath: "use-cases"
+  metaData:
+    clientName: "Pilot Verifier"
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: false
+    oauth:
+      client-id: astra-vz-licencecheck-swagger
+  default-produces-media-type: application/json
+  show-actuator: true
+
+# default logging level
+logging:
+  level:
+    root: info
+
+verifier-agent-management:
+  logging:
+    level: NONE # "NONE", "BASIC", "HEADERS", "BODY"

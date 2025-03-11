@@ -1,0 +1,21 @@
+verifier:
+  metaData:
+    clientName: "LicenceCheck (Local)"
+  mock:
+    failResponse: false
+    errorCode: CREDENTIAL_INVALID
+
+server:
+  port: 8888
+
+cors:
+  allowed-origins:
+    - 'http://localhost:8888'
+    - 'http://localhost:4201'
+
+verifier-agent-management:
+  endpoint: "MOCKED"
+
+springdoc:
+  swagger-ui:
+    enabled: true
