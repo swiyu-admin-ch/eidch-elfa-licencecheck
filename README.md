@@ -9,13 +9,13 @@ SPDX-License-Identifier: MIT
 
 ## Overview
 
-This is an official Swiss Government project developed by the [Federal Office of Information Technology, Systems and Telecommunication (FOITT)](https://www.bit.admin.ch/) as part of the electronic identity (E-ID) initiative.
+This is an official Swiss Government project developed by the [Federal Office of Information Technology, Systems and Telecommunication (FOITT)](https://www.bit.admin.ch/) as part of the electronic identity (e-ID) initiative.
 
-The project is a **pilot application** that utilizes the Swiss E-ID infrastructure, specifically the **Generic Verification Services** (Generic Verifier Validator Service & Generic Verifier Management Service), to verify a learning driver's license. It is a **public-facing** application that does **not store any data**.
+The project is a **pilot application** that utilizes the swiyu Trust Infrastructure, specifically the **Generic Verification Services** ([Generic Verifier Validator Service](https://github.com/swiyu-admin-ch/eidch-verifier-agent-oid4vp) & [Generic Verifier Management Service](https://github.com/swiyu-admin-ch/eidch-verifier-agent-management)), to verify a learning driver's license. It is a **public-facing** application that does **not store any data**.
 
-This repository is part of the broader ecosystem being developed for the future official Swiss E-ID. Our goal is to **engage with the community** and foster collaboration on building a secure, interoperable ecosystem for E-ID and other digital credentials.
+This repository is part of the broader ecosystem being developed for the future official Swiss e-ID. Our goal is to **engage with the community** and foster collaboration on building a secure, interoperable ecosystem for e-ID and other digital credentials.
 
-For more information about the project, please visit the [introduction to the public beta open-source initiative](https://github.com/e-id-admin/eidch-public-beta).
+For more information about the project, please visit the [introduction to the Public Beta](https://www.eid.admin.ch/de/public-beta).
 
 
 ## Table of Contents
