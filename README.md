@@ -36,7 +36,7 @@ flowchart TD
     isoi(Verifier Validator Service)
     wallet[swiyu Wallet]
     
-    subgraph Generic Verification Service
+    subgraph swiyu Generic Verifier
         isam ---> isdb
         isoi ---> isdb
     end
