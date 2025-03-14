@@ -34,9 +34,9 @@ flowchart TD
     isam(Verifier Management Service)
     isdb[(Postgres)]
     isoi(Verifier Validator Service)
-    wallet[Swiyu Wallet]
+    wallet[swiyu Wallet]
     
-    subgraph Generic Verification Services
+    subgraph Generic Verification Service
         isam ---> isdb
         isoi ---> isdb
     end
