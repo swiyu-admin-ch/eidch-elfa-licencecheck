@@ -23,6 +23,7 @@ For more information about the project, please visit the [introduction to the Pu
 - [Overview](#overview)
 - [Installation and Building](#installation-and-building)
 - [How to use](#how-to-use)
+- [Known Issues](#known-issues)
 - [Contributions and feedback](#contributions-and-feedback)
 - [License](#license)
 
@@ -83,6 +84,10 @@ been mocked. To change the mock response, the [application-local.yml](vz-licence
 file can be modified at line 5 or 6 to get different responses. 
 If you want a successful verification, set `failResponse: false`, otherwise set `failResponse: true`. 
 To test various error codes, set the expected error code in line 6. See all possible error codes in [ErrorCodeDto.java](vz-licencecheck-service/src/main/java/ch/admin/astra/vz/lc/domain/vam/model/ErrorCodeDto.java).  
+
+## Known Issues
+
+The swiyu Public Beta Trust Infrastructure was deliberately released at an early stage to enable future ecosystem participants. There may still be minor bugs or security vulnerabilities in the test system. We will publish them in the near future as ‘KnownIssues’ in this repository.
 
 ## Contributions and feedback
 
