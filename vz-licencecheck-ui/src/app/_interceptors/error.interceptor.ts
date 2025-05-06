@@ -16,7 +16,7 @@ export const defaultErrorTranslationKeys: I18nNotification = {
   messageKey: 'i18n.exception.default'
 };
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private readonly notificationService: ObNotificationService,

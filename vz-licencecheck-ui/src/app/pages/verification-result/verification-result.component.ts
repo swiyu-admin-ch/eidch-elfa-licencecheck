@@ -6,11 +6,28 @@ import {environment} from '@environments/environment';
 import {DateUtils} from '@app/core/utils';
 
 import {Attribute, AttributeGroup, UseCase, VerificationState} from '@app/core/api/generated';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {MatIconModule} from '@angular/material/icon';
+import {ObButtonModule, ObIconModule, ObStickyModule} from '@oblique/oblique';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-verification-result',
   templateUrl: './verification-result.component.html',
-  styleUrls: ['./verification-result.component.scss']
+  styleUrls: ['./verification-result.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule,
+    ObButtonModule,
+    ObIconModule,
+    ObStickyModule
+  ]
 })
 export class VerificationResultComponent implements OnInit, OnDestroy {
   useCase: UseCase;

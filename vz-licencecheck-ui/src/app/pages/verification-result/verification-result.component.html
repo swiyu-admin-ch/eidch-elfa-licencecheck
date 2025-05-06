@@ -72,7 +72,6 @@
         <div *ngIf="displayTimeout()" class="image-content">
           <div class="component-title">
             {{ "i18n.verifier.use-cases." + this.useCase?.title | translate }}
-            {{ "i18n.verifier.use-cases.postfix.request" | translate }}
           </div>
           <div class="verification-error status-container">
             <div class="ob-grid">
@@ -91,7 +90,6 @@
         <div *ngIf="displayRejected()" class="image-content">
           <div class="component-title">
             {{ "i18n.verifier.use-cases." + this.useCase?.title | translate }}
-            {{ "i18n.verifier.use-cases.postfix.request" | translate }}
           </div>
           <div class="verification-error status-container">
             <div class="ob-grid">
@@ -110,7 +108,6 @@
         <div *ngIf="displayInvalid()" class="image-content">
           <div class="component-title">
             {{ "i18n.verifier.use-cases." + this.useCase?.title | translate }}
-            {{ "i18n.verifier.use-cases.postfix.request" | translate }}
           </div>
           <div class="invalid-screen status-container">
             <div class="ob-grid">
@@ -130,7 +127,7 @@
 
     <div class="verification-footer-buttons">
       <button (click)="close()" class="ob-button" id="close-button" mat-button obButton="primary" type="button">
-        {{ "i18n.verifier.verification-result.button.understood" | translate }}
+        {{ "i18n.core.button.ok" | translate }}
       </button>
     </div>
   </div>

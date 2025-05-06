@@ -9,6 +9,6 @@
  * Do not edit the class manually.
  */
 
-export interface Holder {
+export interface HolderAttributes {
   attributes?: {[key: string]: string};
 }

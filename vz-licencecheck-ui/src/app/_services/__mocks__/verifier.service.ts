@@ -1,6 +1,6 @@
-import {UseCaseResponse} from '@app/core/api/generated';
+import {UseCase} from '@app/core/api/generated';
 
-export const dummyUseCases: UseCaseResponse[] = [
+export const dummyUseCases: UseCase[] = [
   {id: '1', title: 'Title1', description: 'Desc1', order: 1, attributeGroups: []},
   {id: '2', title: 'Title2', description: 'Desc2', order: 2, attributeGroups: []}
 ];

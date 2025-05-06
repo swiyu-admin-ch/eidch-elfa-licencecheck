@@ -5,6 +5,6 @@ import lombok.Singular;
 
 import java.util.Map;
 
-@Schema(name = "Holder")
+@Schema(name = "HolderAttributes")
 public record HolderAttributesDto(@Singular Map<String, String> attributes) {
 }

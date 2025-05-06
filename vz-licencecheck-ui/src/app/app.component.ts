@@ -7,13 +7,29 @@ import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs';
 import {UseCaseService} from '@app/_services';
 import {Meta, Title} from '@angular/platform-browser';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {ObButtonModule, ObIconModule, ObMasterLayoutModule, ObPopoverModule} from '@oblique/oblique';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatIconModule,
+    MatButtonModule,
+    ObButtonModule,
+    ObPopoverModule,
+    ObIconModule,
+    ObMasterLayoutModule,
+    NgOptimizedImage
+  ]
 })
 export class AppComponent implements OnInit {
   banner: ObIBanner;

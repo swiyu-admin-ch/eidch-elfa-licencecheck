@@ -1,11 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PolicyService} from '@app/_services/policy.service';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
+import {ObButtonModule} from '@oblique/oblique';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [CommonModule, TranslateModule, MatCheckboxModule, MatButtonModule, ObButtonModule]
 })
 export class HomeComponent implements OnInit {
   showMessage: boolean = false;

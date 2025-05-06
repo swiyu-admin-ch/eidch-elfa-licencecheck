@@ -4,7 +4,7 @@
   "verificationUrl": "https://www.eid.admin.ch/",
   "errorCode": "CREDENTIAL_INVALID",
   "errorDescription": "Provided credential is not valid.",
-  "holderResponse": {
+  "holderAttributes": {
     "attributes": {}
   }
 }

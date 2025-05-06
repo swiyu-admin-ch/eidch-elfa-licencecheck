@@ -2,17 +2,22 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UseCaseService} from '@app/_services';
 import {environment} from '@environments/environment';
-import {ObHttpApiInterceptorConfig} from '@oblique/oblique';
+import {ObButtonModule, ObHttpApiInterceptorConfig} from '@oblique/oblique';
 import {interval, startWith, Subscription, switchMap} from 'rxjs';
 import {TimerService} from '@app/_services/timer.service';
 import {Status, UseCase, VerificationBeginResponseDto, VerificationState, VerifierApi} from '@app/core/api/generated';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {MatButtonModule} from '@angular/material/button';
 
 @UntilDestroy()
 @Component({
   selector: 'app-scan-qr-code',
   templateUrl: './scan-qr-code.component.html',
-  styleUrls: ['./scan-qr-code.component.scss']
+  styleUrls: ['./scan-qr-code.component.scss'],
+  standalone: true,
+  imports: [CommonModule, TranslateModule, MatButtonModule, ObButtonModule]
 })
 export class ScanQrCodeComponent implements OnInit, OnDestroy {
   useCase: UseCase;

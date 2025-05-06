@@ -3,7 +3,7 @@ export * from './attribute';
 export * from './attribute-group';
 export * from './error-code';
 export * from './error-response';
-export * from './holder';
+export * from './holder-attributes';
 export * from './link';
 export * from './start-verification';
 export * from './status';

@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 import {Status} from './status';
-import {Holder} from './holder';
+import {HolderAttributes} from './holder-attributes';
 import {ErrorCode} from './error-code';
 
 export interface VerificationState {
@@ -18,6 +18,6 @@ export interface VerificationState {
   verificationUrl?: string;
   errorCode?: ErrorCode;
   errorDescription?: string;
-  holderAttributes?: Holder;
+  holderAttributes?: HolderAttributes;
 }
 export namespace VerificationState {}

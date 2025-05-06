@@ -56,12 +56,14 @@ public class MockVerifierAgentManagementImpl implements VerifierAgentManagementC
                     new SimpleEntry<>("firstName", "Seraina Manuela"),
                     new SimpleEntry<>("lastName", "Muster"),
                     new SimpleEntry<>("dateOfExpiration", "31.12.2025"),
-
+                        new SimpleEntry<>("hometown", "Bern"),
                     new SimpleEntry<>("faberPin", "123456789"),
                     new SimpleEntry<>("licenceNumber", "123456789001"),
                     new SimpleEntry<>("dateOfBirth", "01.01.2000"),
                     new SimpleEntry<>("issuerEntity", "BE"),
-                    new SimpleEntry<>("issuerEntityDate", "01.01.2023")))
+                        new SimpleEntry<>("issuerEntityDate", "01.01.2023"),
+                        new SimpleEntry<>("signatureImage", getSampleSignatureImageAsString()),
+                        new SimpleEntry<>("policeQRImage", getSamplePoliceQRImageAsString())))
                 .build())
             .build();
     }
@@ -91,6 +93,24 @@ public class MockVerifierAgentManagementImpl implements VerifierAgentManagementC
         try {
             return Base64.getEncoder()
                 .encodeToString(new ClassPathResource("sample/kat_b.png").getContentAsByteArray());
+        } catch (IOException e) {
+            throw new ImageHandlingException(e.getMessage(), e);
+        }
+    }
+
+    private String getSampleSignatureImageAsString() {
+        try {
+            return Base64.getEncoder()
+                    .encodeToString(new ClassPathResource("sample/sampleSignature.png").getContentAsByteArray());
+        } catch (IOException e) {
+            throw new ImageHandlingException(e.getMessage(), e);
+        }
+    }
+
+    private String getSamplePoliceQRImageAsString() {
+        try {
+            return Base64.getEncoder()
+                    .encodeToString(new ClassPathResource("sample/samplePoliceQRImage.png").getContentAsByteArray());
         } catch (IOException e) {
             throw new ImageHandlingException(e.getMessage(), e);
         }

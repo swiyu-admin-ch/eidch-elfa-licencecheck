@@ -15,10 +15,6 @@ describe('The Home Page', () => {
     cy.get('ob-master-layout-navigation').should('exist');
     cy.get("img[src='assets/images/welcome.svg']").should('exist');
     cy.get('.title').should('contain', 'Gültigkeit eines elektronischen Lernfahrausweises überprüfen');
-    cy.get('.description').should(
-      'contain',
-      'Elektronische Lernfahrausweise sind ein Pilotprojekt vom Bund.'
-    );
   });
 
   it('shows error message when policy is not confirmed and button is clicked', () => {

@@ -38,6 +38,11 @@
           "name": "hometown",
           "type": "string",
           "order": 5
+        },
+        {
+          "name": "signatureImage",
+          "type": "image",
+          "order": 6
         }
       ]
     },
@@ -48,12 +53,12 @@
         {
           "name": "issuerEntityDate",
           "type": "date",
-          "order": 6
+          "order": 7
         },
         {
           "name": "dateOfExpiration",
           "type": "date",
-          "order": 7
+          "order": 8
         }
       ]
     },
@@ -64,12 +69,12 @@
         {
           "name": "issuerEntity",
           "type": "string",
-          "order": 8
+          "order": 9
         },
         {
           "name": "licenceNumber",
           "type": "string",
-          "order": 9
+          "order": 10
         },
         {
           "name": "faberPin",
@@ -100,6 +105,11 @@
           "name": "restrictionsB",
           "type": "string",
           "order": 16
+        },
+        {
+          "name": "policeQRImage",
+          "type": "image",
+          "order": 17
         }
       ]
     }

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.9.0]
+
+- [EIDRAEDA-1227](https://jira.bit.admin.ch/browse/EIDRAEDA-1227): Refactoring to use standalone feature in Angular UI
+
 ## [1.8.0]
 
 - Remove unused dependency management section
