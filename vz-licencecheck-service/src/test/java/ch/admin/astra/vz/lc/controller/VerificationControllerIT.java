@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static ch.admin.astra.vz.lc.api.VerificationStatus.SUCCESS;
+import static ch.admin.astra.vz.lc.api.StatusDto.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,7 +27,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 
-class VerifierControllerIT extends BaseIntegrationTest {
+
+class VerificationControllerIT extends BaseIntegrationTest {
 
     public static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
     private static final String EXISTING_USE_CASE = "c2041c31-db6b-4cf1-871d-6a24d400159b";
@@ -44,28 +45,28 @@ class VerifierControllerIT extends BaseIntegrationTest {
     @Test
     void testGetUseCases_thenSuccess() throws Exception {
 
-        List<UseCaseResponse> response = fetchGet("use-cases", new TypeReference<>() {
+        List<UseCaseDto> response = fetchGet("use-cases", new TypeReference<>() {
         });
 
         assertNotNull(response);
         Assertions.assertEquals(1, response.size());
 
-        UseCaseResponse useCaseResponse = response.getFirst();
-        assertEquals("title", useCaseResponse.getTitle());
-        assertEquals("description", useCaseResponse.getDescription());
+        UseCaseDto useCaseDto = response.getFirst();
+        assertEquals("title", useCaseDto.title());
+        assertEquals("description", useCaseDto.description());
 
-        List<AttributeGroupResponse> attributeGroups = useCaseResponse.getAttributeGroups();
+        List<AttributeGroupDto> attributeGroups = useCaseDto.attributeGroups();
         assertEquals(1, attributeGroups.size());
 
-        AttributeGroupResponse attributeGroupResponse = attributeGroups.getFirst();
-        assertEquals("name", attributeGroupResponse.getName());
-        assertEquals(1, attributeGroupResponse.getOrder());
+        AttributeGroupDto attributeGroupDto = attributeGroups.getFirst();
+        assertEquals("name", attributeGroupDto.name());
+        assertEquals(1, attributeGroupDto.order());
 
-        List<AttributeResponse> attributes = attributeGroupResponse.getAttributes();
-        AttributeResponse attributeResponse = attributes.getFirst();
-        assertEquals("name", attributeResponse.getName());
-        assertEquals("type", attributeResponse.getType());
-        assertEquals(1, attributeResponse.getOrder());
+        List<AttributeDto> attributes = attributeGroupDto.attributes();
+        AttributeDto attributeDto = attributes.getFirst();
+        assertEquals("name", attributeDto.name());
+        assertEquals("type", attributeDto.type());
+        assertEquals(1, attributeDto.order());
     }
 
     @Test
@@ -73,14 +74,14 @@ class VerifierControllerIT extends BaseIntegrationTest {
         doReturn(getTestVerificationResponse()).when(verifierAgentManagementClient)
             .createVerification(any());
 
-        StartVerificationRequest request = StartVerificationRequest.builder().useCaseId(UUID.fromString(EXISTING_USE_CASE)).build();
-        VerificationBeginResponse response = fetchPost("verify", request, new TypeReference<>() {
+        StartVerificationDto request = new StartVerificationDto(UUID.fromString(EXISTING_USE_CASE));
+        VerificationStartedDto response = fetchPost("verify", request, new TypeReference<>() {
         });
 
         assertNotNull(response);
-        assertEquals(ID, response.getId());
-        assertEquals(Base64.getEncoder().encodeToString(qrCodeService.create("url", 500).getImageData()), Base64.getEncoder().encodeToString(response.getQrCode()));
-        assertEquals("png", response.getQrCodeFormat());
+        assertEquals(ID, response.id());
+        assertEquals(Base64.getEncoder().encodeToString(qrCodeService.create("url", 500).getImageData()), Base64.getEncoder().encodeToString(response.qrCode()));
+        assertEquals("png", response.qrCodeFormat());
     }
 
     @Test
@@ -89,16 +90,16 @@ class VerifierControllerIT extends BaseIntegrationTest {
             .getVerificationStatus(argThat(r -> r.equals(ID)));
 
 
-        VerificationStatusResponse response = fetchGet("verify/" + ID, new TypeReference<>() {
+        VerificationStateDto response = fetchGet("verify/" + ID, new TypeReference<>() {
         });
 
         assertNotNull(response);
 
-        assertEquals(ID.toString(), response.getId());
-        assertEquals(SUCCESS, response.getStatus());
-        assertEquals("url", response.getVerificationUrl());
+        assertEquals(ID.toString(), response.id());
+        assertEquals(SUCCESS, response.status());
+        assertEquals("url", response.verificationUrl());
 
-        assertThat(response.getHolderResponse().getAttributes()).containsExactlyEntriesOf(
+        assertThat(response.holderAttributes().attributes()).containsExactlyEntriesOf(
             Map.of("attributeKey", "attributeValue"));
     }
 

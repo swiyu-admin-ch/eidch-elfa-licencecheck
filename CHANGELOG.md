@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0]
+
+- Remove unused dependency management section
+- [EIDRAEDA-1110](https://jira.bit.admin.ch/browse/EIDRAEDA-1110): Added correct VC attribute translations
+- [EIDRAEDA-1188](https://jira.bit.admin.ch/browse/EIDRAEDA-1188): Multiple technical debts addressed and adding jEAP
+  lib
+
 ## [1.7.0]
 
 - [EIDRAEDA-600](https://jira.bit.admin.ch/browse/EIDRAEDA-600) UI API Code generation with openapi-code-generator
@@ -17,7 +24,6 @@
 - [EIDRAEDA-1093](https://jira.bit.admin.ch/browse/EIDRAEDA-1093): Fix frontend navigation bug for static pages
 - [EIDRAEDA-1113](https://jira.bit.admin.ch/browse/EIDRAEDA-1113): fix MDC not clearing in unforeseen errors
 - [EIDRAEDA-1133](https://jira.bit.admin.ch/browse/EIDRAEDA-1133): Change verifier-agent-management API to versioned endpoints
-
 
 ## [1.6.0]
 

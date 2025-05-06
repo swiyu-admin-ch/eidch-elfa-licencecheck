@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
+import {UseCase} from '@app/core/api/generated';
 
 @Component({
   selector: 'app-info-dialog',
@@ -8,7 +8,7 @@ import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
   styleUrls: ['./info-dialog.component.scss']
 })
 export class InfoDialogComponent implements OnInit {
-  item: UseCaseResponse;
+  item: UseCase;
 
   constructor(public dialogRef: MatDialogRef<InfoDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: {item: any}) {}
 

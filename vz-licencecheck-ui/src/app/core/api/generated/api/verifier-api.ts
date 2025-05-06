@@ -13,12 +13,12 @@
 import {Inject, Injectable, Optional} from '@angular/core';
 import {
   HttpClient,
-  HttpContext,
-  HttpEvent,
   HttpHeaders,
-  HttpParameterCodec,
   HttpParams,
-  HttpResponse
+  HttpResponse,
+  HttpEvent,
+  HttpParameterCodec,
+  HttpContext
 } from '@angular/common/http';
 import {CustomHttpParameterCodec} from '../encoder';
 import {Observable} from 'rxjs';
@@ -26,13 +26,13 @@ import {Observable} from 'rxjs';
 // @ts-ignore
 import {ErrorResponse} from '../model/error-response';
 // @ts-ignore
-import {StartVerificationRequest} from '../model/start-verification-request';
+import {StartVerification} from '../model/start-verification';
 // @ts-ignore
-import {UseCaseResponse} from '../model/use-case-response';
+import {UseCase} from '../model/use-case';
 // @ts-ignore
 import {VerificationBeginResponseDto} from '../model/verification-begin-response-dto';
 // @ts-ignore
-import {VerificationStatusResponse} from '../model/verification-status-response';
+import {VerificationState} from '../model/verification-state';
 
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
@@ -43,7 +43,7 @@ export interface GetVerificationProcessRequestParams {
 }
 
 export interface StartVerificationProcessRequestParams {
-  startVerificationRequest: StartVerificationRequest;
+  startVerification: StartVerification;
 }
 
 @Injectable({
@@ -123,29 +123,29 @@ export class VerifierApi {
   public getUseCases(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<Array<UseCaseResponse>>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<Array<UseCase>>;
   public getUseCases(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<HttpResponse<Array<UseCaseResponse>>>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<HttpResponse<Array<UseCase>>>;
   public getUseCases(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<HttpEvent<Array<UseCaseResponse>>>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<HttpEvent<Array<UseCase>>>;
   public getUseCases(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
     let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json', 'application/problem+json'];
+      const httpHeaderAccepts: string[] = ['application/json'];
       localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (localVarHttpHeaderAcceptSelected !== undefined) {
@@ -168,8 +168,8 @@ export class VerifierApi {
       }
     }
 
-    let localVarPath = `/api/v1/verifier/use-cases`;
-    return this.httpClient.request<Array<UseCaseResponse>>('get', `${this.configuration.basePath}${localVarPath}`, {
+    let localVarPath = `/api/v1/verification/use-cases`;
+    return this.httpClient.request<Array<UseCase>>('get', `${this.configuration.basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
       withCredentials: this.configuration.withCredentials,
@@ -190,25 +190,25 @@ export class VerifierApi {
     requestParameters?: GetVerificationProcessRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<VerificationStatusResponse>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<VerificationState>;
   public getVerificationProcess(
     requestParameters?: GetVerificationProcessRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<HttpResponse<VerificationStatusResponse>>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<HttpResponse<VerificationState>>;
   public getVerificationProcess(
     requestParameters?: GetVerificationProcessRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
-  ): Observable<HttpEvent<VerificationStatusResponse>>;
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+  ): Observable<HttpEvent<VerificationState>>;
   public getVerificationProcess(
     requestParameters?: GetVerificationProcessRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<any> {
     const verificationId = requestParameters?.verificationId;
     if (verificationId === null || verificationId === undefined) {
@@ -220,7 +220,7 @@ export class VerifierApi {
     let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json', 'application/problem+json'];
+      const httpHeaderAccepts: string[] = ['application/json'];
       localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (localVarHttpHeaderAcceptSelected !== undefined) {
@@ -243,16 +243,16 @@ export class VerifierApi {
       }
     }
 
-    let localVarPath = `/api/v1/verifier/verify/${this.configuration.encodeParam({
+    let localVarPath = `/api/v1/verification/verify/${this.configuration.encodeParam({
       name: 'verificationId',
       value: verificationId,
       in: 'path',
       style: 'simple',
       explode: false,
       dataType: 'string',
-      dataFormat: undefined
+      dataFormat: 'uuid'
     })}`;
-    return this.httpClient.request<VerificationStatusResponse>('get', `${this.configuration.basePath}${localVarPath}`, {
+    return this.httpClient.request<VerificationState>('get', `${this.configuration.basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
       withCredentials: this.configuration.withCredentials,
@@ -273,30 +273,30 @@ export class VerifierApi {
     requestParameters?: StartVerificationProcessRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<VerificationBeginResponseDto>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<HttpResponse<VerificationBeginResponseDto>>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<HttpEvent<VerificationBeginResponseDto>>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
   ): Observable<any> {
-    const startVerificationRequest = requestParameters?.startVerificationRequest;
-    if (startVerificationRequest === null || startVerificationRequest === undefined) {
+    const startVerification = requestParameters?.startVerification;
+    if (startVerification === null || startVerification === undefined) {
       throw new Error(
-        'Required parameter startVerificationRequest was null or undefined when calling startVerificationProcess.'
+        'Required parameter startVerification was null or undefined when calling startVerificationProcess.'
       );
     }
 
@@ -305,7 +305,7 @@ export class VerifierApi {
     let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
     if (localVarHttpHeaderAcceptSelected === undefined) {
       // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json', 'application/problem+json'];
+      const httpHeaderAccepts: string[] = ['application/json'];
       localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     }
     if (localVarHttpHeaderAcceptSelected !== undefined) {
@@ -335,13 +335,13 @@ export class VerifierApi {
       }
     }
 
-    let localVarPath = `/api/v1/verifier/verify`;
+    let localVarPath = `/api/v1/verification/verify`;
     return this.httpClient.request<VerificationBeginResponseDto>(
       'post',
       `${this.configuration.basePath}${localVarPath}`,
       {
         context: localVarHttpContext,
-        body: startVerificationRequest,
+        body: startVerification,
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
         headers: localVarHeaders,

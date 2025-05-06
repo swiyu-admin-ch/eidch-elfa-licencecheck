@@ -4,7 +4,7 @@
     <parent>
         <groupId>ch.admin.astra.vz.lc</groupId>
         <artifactId>vz-licencecheck-scs</artifactId>
-        <version>1.7.0</version>
+        <version>1.8.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

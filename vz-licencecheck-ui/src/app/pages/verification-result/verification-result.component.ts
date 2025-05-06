@@ -5,10 +5,7 @@ import {Subscription, switchMap, timer} from 'rxjs';
 import {environment} from '@environments/environment';
 import {DateUtils} from '@app/core/utils';
 
-import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
-import {VerificationStatusResponse} from '@app/core/api/generated';
-import {AttributeGroupResponse} from '@app/core/api/generated/model/attribute-group-response';
-import {AttributeResponse} from '@app/core/api/generated/model/attribute-response';
+import {Attribute, AttributeGroup, UseCase, VerificationState} from '@app/core/api/generated';
 
 @Component({
   selector: 'app-verification-result',
@@ -16,8 +13,8 @@ import {AttributeResponse} from '@app/core/api/generated/model/attribute-respons
   styleUrls: ['./verification-result.component.scss']
 })
 export class VerificationResultComponent implements OnInit, OnDestroy {
-  useCase: UseCaseResponse;
-  verificationResponse: VerificationStatusResponse;
+  useCase: UseCase;
+  verificationState: VerificationState;
   navigationTimerSubscription: Subscription;
 
   constructor(public useCaseService: UseCaseService, private readonly router: Router) {}
@@ -29,12 +26,12 @@ export class VerificationResultComponent implements OnInit, OnDestroy {
       this.useCase = this.useCaseService.getUseCase();
     }
 
-    if (!this.useCaseService.getVerificationResponse() && !this.useCaseService.isTimeout()) {
+    if (!this.useCaseService.getVerificationState() && !this.useCaseService.isTimeout()) {
       this.close();
     }
 
-    if (this.useCaseService.getVerificationResponse()) {
-      this.verificationResponse = this.useCaseService.getVerificationResponse();
+    if (this.useCaseService.getVerificationState()) {
+      this.verificationState = this.useCaseService.getVerificationState();
     }
 
     this.startNavigationTimer();
@@ -46,7 +43,7 @@ export class VerificationResultComponent implements OnInit, OnDestroy {
   }
 
   getAttribute(key: string): string | undefined {
-    const attribute = this.verificationResponse?.holderResponse?.attributes?.[key];
+    const attribute = this.verificationState?.holderAttributes?.attributes?.[key];
     return attribute || '---';
   }
 
@@ -58,18 +55,18 @@ export class VerificationResultComponent implements OnInit, OnDestroy {
     return 'data:image/png;base64,' + this.getAttribute(key);
   }
 
-  getSortedAttributeGroups(): AttributeGroupResponse[] {
-    return this.useCase.attributeGroups.sort((a, b) => a.order - b.order);
+  getSortedAttributeGroups(): AttributeGroup[] {
+    return this.useCase.attributeGroups.sort((a: AttributeGroup, b: AttributeGroup) => a.order - b.order);
   }
 
-  getSortedAttributesWithoutPhotoImage(attributeGroup: AttributeGroupResponse): AttributeResponse[] {
+  getSortedAttributesWithoutPhotoImage(attributeGroup: AttributeGroup): Attribute[] {
     return attributeGroup.attributes.filter(a => a.name !== 'photoImage').sort((a, b) => a.order - b.order);
   }
 
   isVcValid(): boolean {
-    if (this.verificationResponse?.holderResponse?.attributes['dateOfExpiration'] !== undefined) {
+    if (this.verificationState?.holderAttributes?.attributes['dateOfExpiration'] !== undefined) {
       const dateOfExpiration = DateUtils.parseDate(
-        this.verificationResponse?.holderResponse?.attributes?.dateOfExpiration
+        this.verificationState?.holderAttributes?.attributes?.dateOfExpiration
       );
       const now = new Date();
       now.setHours(0, 0, 0, 0);
@@ -94,7 +91,7 @@ export class VerificationResultComponent implements OnInit, OnDestroy {
     return this.useCaseService.isVcInvalid();
   }
 
-  displayGroup(group: AttributeGroupResponse) {
+  displayGroup(group: AttributeGroup) {
     return group.name !== 'photoImage';
   }
 

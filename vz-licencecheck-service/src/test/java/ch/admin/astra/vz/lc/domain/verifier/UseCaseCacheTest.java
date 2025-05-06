@@ -1,6 +1,5 @@
-package ch.admin.astra.vz.lc.domain.verifier.impl;
+package ch.admin.astra.vz.lc.domain.verifier;
 
-import ch.admin.astra.vz.lc.domain.verifier.UseCaseCache;
 import ch.admin.astra.vz.lc.domain.verifier.exception.UseCaseNotFoundException;
 import ch.admin.astra.vz.lc.domain.verifier.model.UseCase;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations="classpath:application.yml")
 @SpringBootTest(properties="spring.main.lazy-initialization=true")
-class UseCaseCacheImplTest {
+class UseCaseCacheTest {
 
     private static final UUID EXISTING_USE_CASE = UUID.fromString("c2041c31-db6b-4cf1-871d-6a24d400159b");
 

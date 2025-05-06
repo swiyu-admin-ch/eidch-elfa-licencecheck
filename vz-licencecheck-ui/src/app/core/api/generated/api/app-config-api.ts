@@ -13,18 +13,20 @@
 import {Inject, Injectable, Optional} from '@angular/core';
 import {
   HttpClient,
-  HttpContext,
-  HttpEvent,
   HttpHeaders,
-  HttpParameterCodec,
   HttpParams,
-  HttpResponse
+  HttpResponse,
+  HttpEvent,
+  HttpParameterCodec,
+  HttpContext
 } from '@angular/common/http';
 import {CustomHttpParameterCodec} from '../encoder';
 import {Observable} from 'rxjs';
 
 // @ts-ignore
 import {AppConfig} from '../model/app-config';
+// @ts-ignore
+import {ErrorResponse} from '../model/error-response';
 
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
@@ -99,6 +101,7 @@ export class AppConfigApi {
   }
 
   /**
+   * Application configuration
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */

@@ -8,10 +8,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {AttributeResponse} from './attribute-response';
 
-export interface AttributeGroupResponse {
-  name?: string;
-  order?: number;
-  attributes?: Array<AttributeResponse>;
+export interface Holder {
+  attributes?: {[key: string]: string};
 }

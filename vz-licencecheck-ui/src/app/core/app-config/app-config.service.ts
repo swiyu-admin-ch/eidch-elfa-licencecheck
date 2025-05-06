@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
-import {AppConfig, AppConfigApi} from '@app/core/app-config/app-config-api';
+import {AppConfig, AppConfigApi} from '@app/core/api/generated';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class AppConfigService {
   constructor(private readonly appConfigApi: AppConfigApi) {}
 
   loadAppConfig(): Observable<AppConfig | undefined> {
-    return this.appConfigApi.getAppConfig().pipe(
+    return this.appConfigApi.getConfiguration().pipe(
       tap(config => {
         this._appConfig$.next(config);
       }),

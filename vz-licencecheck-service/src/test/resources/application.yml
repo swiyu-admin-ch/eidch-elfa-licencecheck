@@ -4,3 +4,7 @@ spring:
 
 verifier:
   use-case-folderPath: "use-cases"
+
+verifier-agent-management:
+  logging:
+    level: NONE

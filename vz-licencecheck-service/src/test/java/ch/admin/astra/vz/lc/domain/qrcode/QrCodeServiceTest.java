@@ -1,7 +1,6 @@
 package ch.admin.astra.vz.lc.domain.qrcode;
 
 import ch.admin.astra.vz.lc.domain.qrcode.exception.ImageHandlingException;
-import ch.admin.astra.vz.lc.domain.qrcode.impl.QrCodeServiceImpl;
 import ch.admin.astra.vz.lc.domain.qrcode.model.QrCode;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
@@ -20,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class QrCodeServiceTest {
 
-    private final QrCodeService qrCodeService = new QrCodeServiceImpl();
+    private final QrCodeService qrCodeService = new QrCodeService();
 
     @Test
     void testCreate_qrCodeContainsTestData_succeeds() throws Exception {

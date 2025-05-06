@@ -34,18 +34,19 @@
                 "output": "assets"
               },
               "src/assets",
-              "src/favicon.png",
               "src/manifest.json"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
             },
             "styles": [
-              "./node_modules/@oblique/oblique/styles/css/oblique-core.css",
               "./node_modules/@oblique/oblique/styles/css/oblique-alert.css",
+              "./node_modules/@oblique/oblique/styles/css/oblique-components.css",
+              "./node_modules/@oblique/oblique/styles/css/oblique-core.css",
               "./node_modules/@oblique/oblique/styles/css/oblique-icons.css",
+              "./node_modules/@oblique/oblique/styles/css/roboto.css",
               "src/styles/css/frutiger.css",
-              "./node_modules/@oblique/oblique/styles/css/roboto.css"
+              "src/styles/styles.scss"
             ],
             "scripts": ["node_modules/@oblique/oblique/ob-features.js"],
             "allowedCommonJsDependencies": ["ajv", "ajv-formats"]

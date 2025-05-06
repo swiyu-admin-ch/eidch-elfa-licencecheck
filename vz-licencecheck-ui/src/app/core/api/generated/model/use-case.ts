@@ -11,8 +11,8 @@
 import {AttributeGroup} from './attribute-group';
 
 export interface UseCase {
-  id?: string;
-  title?: string;
+  id: string;
+  title: string;
   description?: string;
   order?: number;
   attributeGroups?: Array<AttributeGroup>;

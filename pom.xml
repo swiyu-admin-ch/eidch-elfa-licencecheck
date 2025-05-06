@@ -5,19 +5,32 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.3</version>
+        <groupId>ch.admin.bit.jeap</groupId>
+        <artifactId>jeap-spring-boot-parent</artifactId>
+        <version>26.42.0</version>
+        <relativePath/>
     </parent>
 
     <groupId>ch.admin.astra.vz.lc</groupId>
     <artifactId>vz-licencecheck-scs</artifactId>
-    <version>1.7.0</version>
+    <version>1.8.0</version>
     <packaging>pom</packaging>
-    <description>E-ID LicenceCheck App</description>
+    <description>e-ID LicenceCheck App</description>
 
     <properties>
         <java.version>21</java.version>
+        <!-- Sonar Config / Rules -->
+        <sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.exclusions>
+            **/org/**/*.java, **/com/**/*.java
+        </sonar.exclusions>
+        <sonar.cpd.exclusions>
+            **/*Dto.java,**/domain/*
+        </sonar.cpd.exclusions>
+        <sonar.coverage.exclusions>
+            **/*Dto.java,**/config/*,**/generated/*,**/*Exception.java,**/*Type.java,**/*ExceptionHandler.java,**/*Constants.java,**/*Registry.java,**/*Config.java,**/*Mock*,**/*Application.java
+        </sonar.coverage.exclusions>
         <com.google.zxing.version>3.5.3</com.google.zxing.version>
         <org.apache.commons.version>3.14.0</org.apache.commons.version>
         <retrofit.version>2.11.0</retrofit.version>
@@ -25,7 +38,7 @@
         <logging-interceptor.version>4.12.0</logging-interceptor.version>
         <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
         <lombok.version>1.18.30</lombok.version>
-        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.4.1</jib-maven-plugin.version>
         <skip.surefire.tests>false</skip.surefire.tests>
         <skip.failsafe.tests>false</skip.failsafe.tests>
@@ -185,25 +198,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- enforce specific versions of transitive libraries, to pass security gates -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.xmlunit</groupId>
-                <artifactId>xmlunit-core</artifactId>
-                <version>2.10.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.34</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>6.1.14</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

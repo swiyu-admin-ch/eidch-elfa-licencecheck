@@ -1,6 +1,7 @@
 package ch.admin.astra.vz.lc.controller;
 
-import ch.admin.astra.vz.lc.api.AppConfigResponse;
+import ch.admin.astra.vz.lc.api.AppConfigDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,10 @@ class AppConfigController {
     private final Environment environment;
     private final BuildProperties buildProperties;
 
+    @Operation(summary = "Application configuration")
     @GetMapping
-    public AppConfigResponse getConfiguration() {
-        return new AppConfigResponse(buildProperties.getVersion(), getEnvironmentName());
+    public AppConfigDto getConfiguration() {
+        return new AppConfigDto(buildProperties.getVersion(), getEnvironmentName());
     }
 
     private String getEnvironmentName() {

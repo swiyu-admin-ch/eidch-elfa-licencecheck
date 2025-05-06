@@ -9,8 +9,6 @@
  * Do not edit the class manually.
  */
 
-export interface AttributeResponse {
-  name?: string;
-  type?: string;
-  order?: number;
+export interface StartVerification {
+  useCaseId: string;
 }

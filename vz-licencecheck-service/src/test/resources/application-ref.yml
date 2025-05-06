@@ -1,3 +1,2 @@
 verifier-agent-management:
   endpoint: "https://example.com"
-  password: "MOCKED"

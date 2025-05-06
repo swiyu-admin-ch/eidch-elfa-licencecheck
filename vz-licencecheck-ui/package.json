@@ -1,7 +1,7 @@
 {
   "title": "ASTRA VZ-Licencecheck",
   "name": "vz-licencecheck-ui",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "license": "All Rights Reserved",
   "organization": {
     "name": "Federal Office of Information Technology, Systems and Telecommunication FOITT",
@@ -18,7 +18,9 @@
     "lint": "ng lint",
     "prettier": "./node_modules/.bin/prettier --write **/{*.ts,*.html,*.scss,*.json,*.js}",
     "format": "npm run lint -- --fix && npm run prettier",
-    "generate:api": "HTTPS_PROXY=\"\" NODE_TLS_REJECT_UNAUTHORIZED='0' openapi-generator-cli generate --generator-key angular-client-api"
+    "pregenerate:api": "rimraf src/app/core/api/generated",
+    "generate:api": "HTTPS_PROXY=\"\" NODE_TLS_REJECT_UNAUTHORIZED='0' openapi-generator-cli generate --generator-key angular-client-api",
+    "postgenerate:api": "./node_modules/.bin/prettier --write src/app/core/api/generated/**/{*.ts,*.html,*.scss,*.json,*.js,*.md}"
   },
   "dependencies": {
     "@angular/animations": "^17.3.12",

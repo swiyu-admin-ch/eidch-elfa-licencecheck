@@ -1,7 +1,6 @@
 package ch.admin.astra.vz.lc.domain.verifier;
 
 import ch.admin.astra.vz.lc.domain.verifier.exception.FileStorageException;
-import ch.admin.astra.vz.lc.domain.verifier.impl.UseCaseCacheImpl;
 import ch.admin.astra.vz.lc.domain.verifier.model.UseCase;
 import ch.admin.astra.vz.lc.mapper.ResourceToUseCaseMapper;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,7 @@ public class UseCaseCacheConfiguration {
     public UseCaseCache getUseCaseService(@Value("${verifier.use-case-folderPath}") String folderPath) {
         List<Resource> useCaseResourceList = findAllFilesInDirectory(folderPath);
         ConcurrentMap<UUID, UseCase> useCaseCache = mapToUseCases(useCaseResourceList);
-        return new UseCaseCacheImpl(useCaseCache);
+        return new UseCaseCache(useCaseCache);
     }
 
     @NotNull

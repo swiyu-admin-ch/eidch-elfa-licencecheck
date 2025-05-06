@@ -2,7 +2,15 @@ spring:
   application:
     name: vz-licencecheck-scs
 
+jeap:
+  swagger:
+    status: DISABLED
+  web:
+    headers:
+      content-security-policy: "default-src 'self' *.admin.ch; script-src 'self' 'unsafe-inline' *.admin.ch; style-src 'self' 'unsafe-inline'; frame-src 'self' *.admin.ch; img-src 'self' data:;"
+
 server:
+  port: 8888
   servlet:
     context-path: /
   compression:

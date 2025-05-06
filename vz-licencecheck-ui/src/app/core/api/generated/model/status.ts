@@ -9,7 +9,10 @@
  * Do not edit the class manually.
  */
 
-export interface AppConfigResponse {
-  version: string;
-  environment: string;
-}
+export type Status = 'PENDING' | 'SUCCESS' | 'FAILED';
+
+export const Status = {
+  Pending: 'PENDING' as Status,
+  Success: 'SUCCESS' as Status,
+  Failed: 'FAILED' as Status
+};

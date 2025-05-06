@@ -1,4 +1,4 @@
-package ch.admin.astra.vz.lc.domain.verifier.impl;
+package ch.admin.astra.vz.lc.domain.verifier;
 
 import ch.admin.astra.vz.lc.domain.qrcode.QrCodeService;
 import ch.admin.astra.vz.lc.domain.qrcode.exception.ImageHandlingException;
@@ -8,13 +8,14 @@ import ch.admin.astra.vz.lc.domain.vam.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.domain.vam.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.domain.vam.model.VerificationState;
 import ch.admin.astra.vz.lc.domain.vam.service.VerifierAgentManagementClient;
-import ch.admin.astra.vz.lc.domain.verifier.UseCaseCache;
 import ch.admin.astra.vz.lc.domain.verifier.exception.UseCaseNotFoundException;
 import ch.admin.astra.vz.lc.domain.verifier.model.Attribute;
 import ch.admin.astra.vz.lc.domain.verifier.model.AttributeGroup;
 import ch.admin.astra.vz.lc.domain.verifier.model.UseCase;
 import ch.admin.astra.vz.lc.domain.verifier.model.VerificationBeginResponseDto;
 import ch.admin.astra.vz.lc.logging.LoggingService;
+import ch.admin.astra.vz.lc.mapper.UseCaseMapper;
+import ch.admin.astra.vz.lc.mapper.VerificationMapper;
 import ch.qos.logback.classic.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -37,17 +38,23 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class VerifierServiceImplTest {
+class VerificationServiceTest {
 
 
     public static final String CLIENT_NAME = "Client";
-    private VerifierServiceImpl verifierService;
+    private VerificationService verificationService;
 
     @Mock
     private UseCaseCache useCaseCache;
 
     @Mock
+    private UseCaseMapper useCaseMapper;
+
+    @Mock
     private VerifierAgentManagementClient verifierAgentManagementClient;
+
+    @Mock
+    private VerificationMapper verificationMapper;
 
     @Mock
     private QrCodeService qrCodeService;
@@ -57,17 +64,17 @@ class VerifierServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        verifierService = new VerifierServiceImpl(useCaseCache, verifierAgentManagementClient, qrCodeService, loggingService, CLIENT_NAME);
+        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierAgentManagementClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME);
     }
 
     @AfterEach
     void teardown() {
-        ((Logger) LoggerFactory.getLogger(VerifierServiceImpl.class)).detachAndStopAllAppenders();
+        ((Logger) LoggerFactory.getLogger(VerificationService.class)).detachAndStopAllAppenders();
     }
 
     @Test
     void testGetUseCases_callsCache() {
-        verifierService.getUseCases();
+        verificationService.getUseCases();
         Mockito.verify(useCaseCache).getUseCases();
     }
 
@@ -78,7 +85,7 @@ class VerifierServiceImplTest {
         when(useCaseCache.getUseCaseById(useCaseId)).thenThrow(UseCaseNotFoundException.class);
 
         // when
-        Assertions.assertThrows(UseCaseNotFoundException.class, () -> verifierService.createVerification(useCaseId));
+        Assertions.assertThrows(UseCaseNotFoundException.class, () -> verificationService.createVerification(useCaseId));
 
         // then
         Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
@@ -95,7 +102,7 @@ class VerifierServiceImplTest {
         when(verifierAgentManagementClient.createVerification(any())).thenThrow(VAMException.class);
 
         // when
-        Assertions.assertThrows(VAMException.class, () -> verifierService.createVerification(useCaseId));
+        Assertions.assertThrows(VAMException.class, () -> verificationService.createVerification(useCaseId));
 
         // then
         // assert useCaseService
@@ -131,7 +138,7 @@ class VerifierServiceImplTest {
         when(qrCodeService.create(verificationUrlExpected, 500)).thenThrow(ImageHandlingException.class);
 
         // when
-        assertThrows(ImageHandlingException.class, () -> verifierService.createVerification(useCaseId));
+        assertThrows(ImageHandlingException.class, () -> verificationService.createVerification(useCaseId));
 
         // then
         // assert useCaseService
@@ -165,7 +172,7 @@ class VerifierServiceImplTest {
         when(qrCodeService.create(verificationUrlExpected, 500)).thenReturn(QrCode.builder().imageData(imageBytes).format(imageFormat).build());
 
         // when
-        VerificationBeginResponseDto result = verifierService.createVerification(useCaseId);
+        VerificationBeginResponseDto result = verificationService.createVerification(useCaseId);
 
         // then
         // assert result
@@ -196,7 +203,7 @@ class VerifierServiceImplTest {
         when(verifierAgentManagementClient.getVerificationStatus(any())).thenThrow(VAMException.class);
 
         UUID verificationId = UUID.randomUUID();
-        assertThrows(VAMException.class, () -> verifierService.getVerificationStatus(verificationId));
+        assertThrows(VAMException.class, () -> verificationService.getVerificationStatus(verificationId));
     }
 
     @Test
@@ -209,7 +216,7 @@ class VerifierServiceImplTest {
         // mock verifierAgentManagementClient
         when(verifierAgentManagementClient.getVerificationStatus(uuid)).thenReturn(responseDto);
 
-        verifierService.getVerificationStatus(uuid);
+        verificationService.getVerificationStatus(uuid);
 
         Mockito.verify(verifierAgentManagementClient).getVerificationStatus(uuid);
         Mockito.verify(loggingService).logVerificationResponse(responseDto);

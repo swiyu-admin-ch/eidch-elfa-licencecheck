@@ -20,7 +20,7 @@
           "useSingleRequestParameter": "true",
           "removeEnumValuePrefix": "false"
         },
-        "inputSpec": "http://localhost:8888/v3/api-docs",
+        "inputSpec": "http://localhost:8888/api-docs",
         "output": "src/app/core/api/generated"
       }
     }

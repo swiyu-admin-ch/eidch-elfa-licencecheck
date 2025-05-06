@@ -8,12 +8,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {AttributeGroup} from './attribute-group';
+import {Status} from './status';
+import {Holder} from './holder';
+import {ErrorCode} from './error-code';
 
-export interface UseCaseResponse {
+export interface VerificationState {
   id?: string;
-  title?: string;
-  description?: string;
-  order?: number;
-  attributeGroups?: Array<AttributeGroup>;
+  status?: Status;
+  verificationUrl?: string;
+  errorCode?: ErrorCode;
+  errorDescription?: string;
+  holderAttributes?: Holder;
 }
+export namespace VerificationState {}

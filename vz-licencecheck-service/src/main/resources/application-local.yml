@@ -5,13 +5,16 @@ verifier:
     failResponse: false
     errorCode: CREDENTIAL_INVALID
 
-server:
-  port: 8888
+jeap:
+  swagger:
+    status: OPEN
 
 cors:
   allowed-origins:
     - 'http://localhost:8888'
     - 'http://localhost:4201'
+    - 'http://127.0.0.1:8888'
+    - 'http://127.0.0.1:4201'
 
 verifier-agent-management:
   endpoint: "MOCKED"

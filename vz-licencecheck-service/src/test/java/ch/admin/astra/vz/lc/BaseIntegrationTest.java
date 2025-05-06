@@ -33,7 +33,7 @@ public abstract class BaseIntegrationTest {
         }
     }
 
-    protected static final String BASE_URL = "/api/v1/verifier/";
+    protected static final String BASE_URL = "/api/v1/verification/";
 
     @Autowired
     protected ObjectMapper objectMapper;

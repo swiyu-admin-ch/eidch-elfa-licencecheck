@@ -5,14 +5,8 @@ import {environment} from '@environments/environment';
 import {ObHttpApiInterceptorConfig} from '@oblique/oblique';
 import {interval, startWith, Subscription, switchMap} from 'rxjs';
 import {TimerService} from '@app/_services/timer.service';
-import {
-  VerificationBeginResponseDto,
-  VerificationStatus,
-  VerificationStatusResponse,
-  VerifierApi
-} from '@app/core/api/generated';
+import {Status, UseCase, VerificationBeginResponseDto, VerificationState, VerifierApi} from '@app/core/api/generated';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
 
 @UntilDestroy()
 @Component({
@@ -21,7 +15,7 @@ import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
   styleUrls: ['./scan-qr-code.component.scss']
 })
 export class ScanQrCodeComponent implements OnInit, OnDestroy {
-  useCase: UseCaseResponse;
+  useCase: UseCase;
   response: VerificationBeginResponseDto;
 
   intervalSubscription: Subscription;
@@ -41,7 +35,7 @@ export class ScanQrCodeComponent implements OnInit, OnDestroy {
     this.useCase = this.useCaseService.getUseCase();
     if (this.useCase) {
       this.verifierApi
-        .startVerificationProcess({startVerificationRequest: {useCaseId: this.useCase.id}})
+        .startVerificationProcess({startVerification: {useCaseId: this.useCase.id}})
         .pipe(untilDestroyed(this))
         .subscribe(result => {
           this.response = result;
@@ -78,18 +72,18 @@ export class ScanQrCodeComponent implements OnInit, OnDestroy {
   }
 
   handleResponse() {
-    return (response: VerificationStatusResponse) => {
-      if (response.status !== VerificationStatus.Pending) {
+    return (response: VerificationState) => {
+      if (response.status !== Status.Pending) {
         this.timerService.stopTimer();
-        this.useCaseService.setVerificationResponse(response);
+        this.useCaseService.setVerificationState(response);
         this.goToVerification();
       }
     };
   }
 
   handleError() {
-    return (error: VerificationStatusResponse) => {
-      if (error.status !== VerificationStatus.Pending) {
+    return (error: VerificationState) => {
+      if (error.status !== Status.Pending) {
         this.close();
       }
     };

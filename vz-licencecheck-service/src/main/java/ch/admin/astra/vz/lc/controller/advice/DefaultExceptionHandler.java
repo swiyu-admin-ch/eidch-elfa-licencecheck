@@ -1,6 +1,6 @@
 package ch.admin.astra.vz.lc.controller.advice;
 
-import ch.admin.astra.vz.lc.api.ErrorResponse;
+import ch.admin.astra.vz.lc.api.ErrorResponseDto;
 import ch.admin.astra.vz.lc.domain.qrcode.exception.ImageHandlingException;
 import ch.admin.astra.vz.lc.domain.vam.exception.VAMException;
 import ch.admin.astra.vz.lc.domain.verifier.exception.FileMappingException;
@@ -20,27 +20,31 @@ public class DefaultExceptionHandler {
     private final LoggingService loggingService;
 
     @ExceptionHandler(ImageHandlingException.class)
-    public ResponseEntity<ErrorResponse> handleImageHandlingException(ImageHandlingException ex) {
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<ErrorResponseDto> handleImageHandlingException(ImageHandlingException ex) {
         loggingService.logException(ex);
-        return new ResponseEntity<>(new ErrorResponse(ImageHandlingException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(new ErrorResponseDto(ImageHandlingException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(FileMappingException.class)
-    public ResponseEntity<ErrorResponse> handleFileMappingException(FileMappingException ex) {
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<ErrorResponseDto> handleFileMappingException(FileMappingException ex) {
         loggingService.logException(ex);
-        return new ResponseEntity<>(new ErrorResponse(FileMappingException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(new ErrorResponseDto(FileMappingException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(FileStorageException.class)
-    public ResponseEntity<ErrorResponse> handleFileStorageException(FileStorageException ex) {
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<ErrorResponseDto> handleFileStorageException(FileStorageException ex) {
         loggingService.logException(ex);
-        return new ResponseEntity<>(new ErrorResponse(FileStorageException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(new ErrorResponseDto(FileStorageException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(VAMException.class)
-    public ResponseEntity<ErrorResponse> handleVAMException(VAMException ex) {
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<ErrorResponseDto> handleVAMException(VAMException ex) {
         loggingService.logException(ex);
-        return new ResponseEntity<>(new ErrorResponse(VAMException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(new ErrorResponseDto(VAMException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(Exception.class)

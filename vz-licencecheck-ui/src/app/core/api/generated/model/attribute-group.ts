@@ -11,7 +11,7 @@
 import {Attribute} from './attribute';
 
 export interface AttributeGroup {
-  name?: string;
+  name: string;
   order?: number;
   attributes?: Array<Attribute>;
 }

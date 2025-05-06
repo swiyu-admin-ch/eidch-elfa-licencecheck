@@ -9,7 +9,6 @@
   "i18n.title.requestFailed": "Richiesta fallita",
   "i18n.title.requestRejected": "Richiesta rifiutata",
   "i18n.title.licenceInvalid": "Licenza non valida",
-
   "i18n.application.description": "Applicazione per verificare le licenze elettroniche del conducente.",
   "i18n.application.organization.name": "Ufficio federale delle strade USTRA",
   "i18n.application.version": "Versione",
@@ -18,22 +17,17 @@
   "i18n.support.help": "Aiuto",
   "i18n.support.contact": "Contatto",
   "i18n.support.more-information": "Ulteriori informazioni sul progetto",
-
   "i18n.verifier.home.tab": "Home",
   "i18n.verifier.home.title": "Verifica della validità della licenza digitale per allievo conducente",
   "i18n.verifier.home.description": "Le licenze digitali sono un progetto pilota della Confederazione.",
   "i18n.verifier.home.policy": "Ho letto e accetto l’<a href='https://www.eid.admin.ch/it/lcheck-privacyandterms-i' target='_blank'>informativa sulla protezione dei dati e le condizioni di utilizzo<img class='icon' src='assets/images/external.svg' alt='Icon'></img></a>.",
   "i18n.verifier.home.confirm-policy.button": "Verificare una licenza",
   "i18n.verifier.home.confirm-policy.message": "Siete pregati di leggere l’informativa sulla protezione dei dati e le condizioni di utilizzo nonché, se siete d’accordo, di accettarle.",
-
   "i18n.verifier.tab.home": "Home",
   "i18n.verifier.tab.use-case": "Verifica",
-
   "i18n.core.button.cancel": "Interrompi",
-
   "i18n.verifier.use-case-selector.title": "Verifica della licenza",
   "i18n.verifier.use-case-selector.description": "Selezionate il tipo di verifica della licenza digitale per allievo conducente.",
-
   "i18n.verifier.use-cases.validity": "Validità",
   "i18n.verifier.use-cases.validity.info-dialog.text": "In genere è sufficiente la verifica della validità. Informazioni dettagliate come la data di nascita non sono necessarie quando l’allievo conducente è accompagnato.",
   "i18n.verifier.use-cases.allData": "Tutti i dati",
@@ -41,27 +35,23 @@
   "i18n.verifier.use-cases.validity.description": "Verifica minima delle credenziali (standard)",
   "i18n.verifier.use-cases.allData.description": "Verifica completa, ad es. per la creazione del dossier all’inizio della scuola guida",
   "i18n.verifier.use-cases.postfix.request": "richiedere",
-
   "i18n.verifier.use-case.info-dialog.info": "In tal caso vengono richiesti i seguenti dati:",
-
   "i18n.verifier.start-verification.title": "Mostrate il codice QR all’allievo conducente per verificarne la licenza digitale. Lui potrà cosí scannerizzare il vostro codice QR con l’app «pilotWallet» e verificare la vostra richiesta.",
-
   "i18n.verifier.verification-result.title": "Richiedi validità",
   "i18n.verifier.verification-result.lfa.label": "Licenza per allievo conducente",
   "i18n.verifier.verification-result.status.valid": "Valida",
   "i18n.verifier.verification-result.status.invalid": "Non valido/Bloccato",
-
   "i18n.verifier.verification-result.attribute.firstName": "Nome",
   "i18n.verifier.verification-result.attribute.lastName": "Cognome",
   "i18n.verifier.verification-result.attribute.hometown": "Luogo d’origine",
   "i18n.verifier.verification-result.attribute.dateOfExpiration": "Data di scadenza",
   "i18n.verifier.verification-result.attribute.categoryCode": "Categoria",
   "i18n.verifier.verification-result.attribute.categoryIcon": "Icona di categoria",
-  "i18n.verifier.verification-result.attribute.categoryRestrictions": "Dati complementari relativi alla categoria",
+  "i18n.verifier.verification-result.attribute.categoryRestrictions": "Dati supplementari",
   "i18n.verifier.verification-result.attribute.restrictionsA": "Dati complementari (A)",
   "i18n.verifier.verification-result.attribute.restrictionsB": "Dati complementari (B)",
   "i18n.verifier.verification-result.attribute.faberPin": "PIN FABER",
-  "i18n.verifier.verification-result.attribute.licenceNumber": "Numero della licenza",
+  "i18n.verifier.verification-result.attribute.licenceNumber": "Numero della licenza per allievo conducente",
   "i18n.verifier.verification-result.attribute.dateOfBirth": "Data di nascita",
   "i18n.verifier.verification-result.attribute.issuerEntity": "Autorità di rilascio",
   "i18n.verifier.verification-result.attribute.issuerEntityDate": "Data di rilascio",
@@ -69,15 +59,12 @@
   "i18n.verifier.verification-result.attributeGroup.validity": "Validità",
   "i18n.verifier.verification-result.attributeGroup.validity.status": "La licenza è valida",
   "i18n.verifier.verification-result.attributeGroup.validity.invalidityExpiration": "bloccato fino al {{date}}",
-  "i18n.verifier.verification-result.attributeGroup.learningPerson": "Persona in formazione",
+  "i18n.verifier.verification-result.attributeGroup.learningPerson": "Allievo conducente",
   "i18n.verifier.verification-result.attributeGroup.additionalInformation": "Informazioni supplementari",
-
   "i18n.verifier.verification-result.rejection.description": "La vostra richiesta di verifica è stata rifiutata.",
   "i18n.verifier.verification-result.timeout.description": "La trasmissione dei dati è fallita. Non è stato possibile verificare il mezzo di autenticazione. Riprovate con un altro codice QR.",
   "i18n.verifier.verification-result.invalid.description": "Questa licenza non è valida.",
-
   "i18n.verifier.verification-result.button.understood": "OK",
-
   "i18n.exception.technical": "Si è verificato un errore tecnico imprevisto.",
   "i18n.exception.image-handling": "Chiamata non valida. Controllare i dettagli e riprovare",
   "i18n.exception.vam": "Errore durante l'accesso all'infrastruttura di fiducia",

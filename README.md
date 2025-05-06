@@ -9,13 +9,13 @@ SPDX-License-Identifier: MIT
 
 ## Overview
 
-This is an official Swiss Government project developed by the [Federal Office of Information Technology, Systems and Telecommunication (FOITT)](https://www.bit.admin.ch/) as part of the electronic identity (e-ID) initiative.
+This is an official Swiss Government project developed by the [Federal Office of Information Technology, Systems and Telecommunication (FOITT)](https://www.eid.admin.ch/de/public-beta) as part of the electronic identity (e-ID) initiative.
 
-The project is a **pilot application** that utilizes the swiyu Trust Infrastructure, specifically the **Generic Verification Services** ([Generic Verifier Validator Service](https://github.com/swiyu-admin-ch/eidch-verifier-agent-oid4vp) & [Generic Verifier Management Service](https://github.com/swiyu-admin-ch/eidch-verifier-agent-management)), to verify a learning driver's license. It is a **public-facing** application that does **not store any data**.
+The project is a **pilot application** that utilizes the Swiss e-ID infrastructure, specifically the **Generic Verification Services** (Generic Verifier Validator Service & Generic Verifier Management Service), to verify a learning driver's license. It is a **public-facing** application that does **not store any data**.
 
 This repository is part of the broader ecosystem being developed for the future official Swiss e-ID. Our goal is to **engage with the community** and foster collaboration on building a secure, interoperable ecosystem for e-ID and other digital credentials.
 
-For more information about the project, please visit the [introduction to the Public Beta](https://www.eid.admin.ch/de/public-beta).
+For more information about the project, please visit the [introduction to the public beta open-source initiative](https://github.com/e-id-admin/eidch-public-beta).
 
 
 ## Table of Contents
@@ -23,7 +23,6 @@ For more information about the project, please visit the [introduction to the Pu
 - [Overview](#overview)
 - [Installation and Building](#installation-and-building)
 - [How to use](#how-to-use)
-- [Known Issues](#known-issues)
 - [Contributions and feedback](#contributions-and-feedback)
 - [License](#license)
 
@@ -35,9 +34,9 @@ flowchart TD
     isam(Verifier Management Service)
     isdb[(Postgres)]
     isoi(Verifier Validator Service)
-    wallet[swiyu Wallet]
+    wallet[Swiyu Wallet]
     
-    subgraph swiyu Generic Verifier
+    subgraph Generic Verification Services
         isam ---> isdb
         isoi ---> isdb
     end
@@ -85,13 +84,9 @@ file can be modified at line 5 or 6 to get different responses.
 If you want a successful verification, set `failResponse: false`, otherwise set `failResponse: true`. 
 To test various error codes, set the expected error code in line 6. See all possible error codes in [ErrorCodeDto.java](vz-licencecheck-service/src/main/java/ch/admin/astra/vz/lc/domain/vam/model/ErrorCodeDto.java).  
 
-## Known Issues
-
-The swiyu Public Beta Trust Infrastructure was deliberately released at an early stage to enable future ecosystem participants. There may still be minor bugs or security vulnerabilities in the test system. We will publish them in the near future as ‘KnownIssues’ in this repository.
-
 ## Contributions and feedback
 
-The code for this repository is developed privately and will be released after each sprint. The published code can therefore only be a snapshot of the current development and not a thoroughly tested version. However, we welcome any feedback on the code regarding both the implementation and security aspects. Please follow the guidelines for contributing found in [CONTRIBUTING.md](./CONTRIBUTING.md).
+We welcome any feedback on the code regarding both the implementation and security aspects. Please follow the guidelines for contributing found in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 

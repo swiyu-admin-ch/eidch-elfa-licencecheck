@@ -1,6 +1,6 @@
 package ch.admin.astra.vz.lc.mapper;
 
-import ch.admin.astra.vz.lc.api.AttributeGroupResponse;
+import ch.admin.astra.vz.lc.api.AttributeGroupDto;
 import ch.admin.astra.vz.lc.domain.verifier.model.AttributeGroup;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,7 +11,7 @@ import java.util.List;
 public interface AttributeGroupMapper {
 
     @Mapping(source = "attributes", target = "attributes")
-    AttributeGroupResponse map(AttributeGroup useCase);
+    AttributeGroupDto map(AttributeGroup useCase);
 
-    List<AttributeGroupResponse> map(List<AttributeGroup> credentials);
+    List<AttributeGroupDto> map(List<AttributeGroup> credentials);
 }

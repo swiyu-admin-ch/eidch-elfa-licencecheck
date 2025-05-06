@@ -1,6 +1,7 @@
 package ch.admin.astra.vz.lc.config;
 
 import ch.admin.astra.vz.lc.logging.interceptor.LogInterceptor;
+import ch.admin.bit.jeap.starter.application.web.FrontendRouteRedirectExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

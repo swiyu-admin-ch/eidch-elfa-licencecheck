@@ -3,8 +3,8 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {EMPTY, Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ObENotificationType, ObNotificationService} from '@oblique/oblique';
-import {ErrorResponse} from '@app/core/api/generated';
 import {TranslateService} from '@ngx-translate/core';
+import {ErrorResponse} from '@app/core/api/generated';
 
 export interface I18nNotification {
   messageKey: string;

@@ -10,7 +10,7 @@
  */
 
 export interface Attribute {
-  name?: string;
-  type?: string;
+  name: string;
+  type: string;
   order?: number;
 }

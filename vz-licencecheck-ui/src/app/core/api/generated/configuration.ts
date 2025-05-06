@@ -84,6 +84,13 @@ export class Configuration {
     } else {
       this.credentials = {};
     }
+
+    // init default prometheus credential
+    if (!this.credentials['prometheus']) {
+      this.credentials['prometheus'] = () => {
+        return this.username || this.password ? btoa(this.username + ':' + this.password) : undefined;
+      };
+    }
   }
 
   /**

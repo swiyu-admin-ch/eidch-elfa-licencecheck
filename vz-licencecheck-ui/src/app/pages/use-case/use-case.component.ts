@@ -3,9 +3,8 @@ import {UseCaseService} from '@app/_services';
 import {Router} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {InfoDialogComponent} from '@app/pages/use-case/info-dialog/info-dialog.component';
-import {VerifierApi} from '@app/core/api/generated';
+import {UseCase, VerifierApi} from '@app/core/api/generated';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +14,7 @@ import {UseCaseResponse} from '@app/core/api/generated/model/use-case-response';
   encapsulation: ViewEncapsulation.None
 })
 export class UseCaseComponent implements OnInit {
-  useCases: UseCaseResponse[];
+  useCases: UseCase[];
 
   constructor(
     private readonly useCaseService: UseCaseService,
@@ -34,12 +33,12 @@ export class UseCaseComponent implements OnInit {
       });
   }
 
-  createVerificationRequest(useCase: UseCaseResponse): void {
+  createVerificationRequest(useCase: UseCase): void {
     this.useCaseService.setUseCase(useCase);
     this.router.navigate(['/scan-qr-code']);
   }
 
-  openInfoDialog(useCase: UseCaseResponse) {
+  openInfoDialog(useCase: UseCase) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.maxWidth = window.innerWidth <= 600 ? '90vw' : '35vw';
     dialogConfig.maxHeight = '90vh';

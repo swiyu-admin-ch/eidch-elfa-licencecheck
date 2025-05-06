@@ -24,7 +24,7 @@ const translations: Record<string, Translation> = {
     restrictionsB: 'Zusatzangaben (B)',
     qrCodeTitle: 'Gültigkeit anfragen',
     useCase1: 'Alle Daten anfragen',
-    categoryRestrictions: 'Zusatzangaben auf der Kategorie',
+    categoryRestrictions: 'Zusatzangaben',
     timeoutError:
       'Die Datenübermittlung ist fehlgeschlagen. Der Nachweis konnte nicht überprüft werden. Bitte versuchen Sie es nochmals mit einem neuen QR-Code.',
     categoryCode: 'Kategorie',
@@ -32,12 +32,12 @@ const translations: Record<string, Translation> = {
   },
   fr: {
     useCase0: 'Validité demander',
-    restrictionsA: 'Informations complémentaires (A)',
+    restrictionsA: 'Indications complémentaires (A)',
     invalidMessage: 'Ce permis d’élève conducteur n’est pas valable.',
-    restrictionsB: 'Informations complémentaires (B)',
+    restrictionsB: 'Indications complémentaires (B)',
     qrCodeTitle: 'Validité demander',
     useCase1: 'Toutes les données demander',
-    categoryRestrictions: 'Informations complémentaires sur la catégorie',
+    categoryRestrictions: 'Indications complémentaires',
     timeoutError:
       'La transmission des données a échoué. Le moyen de preuve n’a pas pu être vérifié. Veuillez réessayer avec un nouveau code QR.',
     categoryCode: 'Catégorie',
@@ -46,11 +46,11 @@ const translations: Record<string, Translation> = {
   en: {
     useCase0: 'Validity request',
     restrictionsA: 'Additional information (A)',
-    invalidMessage: 'This provisional driving licence is not valid.',
+    invalidMessage: 'This learner-driver permit is not valid.',
     restrictionsB: 'Additional information (B)',
     qrCodeTitle: 'Validity request',
     useCase1: 'All data request',
-    categoryRestrictions: 'Additional information on the category',
+    categoryRestrictions: 'Additional information',
     timeoutError: 'The data transmission failed. The credential could not be verified. Please try a new QR code.',
     categoryCode: 'Category',
     successMessage: 'Valid'
@@ -62,7 +62,7 @@ const translations: Record<string, Translation> = {
     restrictionsB: 'Dati complementari (B)',
     qrCodeTitle: 'Validità richiedere',
     useCase1: 'Tutti i dati richiedere',
-    categoryRestrictions: 'Dati complementari relativi alla categoria',
+    categoryRestrictions: 'Dati supplementari',
     timeoutError:
       'La trasmissione dei dati è fallita. Non è stato possibile verificare il mezzo di autenticazione. Riprovate con un altro codice QR.',
     categoryCode: 'Categoria',
