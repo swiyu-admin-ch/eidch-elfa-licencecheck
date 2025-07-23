@@ -24,17 +24,17 @@ class PresentationDefinitionDtoTest {
         assertEquals(DEFAULT_PURPOSE, result.getPurpose());
         var descriptorDto = result.getInputDescriptors().getFirst();
         assertNotNull(descriptorDto);
-        assertDoesNotThrow(() -> UUID.fromString(descriptorDto.getId()));
-        assertEquals(DEFAULT_NAME, descriptorDto.getName());
-        assertNotNull(descriptorDto.getFormats());
-        assertTrue(descriptorDto.getFormats().containsKey(DEFAULT_FORMAT_KEY));
-        assertEquals(DEFAULT_PROOF_TYPE, descriptorDto.getFormats().get(DEFAULT_FORMAT_KEY).getAlgorithms().getFirst());
-        assertEquals(DEFAULT_PROOF_TYPE, descriptorDto.getFormats().get(DEFAULT_FORMAT_KEY).getKeyBindingAlgorithms().getFirst());
-        var constraintDto = descriptorDto.getConstraints();
+        assertDoesNotThrow(() -> UUID.fromString(descriptorDto.id()));
+        assertEquals(DEFAULT_NAME, descriptorDto.name());
+        assertNotNull(descriptorDto.format());
+        assertTrue(descriptorDto.format().containsKey(DEFAULT_FORMAT_KEY));
+        assertEquals(DEFAULT_PROOF_TYPE, descriptorDto.format().get(DEFAULT_FORMAT_KEY).alg().getFirst());
+        assertEquals(DEFAULT_PROOF_TYPE, descriptorDto.format().get(DEFAULT_FORMAT_KEY).keyBindingAlg().getFirst());
+        var constraintDto = descriptorDto.constraints();
         assertNotNull(constraintDto);
-        assertNotNull(constraintDto.getFields().getFirst());
-        assertNotNull(constraintDto.getFields().getFirst().getPaths().getFirst());
-        assertEquals(DEFAULT_FORMATTED_PATH.formatted(a1), constraintDto.getFields().getFirst().getPaths().getFirst());
-        assertEquals(DEFAULT_FORMATTED_PATH.formatted(a2), constraintDto.getFields().get(1).getPaths().getFirst());
+        assertNotNull(constraintDto.fields().getFirst());
+        assertNotNull(constraintDto.fields().getFirst().path().getFirst());
+        assertEquals(DEFAULT_FORMATTED_PATH.formatted(a1), constraintDto.fields().getFirst().path().getFirst());
+        assertEquals(DEFAULT_FORMATTED_PATH.formatted(a2), constraintDto.fields().get(1).path().getFirst());
     }
 }

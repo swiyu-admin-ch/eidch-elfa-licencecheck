@@ -9,14 +9,14 @@
  * Do not edit the class manually.
  */
 import {Status} from './status';
+import {VerificationErrorResponseCode} from './verification-error-response-code';
 import {HolderAttributes} from './holder-attributes';
-import {ErrorCode} from './error-code';
 
 export interface VerificationState {
   id?: string;
   status?: Status;
   verificationUrl?: string;
-  errorCode?: ErrorCode;
+  errorCode?: VerificationErrorResponseCode;
   errorDescription?: string;
   holderAttributes?: HolderAttributes;
 }

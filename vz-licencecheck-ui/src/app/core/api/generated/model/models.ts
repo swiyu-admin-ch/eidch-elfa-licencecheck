@@ -1,7 +1,6 @@
 export * from './app-config';
 export * from './attribute';
 export * from './attribute-group';
-export * from './error-code';
 export * from './error-response';
 export * from './holder-attributes';
 export * from './link';
@@ -9,4 +8,5 @@ export * from './start-verification';
 export * from './status';
 export * from './use-case';
 export * from './verification-begin-response-dto';
+export * from './verification-error-response-code';
 export * from './verification-state';

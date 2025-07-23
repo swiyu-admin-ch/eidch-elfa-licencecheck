@@ -17,7 +17,7 @@ import java.util.Map;
 public class ResponseDataDto {
 
     @JsonProperty("error_code")
-    private ErrorCodeDto errorCode;
+    private VerificationErrorResponseCodeDto errorCode;
 
     @JsonProperty("error_description")
     private String errorDescription;

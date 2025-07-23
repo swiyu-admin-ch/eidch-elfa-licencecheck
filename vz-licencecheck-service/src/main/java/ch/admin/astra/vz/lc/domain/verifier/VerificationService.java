@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
 
+import static ch.admin.astra.vz.lc.domain.vam.model.CreateVerificationManagementDto.buildCreateVerificationManagementDto;
+
 @Slf4j
 @Component
 public class VerificationService {
@@ -38,13 +40,16 @@ public class VerificationService {
 
     private final String clientName;
 
+    private final String allowedIssuerDid;
+
     public VerificationService(UseCaseCache useCaseCache,
                                UseCaseMapper useCaseMapper,
                                VerifierAgentManagementClient verifierAgentManagementClient,
                                VerificationMapper verificationMapper,
                                QrCodeService qrCodeService,
                                LoggingService loggingService,
-                               @Value("${verifier.metaData.clientName}") String clientName) {
+                               @Value("${verifier.client-name}") String clientName,
+                               @Value("${verifier.allowed-issuer-did}") String allowedIssuerDid) {
         this.useCaseCache = useCaseCache;
         this.useCaseMapper = useCaseMapper;
         this.verifierAgentManagementClient = verifierAgentManagementClient;
@@ -52,6 +57,7 @@ public class VerificationService {
         this.qrCodeService = qrCodeService;
         this.loggingService = loggingService;
         this.clientName = clientName;
+        this.allowedIssuerDid = allowedIssuerDid;
     }
 
     public List<UseCaseDto> getUseCases() {
@@ -66,21 +72,21 @@ public class VerificationService {
         List<String> attributeList = useCaseCache.getUseCaseById(useCaseId).getSortedAttributes();
 
         log.debug("Build CreateVerificationManagementDto");
-        CreateVerificationManagementDto request = CreateVerificationManagementDto.buildCreateVerificationManagementDto(true, PresentationDefinitionDto.buildPresentationDefinitionDto(clientName, attributeList));
+        CreateVerificationManagementDto request = buildCreateVerificationManagementDto(PresentationDefinitionDto.buildPresentationDefinitionDto(clientName, attributeList), allowedIssuerDid, true);
 
         log.debug("Start verification Process on VAM");
         ManagementResponseDto response = verifierAgentManagementClient.createVerification(request);
 
         log.debug("Create QR-Code");
-        QrCode qrCode = qrCodeService.create(response.getVerificationUrl(), 500);
+        QrCode qrCode = qrCodeService.create(response.verificationUrl(), 500);
 
         var responseDto = VerificationBeginResponseDto.builder()
-            .id(response.getId())
+                .id(response.id())
             .qrCode(qrCode.getImageData())
             .qrCodeFormat(qrCode.getFormat())
             .build();
 
-        loggingService.logStartVerificationResponse(response.getId(), response.getState());
+        loggingService.logStartVerificationResponse(response.id(), response.state());
 
         return responseDto;
     }

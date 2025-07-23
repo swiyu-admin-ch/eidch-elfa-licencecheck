@@ -6,7 +6,7 @@ import ch.admin.astra.vz.lc.domain.qrcode.QrCodeService;
 import ch.admin.astra.vz.lc.domain.vam.configuration.interceptor.VAMLoggingInterceptor;
 import ch.admin.astra.vz.lc.domain.vam.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.domain.vam.model.ResponseDataDto;
-import ch.admin.astra.vz.lc.domain.vam.model.VerificationState;
+import ch.admin.astra.vz.lc.domain.vam.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.domain.vam.service.VerifierAgentManagementClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
@@ -106,7 +106,7 @@ class VerificationControllerIT extends BaseIntegrationTest {
     private ManagementResponseDto getTestVerificationResponse() {
         return ManagementResponseDto.builder()
             .id(ID)
-            .state(VerificationState.SUCCESS)
+                .state(VerificationStatusDto.SUCCESS)
             .verificationUrl("url")
             .walletResponse(ResponseDataDto.builder()
                 .credentialSubjectData(Map.of(

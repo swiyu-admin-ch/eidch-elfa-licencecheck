@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ErrorCode, Status, UseCase, VerificationState} from '@app/core/api/generated';
+import {Status, UseCase, VerificationErrorResponseCode, VerificationState} from '@app/core/api/generated';
 
 @Injectable({
   providedIn: 'root'
@@ -46,15 +46,16 @@ export class UseCaseService {
 
   isRejected(): boolean {
     return (
-      this.verificationState?.status === Status.Failed && this.verificationState?.errorCode === ErrorCode.ClientRejected
+      this.verificationState?.status === Status.Failed &&
+      this.verificationState?.errorCode === VerificationErrorResponseCode.ClientRejected
     );
   }
 
   isVcInvalid(): boolean {
     return (
       this.verificationState?.status === Status.Failed &&
-      Object.values(ErrorCode)
-        .filter(err => ErrorCode.ClientRejected !== err) // Ignore, separate screen for ClientRejected
+      Object.values(VerificationErrorResponseCode)
+        .filter(err => VerificationErrorResponseCode.ClientRejected !== err) // Ignore, separate screen for ClientRejected
         .includes(this.verificationState?.errorCode)
     );
   }

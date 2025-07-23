@@ -1,30 +1,27 @@
 package ch.admin.astra.vz.lc.domain.vam.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.annotation.Nonnull;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
-import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 
-@Data
+@Schema(name = "Field")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-@AllArgsConstructor
-@Jacksonized
-public class FieldDto {
+public record FieldDto(
+        @NotEmpty
+        @Schema(description = "(Mandatory) Array of one or more JSONPath string expressions")
+        List<String> path,
 
-    @Singular
-    @JsonProperty("path")
-    @Nonnull
-    private List<String> paths;
+        @Schema(description = "(Optional) If present value MUST be a string that is unique")
+        String id,
 
-    private String id;
+        @Schema(description = "(Optional) If present human-friendly name which describes the target field")
+        String name,
 
-    private String name;
-
-    private String purpose;
+        @Schema(description = "(Optional) If present describes purpose for which the field is requested")
+        String purpose
+) {
 }
-

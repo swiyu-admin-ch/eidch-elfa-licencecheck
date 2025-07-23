@@ -9,6 +9,7 @@ import lombok.Singular;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -40,13 +41,13 @@ public class PresentationDefinitionDto {
                 .inputDescriptor(InputDescriptorDto.builder()
                         .id(UUID.randomUUID().toString())
                         .name(DEFAULT_NAME)
-                        .format(DEFAULT_FORMAT_KEY, FormatAlgorithmDto.builder()
-                                .algorithm(DEFAULT_PROOF_TYPE)
-                                .keyBindingAlgorithm(DEFAULT_PROOF_TYPE)
-                                .build())
+                        .format(Map.of(DEFAULT_FORMAT_KEY, FormatAlgorithmDto.builder()
+                                .alg(List.of(DEFAULT_PROOF_TYPE))
+                                .keyBindingAlg(List.of(DEFAULT_PROOF_TYPE))
+                                .build()))
                         .constraints(ConstraintDto.builder()
                                 .fields(attributeList.stream().map(attribute -> FieldDto.builder()
-                                                .paths(List.of(DEFAULT_FORMATTED_PATH.formatted(attribute)))
+                                                .path(List.of(DEFAULT_FORMATTED_PATH.formatted(attribute)))
                                                 .build())
                                         .toList()
                                 )

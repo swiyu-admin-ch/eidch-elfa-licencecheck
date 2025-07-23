@@ -1,18 +1,21 @@
 # Changelog
 
-## [1.9.0]
+## [1.10.0]
+- [EIDRAEDA-1303](https://jira.bit.admin.ch/browse/EIDRAEDA-1303): Extended verification request with allowed-issuer-did property
 
+## [1.9.1]
+- fix: Translation typos and corrections
+
+## [1.9.0]
 - [EIDRAEDA-1227](https://jira.bit.admin.ch/browse/EIDRAEDA-1227): Refactoring to use standalone feature in Angular UI
 
 ## [1.8.0]
-
 - Remove unused dependency management section
 - [EIDRAEDA-1110](https://jira.bit.admin.ch/browse/EIDRAEDA-1110): Added correct VC attribute translations
 - [EIDRAEDA-1188](https://jira.bit.admin.ch/browse/EIDRAEDA-1188): Multiple technical debts addressed and adding jEAP
   lib
 
 ## [1.7.0]
-
 - [EIDRAEDA-600](https://jira.bit.admin.ch/browse/EIDRAEDA-600) UI API Code generation with openapi-code-generator
 - [EIDRAEDA-535](https://jira.bit.admin.ch/browse/EIDRAEDA-535): Implement translations into LicenceCheck
 - [EIDRAEDA-538](https://jira.bit.admin.ch/browse/EIDRAEDA-538): Adapt code to new Verifier-API
@@ -30,12 +33,10 @@
 - [EIDRAEDA-1133](https://jira.bit.admin.ch/browse/EIDRAEDA-1133): Change verifier-agent-management API to versioned endpoints
 
 ## [1.6.0]
-
 - [EIDRAEDA-536](https://jira.bit.admin.ch/browse/EIDRAEDA-536): Title adaptations
 
 
 ## [1.4.0] - 2024-06-04
-
 - [EIDRAEDA-442](https://jira.bit.admin.ch/browse/EIDRAEDA-442): Logging adoptions
 - [EIDRAEDA-433](https://jira.bit.admin.ch/browse/EIDRAEDA-433): Pages must have a unique, descriptive title.
 - [EIDRAEDA-500](https://jira.bit.admin.ch/browse/EIDRAEDA-500): Oblique and Angular update
@@ -43,25 +44,21 @@
 - [EIDRAEDA-526](https://jira.bit.admin.ch/browse/EIDRAEDA-526): Add SEO keywords
 
 ## [1.3.0] - 2024-06-04
-
 - [EIDRAEDA-512](https://jira.bit.admin.ch/browse/EIDRAEDA-512): Gray page displayed instead of red 
 - [EIDRAEDA-429](https://jira.bit.admin.ch/browse/EIDRAEDA-429): Update Menu on Mobile LicenceCheck
 - [EIDRAEDA-449](https://jira.bit.admin.ch/browse/EIDRAEDA-449): Remove jEAP framework
 - [EIDRAEDA-492](https://jira.bit.admin.ch/browse/EIDRAEDA-492): Prepare the project for open source release
 
 ## [1.2.0] - 2024-04-25
-
 - [EIDRAEDA-434](https://jira.bit.admin.ch/browse/EIDRAEDA-434): Adjusting Text Size and Scrollable Content (modals)
 
 ## [1.1.0] - 2024-04-02
-
 - [EIDRAEDA-374](https://jira.bit.admin.ch/browse/EIDRAEDA-374): Cookies Verifier
 - [EIDRAEDA-430](https://jira.bit.admin.ch/browse/EIDRAEDA-430): REF / ABN banner on LicenceCheck & VZ Controller
 - [EIDRAEDA-432](https://jira.bit.admin.ch/browse/EIDRAEDA-432): Wording updates
 - [EIDRAEDA-374](https://jira.bit.admin.ch/browse/EIDRAEDA-374): Cookies Verifier
 
 ## [1.0.0] - 2024-03-25 (Go Live!)
-
 - [EIDRAEDA-405](https://jira.bit.admin.ch/browse/EIDRAEDA-405): Logo & Name Verifier - Implementation
 - [EIDRAEDA-413](https://jira.bit.admin.ch/browse/EIDRAEDA-413): Dynamic Title Font Size in Verifier
 - [EIDRAEDA-416](https://jira.bit.admin.ch/browse/EIDRAEDA-416): Verifier UI: Show Invalid Screen for Expired eLFA
@@ -73,9 +70,7 @@
 - [EIDRAEDA-380](https://jira.bit.admin.ch/browse/EIDRAEDA-380): Add Verifier LogoURI & Name
 
 ## [0.3.0] - 2024-02-15
-
 - [EIDRAEDA-373](https://jira.bit.admin.ch/browse/EIDRAEDA-373): Update VC Schema
 
 ## [0.2.1] - 2024-02-08
-
 - [EIDRAEDA-369](https://jira.bit.admin.ch/browse/EIDRAEDA-369): Verifier - Timeout after each check

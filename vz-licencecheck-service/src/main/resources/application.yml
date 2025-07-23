@@ -19,9 +19,8 @@ server:
   max-http-request-header-size: 4MB
 
 verifier:
+  allowed-issuer-did: ${ALLOWED_ISSUER_DID}
   use-case-folderPath: "use-cases"
-  metaData:
-    clientName: "Pilot Verifier"
 
 management:
   endpoint:
@@ -43,5 +42,6 @@ logging:
     root: info
 
 verifier-agent-management:
+  endpoint: "${VERIFIER_SERVICE_ENDPOINT}"
   logging:
     level: NONE # "NONE", "BASIC", "HEADERS", "BODY"

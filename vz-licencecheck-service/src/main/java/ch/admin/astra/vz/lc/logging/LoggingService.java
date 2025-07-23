@@ -1,7 +1,7 @@
 package ch.admin.astra.vz.lc.logging;
 
 import ch.admin.astra.vz.lc.domain.vam.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.domain.vam.model.VerificationState;
+import ch.admin.astra.vz.lc.domain.vam.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.util.LoggingUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-import static ch.admin.astra.vz.lc.domain.vam.model.VerificationState.hasFailed;
+import static ch.admin.astra.vz.lc.domain.vam.model.VerificationStatusDto.hasFailed;
 import static ch.admin.astra.vz.lc.logging.Operation.*;
 import static ch.admin.astra.vz.lc.util.LoggingUtil.OPERATION_FINISHED;
 import static ch.admin.astra.vz.lc.util.LoggingUtil.OPERATION_FINISHED_WITH_ERROR;
@@ -28,7 +28,7 @@ public class LoggingService {
     public void initStartVerification(UUID usecaseId) {
         LoggingUtil.setOperation(START_VERIFICATION_PROCESS);
         LoggingUtil.setUseCaseId(usecaseId);
-        LoggingUtil.setVerificationStatus(VerificationState.PENDING);
+        LoggingUtil.setVerificationStatus(VerificationStatusDto.PENDING);
     }
 
     public void initGetVerificationProcessStatus(UUID verificationId) {
@@ -36,7 +36,7 @@ public class LoggingService {
         LoggingUtil.setVerificationId(verificationId);
     }
 
-    public void logStartVerificationResponse(UUID usecaseId, VerificationState state) {
+    public void logStartVerificationResponse(UUID usecaseId, VerificationStatusDto state) {
         LoggingUtil.setUseCaseId(usecaseId);
         LoggingUtil.setVerificationStatus(state);
         logOperationFinished();
@@ -52,9 +52,9 @@ public class LoggingService {
     }
 
     public void logVerificationResponse(ManagementResponseDto response) {
-        LoggingUtil.setVerificationStatus(response.getState());
-        if (hasFailed(response.getState())) {
-            LoggingUtil.setErrorCode(response.getWalletResponse().getErrorCode());
+        LoggingUtil.setVerificationStatus(response.state());
+        if (hasFailed(response.state())) {
+            LoggingUtil.setErrorCode(response.walletResponse().getErrorCode());
         }
         logOperationFinished();
     }

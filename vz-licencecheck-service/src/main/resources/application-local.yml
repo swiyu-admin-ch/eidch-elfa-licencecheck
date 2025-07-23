@@ -1,6 +1,6 @@
 verifier:
-  metaData:
-    clientName: "LicenceCheck (Local)"
+  allowed-issuer-did: "MOCK-DID"
+  client-name: "LicenceCheck (Local)"
   mock:
     failResponse: false
     errorCode: CREDENTIAL_INVALID
@@ -15,9 +15,6 @@ cors:
     - 'http://localhost:4201'
     - 'http://127.0.0.1:8888'
     - 'http://127.0.0.1:4201'
-
-verifier-agent-management:
-  endpoint: "MOCKED"
 
 springdoc:
   swagger-ui:

@@ -6,7 +6,7 @@ import ch.admin.astra.vz.lc.domain.qrcode.model.QrCode;
 import ch.admin.astra.vz.lc.domain.vam.exception.VAMException;
 import ch.admin.astra.vz.lc.domain.vam.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.domain.vam.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.domain.vam.model.VerificationState;
+import ch.admin.astra.vz.lc.domain.vam.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.domain.vam.service.VerifierAgentManagementClient;
 import ch.admin.astra.vz.lc.domain.verifier.exception.UseCaseNotFoundException;
 import ch.admin.astra.vz.lc.domain.verifier.model.Attribute;
@@ -42,6 +42,7 @@ class VerificationServiceTest {
 
 
     public static final String CLIENT_NAME = "Client";
+    public static final String ALLOWED_ISSUER_DID = "did:example:123";
     private VerificationService verificationService;
 
     @Mock
@@ -64,7 +65,7 @@ class VerificationServiceTest {
 
     @BeforeEach
     void setUp() {
-        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierAgentManagementClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME);
+        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierAgentManagementClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME, ALLOWED_ISSUER_DID);
     }
 
     @AfterEach
@@ -112,9 +113,9 @@ class VerificationServiceTest {
         ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
         Mockito.verify(verifierAgentManagementClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
         CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
-        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.getPresentationDefinition().getInputDescriptors().getFirst().getConstraints().getFields().getFirst().getPaths());
-        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.getPresentationDefinition().getInputDescriptors().getFirst().getConstraints().getFields().get(1).getPaths());
-        assertEquals(CLIENT_NAME, createVerificationManagementDto.getPresentationDefinition().getName());
+        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
+        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
+        assertEquals(CLIENT_NAME, createVerificationManagementDto.presentationDefinition().getName());
     }
 
     @Test
@@ -129,7 +130,7 @@ class VerificationServiceTest {
         String verificationUrlExpected = "URL";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
             .id(verificationId)
-            .state(VerificationState.SUCCESS)
+                .state(VerificationStatusDto.SUCCESS)
             .verificationUrl(verificationUrlExpected)
             .build();
         when(verifierAgentManagementClient.createVerification(any())).thenReturn(managementResponseDto);
@@ -160,7 +161,7 @@ class VerificationServiceTest {
         String verificationUrlExpected = "URL";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
             .id(verificationId)
-            .state(VerificationState.SUCCESS)
+                .state(VerificationStatusDto.SUCCESS)
             .verificationUrl(verificationUrlExpected)
             .build();
 
@@ -187,9 +188,9 @@ class VerificationServiceTest {
         ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
         Mockito.verify(verifierAgentManagementClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
         CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
-        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.getPresentationDefinition().getInputDescriptors().getFirst().getConstraints().getFields().getFirst().getPaths());
-        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.getPresentationDefinition().getInputDescriptors().getFirst().getConstraints().getFields().get(1).getPaths());
-        assertEquals(CLIENT_NAME, createVerificationManagementDto.getPresentationDefinition().getName());
+        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
+        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
+        assertEquals(CLIENT_NAME, createVerificationManagementDto.presentationDefinition().getName());
 
         // assert QrCode
         ArgumentCaptor<String> qrCodeArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -210,7 +211,7 @@ class VerificationServiceTest {
     void getVerificationStatus() {
         var uuid = UUID.randomUUID();
         var responseDto = ManagementResponseDto.builder()
-            .state(VerificationState.SUCCESS)
+                .state(VerificationStatusDto.SUCCESS)
             .build();
 
         // mock verifierAgentManagementClient

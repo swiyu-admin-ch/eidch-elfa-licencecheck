@@ -11,24 +11,24 @@ class VerificationStateTest {
 
     @Test
     void isSuccess_true() {
-        assertTrue(VerificationState.isSuccess(VerificationState.SUCCESS));
+        assertTrue(VerificationStatusDto.isSuccess(VerificationStatusDto.SUCCESS));
     }
 
     @ParameterizedTest
-    @EnumSource(value = VerificationState.class, names = {"PENDING", "FAILED"})
-    void isSuccess_false(VerificationState status) {
-        assertFalse(VerificationState.isSuccess(status));
+    @EnumSource(value = VerificationStatusDto.class, names = {"PENDING", "FAILED"})
+    void isSuccess_false(VerificationStatusDto status) {
+        assertFalse(VerificationStatusDto.isSuccess(status));
     }
 
     @Test
     void hasFailed_true() {
-        assertTrue(VerificationState.hasFailed(VerificationState.FAILED));
+        assertTrue(VerificationStatusDto.hasFailed(VerificationStatusDto.FAILED));
     }
 
     @ParameterizedTest
-    @EnumSource(value = VerificationState.class, names = {"PENDING", "SUCCESS"})
-    void hasFailed_false(VerificationState status) {
-        assertFalse(VerificationState.hasFailed(status));
+    @EnumSource(value = VerificationStatusDto.class, names = {"PENDING", "SUCCESS"})
+    void hasFailed_false(VerificationStatusDto status) {
+        assertFalse(VerificationStatusDto.hasFailed(status));
     }
 
 

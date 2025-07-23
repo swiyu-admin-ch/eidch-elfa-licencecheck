@@ -1,26 +1,29 @@
 package ch.admin.astra.vz.lc.domain.vam.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
-import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 
-@Data
+@Schema(name = "FormatAlgorithm")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-@AllArgsConstructor
-@Jacksonized
-public class FormatAlgorithmDto {
+public record FormatAlgorithmDto(
+        @NotNull
+        @NotEmpty
+        @JsonProperty("sd-jwt_alg_values")
+        @Schema(description = "(Required) algorithms string from the SDJWT family")
+        List<String> alg,
 
-    @Singular
-    @JsonProperty("sd-jwt_alg_values")
-    private List<String> algorithms;
-
-    @Singular
-    @JsonProperty("kb-jwt_alg_values")
-    private List<String> keyBindingAlgorithms;
+        @NotNull
+        @NotEmpty
+        @JsonProperty("kb-jwt_alg_values")
+        @Schema(description = "(Required) algorithms defining the keybinding algorithm for SDJWT family")
+        List<String> keyBindingAlg
+) {
 }
 

@@ -3,7 +3,7 @@ package ch.admin.astra.vz.lc.domain.vam.configuration;
 import ch.admin.astra.vz.lc.domain.vam.api.VerifierAgentManagementApi;
 import ch.admin.astra.vz.lc.domain.vam.configuration.interceptor.VAMHeaderInterceptor;
 import ch.admin.astra.vz.lc.domain.vam.configuration.interceptor.VAMLoggingInterceptor;
-import ch.admin.astra.vz.lc.domain.vam.model.ErrorCodeDto;
+import ch.admin.astra.vz.lc.domain.vam.model.VerificationErrorResponseCodeDto;
 import ch.admin.astra.vz.lc.domain.vam.service.MockVerifierAgentManagementImpl;
 import ch.admin.astra.vz.lc.domain.vam.service.VerifierAgentManagementClient;
 import ch.admin.astra.vz.lc.domain.vam.service.VerifierAgentManagementImpl;
@@ -50,7 +50,7 @@ public class VerifierAgentManagementClientConfiguration {
     @Profile("local")
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_APPLICATION)
-    public VerifierAgentManagementClient mockVerifierAgentManagementImpl(@Value("${verifier.mock.failResponse}") Boolean failResponse, @Value("${verifier.mock.errorCode}") ErrorCodeDto errorCode) {
+    public VerifierAgentManagementClient mockVerifierAgentManagementImpl(@Value("${verifier.mock.failResponse}") Boolean failResponse, @Value("${verifier.mock.errorCode}") VerificationErrorResponseCodeDto errorCode) {
         return new MockVerifierAgentManagementImpl(failResponse, errorCode);
     }
 }

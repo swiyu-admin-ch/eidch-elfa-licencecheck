@@ -19,13 +19,13 @@ import java.util.UUID;
 public class MockVerifierAgentManagementImpl implements VerifierAgentManagementClient {
 
     private final Boolean failResponse;
-    private final ErrorCodeDto errorCode;
+    private final VerificationErrorResponseCodeDto errorCode;
 
     private final Random random = new Random();
 
     @Override
     public ManagementResponseDto createVerification(CreateVerificationManagementDto createVerificationManagementDto) {
-        return buildSuccessResponse(UUID.fromString("534a8d81-081f-4f01-9e37-38856c8b06e4"), VerificationState.PENDING);
+        return buildSuccessResponse(UUID.fromString("534a8d81-081f-4f01-9e37-38856c8b06e4"), VerificationStatusDto.PENDING);
     }
 
     @Override
@@ -36,10 +36,10 @@ public class MockVerifierAgentManagementImpl implements VerifierAgentManagementC
             return buildFailedResponse(verificationId, errorCode);
         }
 
-        return buildSuccessResponse(verificationId, i == 1 ? VerificationState.SUCCESS : VerificationState.PENDING);
+        return buildSuccessResponse(verificationId, i == 1 ? VerificationStatusDto.SUCCESS : VerificationStatusDto.PENDING);
     }
 
-    private ManagementResponseDto buildSuccessResponse(UUID verificationId, VerificationState status) {
+    private ManagementResponseDto buildSuccessResponse(UUID verificationId, VerificationStatusDto status) {
         return ManagementResponseDto.builder()
             .id(verificationId)
             .state(status)
@@ -69,10 +69,10 @@ public class MockVerifierAgentManagementImpl implements VerifierAgentManagementC
     }
 
     @SuppressWarnings("java:S1144")
-    private ManagementResponseDto buildFailedResponse(UUID verificationId, ErrorCodeDto errorCode) {
+    private ManagementResponseDto buildFailedResponse(UUID verificationId, VerificationErrorResponseCodeDto errorCode) {
         return ManagementResponseDto.builder()
             .id(verificationId)
-            .state(VerificationState.FAILED)
+                .state(VerificationStatusDto.FAILED)
             .verificationUrl("https://www.eid.admin.ch/")
             .walletResponse(ResponseDataDto.builder()
                 .errorCode(errorCode)

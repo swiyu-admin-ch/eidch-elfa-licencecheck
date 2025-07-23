@@ -59,7 +59,7 @@
   "i18n.verifier.verification-result.attribute.photoImage": "Fotografia",
   "i18n.verifier.verification-result.attribute.policeQRImage": "Controlla da la polizia, code QR",
   "i18n.verifier.verification-result.attribute.signatureImage": "Suttascripziun",
-  "i18n.verifier.verification-result.attributeGroup.validity": "Valiavladad",
+  "i18n.verifier.verification-result.attributeGroup.validity": "Valaivladad",
   "i18n.verifier.verification-result.attributeGroup.validity.status": "Il permiss è valaivel",
   "i18n.verifier.verification-result.attributeGroup.validity.invalidityExpiration": "bloccà fin a {{date}}",
   "i18n.verifier.verification-result.attributeGroup.learningPerson": "Persuna che emprenda a manischar",

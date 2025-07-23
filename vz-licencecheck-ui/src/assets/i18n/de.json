@@ -35,7 +35,7 @@
   "i18n.verifier.use-cases.allData.info-dialog.text": "Manchmal reicht die Gültigkeit alleine nicht. Detailinformationen wie das Geburtsdatum sind beispielsweise bei Fahrschulanmeldungen notwendig.",
   "i18n.verifier.use-cases.allData.info-dialog.title": "Alle Daten",
   "i18n.verifier.use-cases.validity.description": "Minimalüberprüfung des Ausweises (Standard)",
-  "i18n.verifier.use-cases.allData.description": "Maximalüberprüfung z.B. um das Dossier zum Eintritt Fahrschule zu erstellen",
+  "i18n.verifier.use-cases.allData.description": "Maximalüberprüfung z.B. um das Dossier zum Eintritt in die Fahrschule zu erstellen.",
   "i18n.verifier.use-case.info-dialog.info": "Folgende Daten werden angefragt:",
   "i18n.verifier.start-verification.title": "Zeigen Sie den QR-Code der Person, die Sie überprüfen möchten.  Sie kann den Code mit der swiyu-App scannen und Ihre Anfrage überprüfen.",
   "i18n.verifier.verification-result.title": "Gültigkeit anfragen",

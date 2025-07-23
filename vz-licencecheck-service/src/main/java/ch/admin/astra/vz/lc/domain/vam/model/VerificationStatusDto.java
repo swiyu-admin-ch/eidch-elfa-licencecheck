@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum VerificationState {
+public enum VerificationStatusDto {
 
     PENDING("PENDING"),
 
@@ -15,11 +15,11 @@ public enum VerificationState {
 
     private final String value;
 
-    public static boolean isSuccess(VerificationState status) {
+    public static boolean isSuccess(VerificationStatusDto status) {
         return SUCCESS.equals(status);
     }
 
-    public static boolean hasFailed(VerificationState status) {
+    public static boolean hasFailed(VerificationStatusDto status) {
         return FAILED.equals(status);
     }
 }
