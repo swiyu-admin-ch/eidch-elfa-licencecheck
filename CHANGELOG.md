@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.11.0]
+- [EIDRAEDA-EIDRAEDA-1391](https://jira.bit.admin.ch/browse/EIDRAEDA-EIDRAEDA-1391): Refactor & improve Logging
+- [EIDRAEDA-1226](https://jira.bit.admin.ch/browse/EIDRAEDA-1226): Reorganize package structure according to other vz services
+
 ## [1.10.0]
 - [EIDRAEDA-1303](https://jira.bit.admin.ch/browse/EIDRAEDA-1303): Extended verification request with allowed-issuer-did property
 

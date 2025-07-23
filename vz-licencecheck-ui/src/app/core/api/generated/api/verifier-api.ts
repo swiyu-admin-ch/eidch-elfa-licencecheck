@@ -13,12 +13,12 @@
 import {Inject, Injectable, Optional} from '@angular/core';
 import {
   HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
+  HttpContext,
   HttpEvent,
+  HttpHeaders,
   HttpParameterCodec,
-  HttpContext
+  HttpParams,
+  HttpResponse
 } from '@angular/common/http';
 import {CustomHttpParameterCodec} from '../encoder';
 import {Observable} from 'rxjs';
@@ -30,7 +30,7 @@ import {StartVerification} from '../model/start-verification';
 // @ts-ignore
 import {UseCase} from '../model/use-case';
 // @ts-ignore
-import {VerificationBeginResponseDto} from '../model/verification-begin-response-dto';
+import {VerificationBeginResponse} from '../model/verification-begin-response';
 // @ts-ignore
 import {VerificationState} from '../model/verification-state';
 
@@ -274,19 +274,19 @@ export class VerifierApi {
     observe?: 'body',
     reportProgress?: boolean,
     options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
-  ): Observable<VerificationBeginResponseDto>;
+  ): Observable<VerificationBeginResponse>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
     options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
-  ): Observable<HttpResponse<VerificationBeginResponseDto>>;
+  ): Observable<HttpResponse<VerificationBeginResponse>>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
     options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
-  ): Observable<HttpEvent<VerificationBeginResponseDto>>;
+  ): Observable<HttpEvent<VerificationBeginResponse>>;
   public startVerificationProcess(
     requestParameters?: StartVerificationProcessRequestParams,
     observe: any = 'body',
@@ -336,18 +336,14 @@ export class VerifierApi {
     }
 
     let localVarPath = `/api/v1/verification/verify`;
-    return this.httpClient.request<VerificationBeginResponseDto>(
-      'post',
-      `${this.configuration.basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: startVerification,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: localVarHeaders,
-        observe: observe,
-        reportProgress: reportProgress
-      }
-    );
+    return this.httpClient.request<VerificationBeginResponse>('post', `${this.configuration.basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: startVerification,
+      responseType: <any>responseType_,
+      withCredentials: this.configuration.withCredentials,
+      headers: localVarHeaders,
+      observe: observe,
+      reportProgress: reportProgress
+    });
   }
 }

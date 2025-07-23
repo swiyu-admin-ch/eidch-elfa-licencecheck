@@ -13,7 +13,7 @@
 
     <groupId>ch.admin.astra.vz.lc</groupId>
     <artifactId>vz-licencecheck-scs</artifactId>
-    <version>1.10.0</version>
+    <version>1.11.0</version>
     <packaging>pom</packaging>
     <description>e-ID LicenceCheck App</description>
 
