@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @TestPropertySource(locations="classpath:application.yml")
 @ActiveProfiles(value = "local")
 @SpringBootTest(properties="spring.main.lazy-initialization=true")
-class VerifierAgentManagementClientConfigurationMockIT {
+class VerifierServiceClientConfigurationMockIT {
 
     @Autowired
-    private VerifierAgentManagementClient verifierAgentManagementClient;
+    private VerifierServiceClient verifierServiceClient;
 
     @Test
     void assertTechAdapterClient() {
-        assertInstanceOf(MockVerifierAgentManagementImpl.class, verifierAgentManagementClient);
+        assertInstanceOf(MockVerifierServiceImpl.class, verifierServiceClient);
     }
 }

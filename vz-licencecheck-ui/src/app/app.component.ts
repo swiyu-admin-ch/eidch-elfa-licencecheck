@@ -5,13 +5,13 @@ import {banner} from '@app/core/utils';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs';
-import {UseCaseService} from '@app/_services';
 import {Meta, Title} from '@angular/platform-browser';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {ObButtonModule, ObIconModule, ObMasterLayoutModule, ObPopoverModule} from '@oblique/oblique';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {TimedOut, VerificationStore} from '@app/_services/verification.store';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   title: string;
   supportItems = [
     {link: 'https://findmind.ch/c/Ce39-nUQL', label: 'i18n.support.feedback'},
-    {link: 'https://www.eid.admin.ch/de/hilfe-support', label: 'i18n.support.help'},
+    {link: 'https://www.eid.admin.ch/de/help-pilot', label: 'i18n.support.help'},
     {link: 'https://forms.eid.admin.ch/elfa', label: 'i18n.support.contact'},
     {link: 'https://www.eid.admin.ch/de/pilotprojekte', label: 'i18n.support.more-information'}
   ];
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly appConfigService: AppConfigService,
     private readonly router: Router,
-    public useCaseService: UseCaseService,
+    public store: VerificationStore,
     private readonly titleService: Title,
     private readonly translate: TranslateService,
     private readonly meta: Meta
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
         titleKey = 'i18n.title.proof';
         break;
       case '/scan-qr-code':
-        titleKey = 'i18n.title.' + this.useCaseService.getUseCase()?.title;
+        titleKey = 'i18n.title.' + this.store.useCase()?.title;
         break;
       case '/verification-result':
         titleKey = this.getVerificationResultTitle();
@@ -101,14 +101,16 @@ export class AppComponent implements OnInit {
   }
 
   private getVerificationResultTitle(): string {
-    if (this.useCaseService.isVcValid()) {
+    if (this.store.isValid()) {
       return 'i18n.title.licenceValid';
-    } else if (this.useCaseService.isTimeout()) {
+    } else if (this.store.status() === TimedOut) {
       return 'i18n.title.requestFailed';
-    } else if (this.useCaseService.isRejected()) {
+    } else if (this.store.isRejected()) {
       return 'i18n.title.requestRejected';
-    } else if (this.useCaseService.isVcInvalid()) {
+    } else if (this.store.isInvalid()) {
       return 'i18n.title.licenceInvalid';
+    } else if (this.store.isPremature()) {
+      return 'i18n.title.jwtPremature';
     } else {
       return 'i18n.title.verification';
     }

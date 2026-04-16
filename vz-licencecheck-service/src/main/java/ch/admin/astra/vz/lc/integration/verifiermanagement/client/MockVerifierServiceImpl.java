@@ -13,10 +13,10 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Mock Implementation class for the {@link VerifierAgentManagementClient} interface to test locally.
+ * Mock Implementation class for the {@link VerifierServiceClient} interface to test locally.
  */
 @RequiredArgsConstructor
-public class MockVerifierAgentManagementImpl implements VerifierAgentManagementClient {
+public class MockVerifierServiceImpl implements VerifierServiceClient {
 
     private final Boolean failResponse;
     private final VerificationErrorResponseCodeDto errorCode;

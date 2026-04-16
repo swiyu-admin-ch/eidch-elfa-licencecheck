@@ -2,7 +2,7 @@ package ch.admin.astra.vz.lc.api.common;
 
 import ch.admin.astra.vz.lc.api.common.model.ErrorResponseDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VAMException;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileMappingException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileStorageException;
 import ch.admin.astra.vz.lc.modules.verification.exception.ImageHandlingException;
@@ -40,11 +40,11 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(new ErrorResponseDto(FileStorageException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(VAMException.class)
+    @ExceptionHandler(VerifierException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public ResponseEntity<ErrorResponseDto> handleVAMException(VAMException ex) {
-        loggingService.logException(ex);
-        return new ResponseEntity<>(new ErrorResponseDto(VAMException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
+    public ResponseEntity<ErrorResponseDto> handleVerifierException(VerifierException ex) {
+        loggingService.logApiException(ex, ex.getIsBusinessError());
+        return new ResponseEntity<>(new ErrorResponseDto(VerifierException.EXCEPTION_MSG, HttpStatus.SERVICE_UNAVAILABLE.value()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(Exception.class)

@@ -6,10 +6,9 @@ import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.Manageme
 import java.util.UUID;
 
 /**
- * Interface client to connect to the Verifier Agent Management.
+ * Interface client to connect to the Verifier Service.
  */
-public interface VerifierAgentManagementClient {
-
+public interface VerifierServiceClient {
 
     ManagementResponseDto createVerification(CreateVerificationManagementDto createVerificationManagementDto);
 

@@ -41,7 +41,10 @@ logging:
   level:
     root: info
 
-verifier-agent-management:
+verifier-service:
   endpoint: "${VERIFIER_SERVICE_ENDPOINT}"
   logging:
     level: NONE # "NONE", "BASIC", "HEADERS", "BODY"
+
+features:
+  USE_SINGLE_VERIFIER_ENABLED: ${FEATURE_USE_SINGLE_VERIFIER:false}

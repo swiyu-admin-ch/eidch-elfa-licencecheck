@@ -9,6 +9,7 @@
   "i18n.title.requestFailed": "Dumonda betg reussida",
   "i18n.title.requestRejected": "Dumonda refusada",
   "i18n.title.licenceInvalid": "Permiss da manischar è invalid",
+  "i18n.title.jwtPremature": "Permis da manischar vala pir en il futur",
   "i18n.application.description": "Applicaziun per verifitgar electronic permiss per emprender a manischar.",
   "i18n.application.organization.name": "Uffizi federal da vias UVIAS",
   "i18n.application.version": "Versiun",
@@ -67,11 +68,12 @@
   "i18n.verifier.verification-result.rejection.description": "Vossa dumonda da verificaziun è vegnida refusada da l'autra persuna.",
   "i18n.verifier.verification-result.timeout.description": "La transmissiun da datas n’è betg reussida. Il permiss n’ha betg pudì vegnir verifitgà. Empruvai anc ina giada cun in nov code QR.",
   "i18n.verifier.verification-result.invalid.description": "Quest permiss per emprender a manischar è nunvalaivel.",
+  "i18n.verifier.verification-result.premature.description": "Permis da manischar vala pir en il futur",
   "i18n.exception": "Errur",
   "i18n.exception.default": "Igl è capità in sbagl. Per plaschair empruvar anc ina giada pli tard.",
   "i18n.exception.technical": "Ina errur tecnical è capità.",
   "i18n.exception.image-handling": "Inclamaziun nunvalaivla. Per plaschair controllai Vossas indicaziuns ed emprova da far quai danovamain.",
-  "i18n.exception.vam": "Errur durant l'access a l'infrastructura da confidenza",
+  "i18n.exception.verifier": "Errur durant l'access a l'infrastructura da confidenza",
   "i18n.exception.file-storage": "Errur dal sistem da file. Per plaschair contactai l'administratur.",
   "i18n.exception.file-mapping": "Errur durant chargiar las metodas da verificaziun. Per plaschair contactai l'administratur."
 }

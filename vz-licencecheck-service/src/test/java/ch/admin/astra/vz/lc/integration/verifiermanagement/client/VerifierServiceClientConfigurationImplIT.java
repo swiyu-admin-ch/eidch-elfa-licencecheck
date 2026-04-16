@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @TestPropertySource(locations={"classpath:application.yml", "classpath:application-ref.yml"})
 @ActiveProfiles(value = "ref")
 @SpringBootTest(properties="spring.main.lazy-initialization=true")
-class VerifierAgentManagementClientConfigurationImplIT {
+class VerifierServiceClientConfigurationImplIT {
 
     @Autowired
-    private VerifierAgentManagementClient verifierAgentManagementClient;
+    private VerifierServiceClient verifierServiceClient;
 
     @Test
     void assertTechAdapterClient() {
-        assertInstanceOf(VerifierAgentManagementImpl.class, verifierAgentManagementClient);
+        assertInstanceOf(VerifierServiceImpl.class, verifierServiceClient);
     }
 }

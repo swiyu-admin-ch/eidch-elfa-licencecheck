@@ -2,8 +2,8 @@ package ch.admin.astra.vz.lc.api.verification.controller;
 
 import ch.admin.astra.vz.lc.BaseIntegrationTest;
 import ch.admin.astra.vz.lc.api.verification.model.*;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierAgentManagementClient;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.interceptor.VAMLoggingInterceptor;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.client.interceptor.VerifierLoggingInterceptor;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ResponseDataDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Base64;
 import java.util.List;
@@ -33,11 +33,11 @@ class VerificationControllerIT extends BaseIntegrationTest {
     public static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
     private static final String EXISTING_USE_CASE = "c2041c31-db6b-4cf1-871d-6a24d400159b";
 
-    @MockBean
-    private VerifierAgentManagementClient verifierAgentManagementClient;
+    @MockitoBean
+    private VerifierServiceClient verifierServiceClient;
 
-    @MockBean
-    private VAMLoggingInterceptor vamLoggingInterceptor;
+    @MockitoBean
+    private VerifierLoggingInterceptor verifierLoggingInterceptor;
 
     @Autowired
     private QrCodeService qrCodeService;
@@ -71,7 +71,7 @@ class VerificationControllerIT extends BaseIntegrationTest {
 
     @Test
     void testStartVerificationProcess_usingExistingUseCase_thenSuccess() throws Exception {
-        doReturn(getTestVerificationResponse()).when(verifierAgentManagementClient)
+        doReturn(getTestVerificationResponse()).when(verifierServiceClient)
             .createVerification(any());
 
         StartVerificationDto request = new StartVerificationDto(UUID.fromString(EXISTING_USE_CASE));
@@ -86,7 +86,7 @@ class VerificationControllerIT extends BaseIntegrationTest {
 
     @Test
     void testGetVerificationProcess_usingMockedProcess_thenSuccess() throws Exception {
-        doReturn(getTestVerificationResponse()).when(verifierAgentManagementClient)
+        doReturn(getTestVerificationResponse()).when(verifierServiceClient)
             .getVerificationStatus(argThat(r -> r.equals(ID)));
 
 

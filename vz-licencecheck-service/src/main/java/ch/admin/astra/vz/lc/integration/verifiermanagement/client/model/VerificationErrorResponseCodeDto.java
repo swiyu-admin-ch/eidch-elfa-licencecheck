@@ -1,5 +1,6 @@
 package ch.admin.astra.vz.lc.integration.verifiermanagement.client.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Getter;
         |---------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
         | credential_invalid                          | The credential presented during validation was deemed invalid.<br>This is a general purpose code if none of the other codes apply.                                                                                                                   |
         | jwt_expired                                 | During the verification process an expired jwt was used.                                                                                                                                                                                             |
+        | jwt_premature                               | During the verification process a not yet valid jwt was used.                                                                                                                                                                                        |
         | missing_nonce                               | During the verification process a nonce was missing.                                                                                                                                                                                                 |
         | invalid_format                              | The data send in the verification process used an invalid format.                                                                                                                                                                                    |
         | credential_expired                          | The credential presented during validation was expired.                                                                                                                                                                                              |
@@ -23,7 +25,7 @@ import lombok.Getter;
         | issuer_not_accepted                         | The credential presented during validation was issued by an entity that is not in the list of allowed issuers.                                                                                                                                       |
         | holder_binding_mismatch                     | The holder has provided invalid proof that the credential is under their control.                                                                                                                                                                    |
         | client_rejected                             | The holder rejected the verification request.                                                                                                                                                                                                        |
-        | issuer_not_accepted                         | The issuer of the vc was not in the allow-list given in the verificaiton request.                                                                                                                                                                    |
+        | issuer_not_accepted                         | The issuer of the vc was not in the allow-list given in the verification request.                                                                                                                                                                    |
         | authorization_request_missing_error_param   | During the verification process a required parameter (eg.: vp_token, presentation) was not provided in the request.                                                                                                                                  |
         | authorization_request_object_not_found      | The requested verification process cannot be found.                                                                                                                                                                                                  |
         | verification_process_closed                 | The requested verification process is already closed.                                                                                                                                                                                                |
@@ -35,13 +37,10 @@ import lombok.Getter;
         | invalid_client                              | client_metadata parameter exists, but the Wallet recognizes Client Identifier and knows metadata associated with it, Verifier's pre-registered metadata has been found based on the Client Identifier, but client_metadata parameter is also present |
         | vp_formats_not_supported                    | The Wallet doesn't support any of the formats requested by the Verifier                                                                                                                                                                              |
         | invalid_presentation_definition_uri         | Presentation Definition URI can't be reached                                                                                                                                                                                                         |
-        | invalid_presentation_definition_reference   | Presentation Definition URI can be reached, but the presentation_definition cannot be found there                                                                                                                                                    |        
+        | invalid_presentation_definition_reference   | Presentation Definition URI can be reached, but the presentation_definition cannot be found there                                                                                                                                                    |
         """)
 
 public enum VerificationErrorResponseCodeDto {
-
-    // TODO : Split logic for submission errors from wallet and internal errors from verifier agent as already done in the oid4vp
-
     CREDENTIAL_INVALID("credential_invalid"),
     JWT_EXPIRED("jwt_expired"),
     INVALID_FORMAT("invalid_format"),
@@ -54,6 +53,7 @@ public enum VerificationErrorResponseCodeDto {
     CREDENTIAL_MISSING_DATA("credential_missing_data"),
     UNRESOLVABLE_STATUS_LIST("unresolvable_status_list"),
     PUBLIC_KEY_OF_ISSUER_UNRESOLVABLE("public_key_of_issuer_unresolvable"),
+    CLIENT_REJECTED("client_rejected"),
     ISSUER_NOT_ACCEPTED("issuer_not_accepted"),
     AUTHORIZATION_REQUEST_OBJECT_NOT_FOUND("authorization_request_object_not_found"),
     AUTHORIZATION_REQUEST_MISSING_ERROR_PARAM("authorization_request_missing_error_param"),
@@ -68,7 +68,17 @@ public enum VerificationErrorResponseCodeDto {
     VP_FORMATS_NOT_SUPPORTED("vp_formats_not_supported"),
     INVALID_PRESENTATION_DEFINITION_URI("invalid_presentation_definition_uri"),
     INVALID_PRESENTATION_DEFINITION_REFERENCE("invalid_presentation_definition_reference"),
-    CLIENT_REJECTED("client_rejected");
+    JWT_PREMATURE("jwt_premature");
 
     private final String displayName;
+
+    @JsonCreator
+    public static VerificationErrorResponseCodeDto fromValue(String value) {
+        for (VerificationErrorResponseCodeDto b : VerificationErrorResponseCodeDto.values()) {
+            if (b.displayName.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
 }

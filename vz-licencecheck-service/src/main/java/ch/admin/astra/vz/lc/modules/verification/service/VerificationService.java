@@ -4,7 +4,7 @@ import ch.admin.astra.vz.lc.api.verification.model.UseCaseDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationStateDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierAgentManagementClient;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.PresentationDefinitionDto;
@@ -31,7 +31,7 @@ public class VerificationService {
 
     private final UseCaseMapper useCaseMapper;
 
-    private final VerifierAgentManagementClient verifierAgentManagementClient;
+    private final VerifierServiceClient verifierServiceClient;
 
     private final VerificationMapper verificationMapper;
 
@@ -45,7 +45,7 @@ public class VerificationService {
 
     public VerificationService(UseCaseCache useCaseCache,
                                UseCaseMapper useCaseMapper,
-                               VerifierAgentManagementClient verifierAgentManagementClient,
+                               VerifierServiceClient verifierServiceClient,
                                VerificationMapper verificationMapper,
                                QrCodeService qrCodeService,
                                LoggingService loggingService,
@@ -53,7 +53,7 @@ public class VerificationService {
                                @Value("${verifier.allowed-issuer-did}") String allowedIssuerDid) {
         this.useCaseCache = useCaseCache;
         this.useCaseMapper = useCaseMapper;
-        this.verifierAgentManagementClient = verifierAgentManagementClient;
+        this.verifierServiceClient = verifierServiceClient;
         this.verificationMapper = verificationMapper;
         this.qrCodeService = qrCodeService;
         this.loggingService = loggingService;
@@ -74,8 +74,8 @@ public class VerificationService {
         log.debug("Build CreateVerificationManagementDto");
         CreateVerificationManagementDto request = buildCreateVerificationManagementDto(PresentationDefinitionDto.buildPresentationDefinitionDto(clientName, attributeList), allowedIssuerDid, true);
 
-        log.debug("Start verification Process on VAM");
-        ManagementResponseDto response = verifierAgentManagementClient.createVerification(request);
+        log.debug("Start verification Process on Verifier Service");
+        ManagementResponseDto response = verifierServiceClient.createVerification(request);
 
         log.debug("Create QR-Code");
         QrCode qrCode = qrCodeService.create(response.verificationUrl(), 500);
@@ -88,8 +88,8 @@ public class VerificationService {
     }
 
     public VerificationStateDto getVerificationStatus(UUID verificationId) {
-        log.debug("Get verification status from VAM");
-        ManagementResponseDto managementResponseDto = verifierAgentManagementClient.getVerificationStatus(verificationId);
+        log.debug("Get verification status from Verifier Service for verificationId: {}", verificationId);
+        ManagementResponseDto managementResponseDto = verifierServiceClient.getVerificationStatus(verificationId);
 
         loggingService.addVerificationStatusContext(managementResponseDto);
 

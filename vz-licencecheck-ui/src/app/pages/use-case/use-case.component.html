@@ -3,7 +3,7 @@
     <div class="title">{{ "i18n.verifier.use-case-selector.title" | translate }}</div>
     <div class="description">{{ "i18n.verifier.use-case-selector.description" | translate }}</div>
     <div id="use-cases" class="ob-grid">
-      <ng-template [ngForOf]="useCases" let-i="index" let-item ngFor>
+      <ng-container *ngFor="let item of useCases(); let i = index">
         <div class="ob-span-12">
           <mat-card id="use-case-{{ i }}">
             <mat-icon class="info-icon" [svgIcon]="'info-circle'" (click)="openInfoDialog(item)"></mat-icon>
@@ -32,7 +32,7 @@
           </mat-card>
         </div>
         <br />
-      </ng-template>
+      </ng-container>
     </div>
   </div>
 </div>

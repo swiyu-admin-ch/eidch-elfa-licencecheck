@@ -3,7 +3,7 @@ verifier:
   client-name: "LicenceCheck (Local)"
   mock:
     failResponse: false
-    errorCode: CREDENTIAL_INVALID
+    errorCode: JWT_PREMATURE
 
 jeap:
   swagger:
@@ -19,3 +19,6 @@ cors:
 springdoc:
   swagger-ui:
     enabled: true
+
+features:
+  use-single-verifier-enabled: true

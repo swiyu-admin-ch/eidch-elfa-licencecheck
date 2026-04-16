@@ -1,2 +1,2 @@
-verifier-agent-management:
+verifier-service:
   endpoint: "https://example.com"

@@ -2,6 +2,7 @@ package ch.admin.astra.vz.lc.core.logging;
 
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -63,5 +64,15 @@ public class LoggingService {
     public void logException(Exception e) {
         LoggingUtil.setStatus(ERROR);
         log.error("%s Reason: %s" .formatted(OPERATION_FINISHED_WITH_ERROR, e.getMessage()), e);
+    }
+
+    public void logApiException(VerifierException e, boolean logDebug) {
+        LoggingUtil.setStatus(ERROR);
+        if(logDebug) {
+            log.debug("%s Code: %s Reason: %s" .formatted(OPERATION_FINISHED_WITH_ERROR, e.getStatus(), e.getMessage()), e);
+            log.info(OPERATION_FINISHED);
+        } else {
+            log.error("%s Code: %s Reason: %s".formatted(OPERATION_FINISHED_WITH_ERROR, e.getStatus(), e.getMessage()), e);
+        }
     }
 }

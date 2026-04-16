@@ -15,11 +15,14 @@ Object.defineProperty(window, 'getComputedStyle', {
   value: () => ['-webkit-appearance']
 });
 (window as any).HTMLElement.prototype.scrollIntoView = function () {};
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
+if (!Object.getOwnPropertyDescriptor(document.body.style, 'transform')?.configurable) {
+  try {
+    Object.defineProperty(document.body.style, 'transform', {
+      value: '',
+      writable: true,
       configurable: true
-    };
+    });
+  } catch (e) {
+    // some environments may not allow it at all — silently fail
   }
-});
+}

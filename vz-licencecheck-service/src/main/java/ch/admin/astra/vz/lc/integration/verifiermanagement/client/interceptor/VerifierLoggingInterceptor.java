@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VAMLoggingInterceptor {
+public class VerifierLoggingInterceptor {
 
-    @Value("${verifier-agent-management.logging.level}")
+    @Value("${verifier-service.logging.level}")
     private HttpLoggingInterceptor.Level level;
 
     public HttpLoggingInterceptor getInterceptor() {

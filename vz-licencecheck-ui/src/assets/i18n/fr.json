@@ -9,6 +9,7 @@
   "i18n.title.requestFailed": "Échec de la demande",
   "i18n.title.requestRejected": "Demande refusée",
   "i18n.title.licenceInvalid": "Permis de conduire invalide",
+  "i18n.title.jwtPremature": "Permis de conduire antidaté",
   "i18n.application.description": "Application pour vérifier les permis de conduire électronique.",
   "i18n.application.organization.name": "Office fédéral des routes OFROU",
   "i18n.application.version": "Version",
@@ -67,11 +68,12 @@
   "i18n.verifier.verification-result.rejection.description": "Votre demande de vérification a été refusée par l’autre personne.",
   "i18n.verifier.verification-result.timeout.description": "La transmission des données a échoué. Le permis n’a pas pu être vérifié. Veuillez réessayer avec un nouveau code QR.",
   "i18n.verifier.verification-result.invalid.description": "Ce permis d’élève conducteur n’est pas valable.",
+  "i18n.verifier.verification-result.premature.description": "Ce permis d’élève conducteur n’est valable qu’à l’avenir.",
   "i18n.exception": "Erreur",
   "i18n.exception.default": "Une erreur s'est produite. Veuillez réessayer ultérieurement.",
   "i18n.exception.technical": "Une erreur technique inattendue est survenue.",
   "i18n.exception.image-handling": "Appel non valide. Veuillez vérifier vos données et réessayer",
-  "i18n.exception.vam": "Erreur lors de l'accès à l'infrastructure de confiance",
+  "i18n.exception.verifier": "Erreur lors de l'accès à l'infrastructure de confiance",
   "i18n.exception.file-storage": "Erreur du système de fichiers. Veuillez contacter l'administrateur.",
   "i18n.exception.file-mapping": "Erreur lors du chargement des méthodes de vérification. Veuillez contacter l'administrateur."
 }

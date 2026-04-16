@@ -9,6 +9,7 @@
   "i18n.title.requestFailed": "Request failed",
   "i18n.title.requestRejected": "Request rejected",
   "i18n.title.licenceInvalid": "Learner-driver permit invalid",
+  "i18n.title.jwtPremature": "Learner-driver permit predated",
   "i18n.application.description": "Application to verify electronic learner driver's licences.",
   "i18n.application.organization.name": "Federal Roads Office FEDRO",
   "i18n.application.version": "Version",
@@ -67,11 +68,12 @@
   "i18n.verifier.verification-result.rejection.description": "Your verification request has been rejected by the other person.",
   "i18n.verifier.verification-result.timeout.description": "The data transmission failed. The licence could not be verified. Please try a new QR code.",
   "i18n.verifier.verification-result.invalid.description": "This learner-driver permit is not valid.",
+  "i18n.verifier.verification-result.premature.description": "This learner-driver permit is only valid in the future.",
   "i18n.exception": "Error",
   "i18n.exception.default": "An error has occurred. Please try again later.",
   "i18n.exception.technical": "An unexpected technical error has occurred.",
   "i18n.exception.image-handling": "Invalid call. Please check your information and try again.",
-  "i18n.exception.vam": "Error accessing the trust infrastructure",
+  "i18n.exception.verifier": "Error accessing the trust infrastructure",
   "i18n.exception.file-storage": "File system error. Please contact the administrator.",
   "i18n.exception.file-mapping": "Error loading verification methods. Please contact the administrator."
 }

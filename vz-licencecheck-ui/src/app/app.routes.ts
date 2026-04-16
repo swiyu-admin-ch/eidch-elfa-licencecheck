@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {PolicyGuard} from '@app/_guards/policy.guard';
 import {HomeComponent} from '@app/pages/home/home.component';
+import {verificationResultGuard} from '@app/_guards/verification-result.guard';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
@@ -20,7 +21,7 @@ export const routes: Routes = [
     path: 'verification-result',
     loadComponent: () =>
       import('./pages/verification-result/verification-result.component').then(m => m.VerificationResultComponent),
-    canActivate: [PolicyGuard],
+    canActivate: [PolicyGuard, verificationResultGuard],
     pathMatch: 'full'
   },
   {path: '**', redirectTo: ''}

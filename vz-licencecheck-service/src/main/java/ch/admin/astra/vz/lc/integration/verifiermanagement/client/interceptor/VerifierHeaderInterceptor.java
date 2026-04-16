@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * The VAMHeaderInterceptor class is responsible for adding the necessary headers
- * to the outgoing requests before they are sent to the Verifier Agent Management.
+ * The VerifierHeaderInterceptor class is responsible for adding the necessary headers
+ * to the outgoing requests before they are sent to the Verifier Service.
  */
 @Component
 @RequiredArgsConstructor
-public class VAMHeaderInterceptor implements Interceptor {
+public class VerifierHeaderInterceptor implements Interceptor {
 
     public static final String ACCEPT = "accept";
     public static final String CONTENT_TYPE = "Content-Type";

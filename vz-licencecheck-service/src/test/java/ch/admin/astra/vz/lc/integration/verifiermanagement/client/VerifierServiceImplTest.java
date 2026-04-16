@@ -2,7 +2,7 @@ package ch.admin.astra.vz.lc.integration.verifiermanagement.client;
 
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VAMException;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,13 +17,13 @@ import retrofit2.Response;
 import java.io.IOException;
 
 @ExtendWith(MockitoExtension.class)
-class VerifierAgentManagementImplTest {
+class VerifierServiceImplTest {
 
     @InjectMocks
-    private VerifierAgentManagementImpl verifierAgentManagement;
+    private VerifierServiceImpl verifierManagement;
 
     @Mock
-    private VerifierAgentManagementApi verifierAgentManagementApi;
+    private VerifierManagementApi verifierManagementApi;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -37,12 +37,12 @@ class VerifierAgentManagementImplTest {
     @Test
     void createVerification_success() throws IOException {
         CreateVerificationManagementDto createVerificationManagementDto = CreateVerificationManagementDto.builder().build();
-        Mockito.when(verifierAgentManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
+        Mockito.when(verifierManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
 
         ManagementResponseDto expected = ManagementResponseDto.builder().build();
         Mockito.when(call.execute()).thenReturn(Response.success(expected));
 
-        ManagementResponseDto result = verifierAgentManagement.createVerification(createVerificationManagementDto);
+        ManagementResponseDto result = verifierManagement.createVerification(createVerificationManagementDto);
 
         Assertions.assertEquals(expected, result);
     }
@@ -50,9 +50,9 @@ class VerifierAgentManagementImplTest {
     @Test
     void createVerification_exception() throws IOException {
         CreateVerificationManagementDto createVerificationManagementDto = CreateVerificationManagementDto.builder().build();
-        Mockito.when(verifierAgentManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
+        Mockito.when(verifierManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
         Mockito.when(call.execute()).thenThrow(IOException.class);
 
-        Assertions.assertThrows(VAMException.class, () -> verifierAgentManagement.createVerification(createVerificationManagementDto));
+        Assertions.assertThrows(VerifierException.class, () -> verifierManagement.createVerification(createVerificationManagementDto));
     }
 }

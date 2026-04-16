@@ -1,6 +1,6 @@
 import {APP_INITIALIZER, ApplicationConfig, enableProdMode, importProvidersFrom, LOCALE_ID} from '@angular/core';
 
-import {environment} from './environments/environment';
+import {environment} from '@environments/environment';
 import {
   multiTranslateLoader,
   OB_BANNER,
@@ -12,7 +12,7 @@ import {
 } from '@oblique/oblique';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
 import {banner} from '@app/core/utils';
-import {HTTP_INTERCEPTORS, provideHttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {ErrorInterceptor} from '@app/_interceptors';
 import {PolicyService} from '@app/_services/policy.service';
 import {CommonModule, registerLocaleData} from '@angular/common';
@@ -60,7 +60,7 @@ const appConfig: ApplicationConfig = {
     // provider used to create fake backend
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     PolicyService,
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom([
       CommonModule,

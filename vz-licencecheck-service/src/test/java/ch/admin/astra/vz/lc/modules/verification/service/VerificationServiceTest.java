@@ -2,11 +2,11 @@ package ch.admin.astra.vz.lc.modules.verification.service;
 
 import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierAgentManagementClient;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VAMException;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.domain.qrcode.QrCode;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.Attribute;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.AttributeGroup;
@@ -53,7 +53,7 @@ class VerificationServiceTest {
     private UseCaseMapper useCaseMapper;
 
     @Mock
-    private VerifierAgentManagementClient verifierAgentManagementClient;
+    private VerifierServiceClient verifierServiceClient;
 
     @Mock
     private VerificationMapper verificationMapper;
@@ -66,7 +66,7 @@ class VerificationServiceTest {
 
     @BeforeEach
     void setUp() {
-        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierAgentManagementClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME, ALLOWED_ISSUER_DID);
+        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierServiceClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME, ALLOWED_ISSUER_DID);
     }
 
     @AfterEach
@@ -100,11 +100,11 @@ class VerificationServiceTest {
         UUID useCaseId = UUID.randomUUID();
         when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
 
-        // mock verifierAgentManagementClient
-        when(verifierAgentManagementClient.createVerification(any())).thenThrow(VAMException.class);
+        // mock verifierManagementClient
+        when(verifierServiceClient.createVerification(any())).thenThrow(VerifierException.class);
 
         // when
-        Assertions.assertThrows(VAMException.class, () -> verificationService.createVerification(useCaseId));
+        Assertions.assertThrows(VerifierException.class, () -> verificationService.createVerification(useCaseId));
 
         // then
         // assert useCaseService
@@ -112,7 +112,7 @@ class VerificationServiceTest {
 
         // assert CreateVerificationManagementDto
         ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
-        Mockito.verify(verifierAgentManagementClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
+        Mockito.verify(verifierServiceClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
         CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
         assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
         assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
@@ -126,7 +126,7 @@ class VerificationServiceTest {
         UUID useCaseId = UUID.randomUUID();
         when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
 
-        // mock verifierAgentManagementClient
+        // mock verifierManagementClient
         UUID verificationId = UUID.randomUUID();
         String verificationUrlExpected = "URL";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
@@ -134,7 +134,7 @@ class VerificationServiceTest {
                 .state(VerificationStatusDto.SUCCESS)
             .verificationUrl(verificationUrlExpected)
             .build();
-        when(verifierAgentManagementClient.createVerification(any())).thenReturn(managementResponseDto);
+        when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
 
         // mock qrCodeService
         when(qrCodeService.create(verificationUrlExpected, 500)).thenThrow(ImageHandlingException.class);
@@ -145,7 +145,7 @@ class VerificationServiceTest {
         // then
         // assert useCaseService
         Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
-        Mockito.verify(verifierAgentManagementClient).createVerification(Mockito.any());
+        Mockito.verify(verifierServiceClient).createVerification(Mockito.any());
         Mockito.verify(qrCodeService).create(verificationUrlExpected, 500);
     }
 
@@ -157,7 +157,7 @@ class VerificationServiceTest {
         UUID useCaseId = UUID.randomUUID();
         when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
 
-        // mock verifierAgentManagementClient
+        // mock verifierManagementClient
         UUID verificationId = UUID.randomUUID();
         String verificationUrlExpected = "URL";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
@@ -166,7 +166,7 @@ class VerificationServiceTest {
             .verificationUrl(verificationUrlExpected)
             .build();
 
-        when(verifierAgentManagementClient.createVerification(any())).thenReturn(managementResponseDto);
+        when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
 
         // mock qrCodeService
         byte[] imageBytes = "image".getBytes();
@@ -187,7 +187,7 @@ class VerificationServiceTest {
 
         // assert CreateVerificationManagementDto
         ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
-        Mockito.verify(verifierAgentManagementClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
+        Mockito.verify(verifierServiceClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
         CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
         assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
         assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
@@ -202,10 +202,10 @@ class VerificationServiceTest {
 
     @Test
     void getVerificationStatus_throwsTechAdapterException() {
-        when(verifierAgentManagementClient.getVerificationStatus(any())).thenThrow(VAMException.class);
+        when(verifierServiceClient.getVerificationStatus(any())).thenThrow(VerifierException.class);
 
         UUID verificationId = UUID.randomUUID();
-        assertThrows(VAMException.class, () -> verificationService.getVerificationStatus(verificationId));
+        assertThrows(VerifierException.class, () -> verificationService.getVerificationStatus(verificationId));
     }
 
     @Test
@@ -216,12 +216,12 @@ class VerificationServiceTest {
                 .state(VerificationStatusDto.SUCCESS)
             .build();
 
-        // mock verifierAgentManagementClient
-        when(verifierAgentManagementClient.getVerificationStatus(uuid)).thenReturn(responseDto);
+        // mock verifierManagementClient
+        when(verifierServiceClient.getVerificationStatus(uuid)).thenReturn(responseDto);
 
         verificationService.getVerificationStatus(uuid);
 
-        Mockito.verify(verifierAgentManagementClient).getVerificationStatus(uuid);
+        Mockito.verify(verifierServiceClient).getVerificationStatus(uuid);
         Mockito.verify(loggingService).addVerificationStatusContext(responseDto);
     }
 

@@ -9,6 +9,7 @@
   "i18n.title.requestFailed": "Richiesta fallita",
   "i18n.title.requestRejected": "Richiesta rifiutata",
   "i18n.title.licenceInvalid": "Licenza non valida",
+  "i18n.title.jwtPremature": "Licenza predatata",
   "i18n.application.description": "Applicazione per verificare le licenze elettroniche del conducente.",
   "i18n.application.organization.name": "Ufficio federale delle strade USTRA",
   "i18n.application.version": "Versione",
@@ -67,11 +68,12 @@
   "i18n.verifier.verification-result.rejection.description": "La vostra richiesta di verifica è stata rifiutata dall'altra persona.",
   "i18n.verifier.verification-result.timeout.description": "La trasmissione dei dati è fallita. Non è stato possibile verificare la licenza. Si prega di riprovare con un nuovo codice QR.",
   "i18n.verifier.verification-result.invalid.description": "Questa licenza per allievo conducente non è valida.",
+  "i18n.verifier.verification-result.premature.description": "Questa licenza per allievo conducente è valida solo in futuro.",
   "i18n.exception": "Errore",
   "i18n.exception.default": "Si è verificato un errore. Riprova più tardi.",
   "i18n.exception.technical": "Si è verificato un errore tecnico imprevisto.",
   "i18n.exception.image-handling": "Chiamata non valida. Controllare i dettagli e riprovare",
-  "i18n.exception.vam": "Errore durante l'accesso all'infrastruttura di fiducia",
+  "i18n.exception.verifier": "Errore durante l'accesso all'infrastruttura di fiducia",
   "i18n.exception.file-storage": "Errore nel file system. Si prega di contattare l'amministratore.",
   "i18n.exception.file-mapping": "Errore durante il caricamento dei metodi di verifica. Si prega di contattare l'amministratore."
 }
