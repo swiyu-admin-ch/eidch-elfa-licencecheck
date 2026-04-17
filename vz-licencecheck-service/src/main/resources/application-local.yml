@@ -12,9 +12,17 @@ spring:
       - org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration
 
 jeap:
+  logging:
+    platform: local
   swagger:
     status: OPEN
+  monitor:
+    prometheus:
+      user: "prometheus"
+      password: "{noop}secret"
 
+toTriggerPipeline:
+    trigger: "true"
 
 logging:
   level:

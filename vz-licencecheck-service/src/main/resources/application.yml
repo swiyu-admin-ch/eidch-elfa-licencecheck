@@ -16,6 +16,13 @@ spring:
             issuer-uri: ${VERIFIER_SERVICE_OAUTH2_KEYCLOAK_URI}
 
 jeap:
+  logging:
+    platform: rhos
+  monitor:
+    prometheus:
+      user: "${PROMETHEUS_USER}"
+      password: "{noop}${PROMETHEUS_PASSWORD}"
+      plainTextOnly: true # RHOS only supports plain text scraping
   swagger:
     status: DISABLED
   web:

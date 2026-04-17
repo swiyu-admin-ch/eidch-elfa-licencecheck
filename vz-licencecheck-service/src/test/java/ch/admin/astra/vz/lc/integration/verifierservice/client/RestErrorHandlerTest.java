@@ -1,6 +1,5 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ErrorDto;
 import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -67,46 +66,57 @@ class RestErrorHandlerTest {
     }
 
     @Test
-    void handle_missingStatusOrDetail_throwsVerifierExceptionWithTechnicalFlag() throws IOException {
-        // ErrorDto missing status
-        String errorJsonMissingStatus = "{\"detail\":\"some-detail\"}";
+    void handle_missingDescriptionAndDetail_throwsVerifierExceptionWithTechnicalFlag() throws IOException {
+        // Error JSON missing both description and detail
+        String errorJsonMissingDescriptionAndDetail = "{}";
         ClientHttpResponse responseMissingStatus = Mockito.mock(ClientHttpResponse.class);
         Mockito.when(responseMissingStatus.getBody())
-                .thenReturn(new ByteArrayInputStream(errorJsonMissingStatus.getBytes(StandardCharsets.UTF_8)));
+                .thenReturn(new ByteArrayInputStream(errorJsonMissingDescriptionAndDetail.getBytes(StandardCharsets.UTF_8)));
+        Mockito.when(responseMissingStatus.getStatusCode()).thenReturn(HttpStatus.SERVICE_UNAVAILABLE);
         HttpRequest request = Mockito.mock(HttpRequest.class);
 
         VerifierException ex1 = assertThrows(VerifierException.class, () -> errorHandler.handle(request, responseMissingStatus));
         assertEquals(SERVICE_UNAVAILABLE, ex1.getStatus());
-        assertEquals("Invalid error format: missing status or detail", ex1.getMessage());
+        assertEquals("Invalid error format: missing description or detail", ex1.getMessage());
         assertFalse(ex1.getIsBusinessError());
 
-        // ErrorDto missing detail
-        String errorJsonMissingDetail = "{\"status\":\"NOT_FOUND\"}";
+        // Error JSON missing detail
+        String errorJsonMissingDetail = "{\"error_description\":\"This is an error\"}";
         ClientHttpResponse responseMissingDetail = Mockito.mock(ClientHttpResponse.class);
         Mockito.when(responseMissingDetail.getBody())
                 .thenReturn(new ByteArrayInputStream(errorJsonMissingDetail.getBytes(StandardCharsets.UTF_8)));
+        Mockito.when(responseMissingDetail.getStatusCode()).thenReturn(HttpStatus.SERVICE_UNAVAILABLE);
 
         VerifierException ex2 = assertThrows(VerifierException.class, () -> errorHandler.handle(request, responseMissingDetail));
         assertEquals(SERVICE_UNAVAILABLE, ex2.getStatus());
-        assertEquals("Invalid error format: missing status or detail", ex2.getMessage());
+        assertEquals("Description: null Detail: This is an error", ex2.getMessage());
         assertFalse(ex2.getIsBusinessError());
+
+        // Error JSON missing description
+        String errorJsonMissingDescription = "{\"detail\":\"This is a detail\"}";
+        ClientHttpResponse responseMissingDescription = Mockito.mock(ClientHttpResponse.class);
+        Mockito.when(responseMissingDescription.getBody())
+                .thenReturn(new ByteArrayInputStream(errorJsonMissingDescription.getBytes(StandardCharsets.UTF_8)));
+        Mockito.when(responseMissingDescription.getStatusCode()).thenReturn(HttpStatus.SERVICE_UNAVAILABLE);
+
+        VerifierException ex3 = assertThrows(VerifierException.class, () -> errorHandler.handle(request, responseMissingDescription));
+        assertEquals(SERVICE_UNAVAILABLE, ex3.getStatus());
+        assertEquals("Description: This is a detail Detail: null", ex3.getMessage());
+        assertFalse(ex3.getIsBusinessError());
     }
 
     @Test
     void handle_businessError_throwsVerifierExceptionWithBusinessFlag() throws IOException {
-        ErrorDto errorDto = ErrorDto.builder()
-                .status(HttpStatus.NOT_FOUND)
-                .detail("verification-not-found")
-                .build();
-        String errorJson = objectMapper.writeValueAsString(errorDto);
+        String errorJson = "{\"detail\":\"The verification with the identifier '34234' was not found\"}";
         ClientHttpResponse response = Mockito.mock(ClientHttpResponse.class);
         Mockito.when(response.getBody()).thenReturn(new ByteArrayInputStream(errorJson.getBytes(StandardCharsets.UTF_8)));
+        Mockito.when(response.getStatusCode()).thenReturn(HttpStatus.NOT_FOUND);
         HttpRequest request = Mockito.mock(HttpRequest.class);
 
         VerifierException ex = assertThrows(VerifierException.class, () -> errorHandler.handle(request, response));
 
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
-        assertEquals("verification-not-found", ex.getMessage());
+        assertEquals("The verification with the identifier '34234' was not found", ex.getMessage());
         assertTrue(ex.getIsBusinessError());
     }
 

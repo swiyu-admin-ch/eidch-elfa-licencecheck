@@ -2,14 +2,13 @@ import {
   ApplicationConfig,
   enableProdMode,
   importProvidersFrom,
-  LOCALE_ID,
   inject,
+  LOCALE_ID,
   provideAppInitializer
 } from '@angular/core';
 
 import {environment} from '@environments/environment';
 import {
-  multiTranslateLoader,
   OB_BANNER,
   ObHttpApiInterceptor,
   ObIconModule,
@@ -32,7 +31,6 @@ import localeRM from '@angular/common/locales/rm';
 import {AppComponent} from '@app/app.component';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TranslateModule} from '@ngx-translate/core';
 import {PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
 import {routes} from '@app/app.routes';
 import {ApiModule, Configuration} from '@app/core/api/generated';
@@ -47,17 +45,18 @@ if (environment.production) {
   enableProdMode();
 }
 
+const initializeMasterLayoutConfig = (config: ObMasterLayoutConfig) => {
+  config.locale.locales = ['de-CH', 'fr-CH', 'it-CH', 'en-CH', 'rm'];
+  config.homePageRoute = '/';
+};
+
 const appConfig: ApplicationConfig = {
   providers: [
     /* Initialize Services and/or run code on application initialization. */
     provideAppInitializer(() => {
-      const initializerFn = ((config: ObMasterLayoutConfig) => {
-        return () => {
-          config.locale.locales = ['de-CH', 'fr-CH', 'it-CH', 'en-CH', 'rm'];
-          config.homePageRoute = '/use-case';
-        };
-      })(inject(ObMasterLayoutConfig));
-      return initializerFn();
+      initializeMasterLayoutConfig(inject(ObMasterLayoutConfig));
+      // initialization will not complete until the app-config is loaded
+      return inject(AppConfigService).loadAppConfig();
     }),
     provideObliqueConfiguration({
       accessibilityStatement: {
@@ -86,7 +85,6 @@ const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       ObMasterLayoutModule,
       ObIconModule.forRoot(),
-      TranslateModule.forRoot(multiTranslateLoader()),
       ApiModule.forRoot(
         () =>
           new Configuration({

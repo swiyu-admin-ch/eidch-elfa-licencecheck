@@ -1,15 +1,15 @@
-import {Component, computed, inject, OnInit, Signal, signal, ViewEncapsulation} from '@angular/core';
+import {Component, computed, inject, OnInit, Signal, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {InfoDialogComponent} from '@app/pages/use-case/info-dialog/info-dialog.component';
 import {UseCase, VerifierApi} from '@app/core/api/generated';
 import {UntilDestroy} from '@ngneat/until-destroy';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectChange, MatSelectModule} from '@angular/material/select';
+import {MatSelectModule} from '@angular/material/select';
 import {ObButtonModule, ObIconModule} from '@oblique/oblique';
 import {MatButtonModule} from '@angular/material/button';
 import {VerificationStore} from '@app/_services/verification.store';
@@ -32,7 +32,8 @@ import {AppConfigService} from '@app/core/app-config/app-config.service';
     MatSelectModule,
     ObButtonModule,
     ObIconModule,
-    MatButtonModule
+    MatButtonModule,
+    NgOptimizedImage
   ]
 })
 export class UseCaseComponent implements OnInit {
@@ -42,7 +43,7 @@ export class UseCaseComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly appConfigService = inject(AppConfigService);
 
-  isMdlEnabled = false;
+  readonly isMdlEnabled = this.appConfigService.isMdlFeatureEnabled;
 
   useCases = toSignal(this.verifierApi.getUseCases().pipe(map(list => [...list].sort((a, b) => a.order - b.order))), {
     initialValue: []
@@ -57,61 +58,42 @@ export class UseCaseComponent implements OnInit {
     return cases;
   });
 
-  availableTypes: Signal<string[]> = computed(() => {
-    return Array.from(
-      new Set(
-        this.availableUseCases()
-          .map(u => u.type)
-          .filter(Boolean)
-      )
-    );
-  });
-
-  selectedType = signal<string | null>(null);
+  readonly selectedType = this.store.selectedLicenceType;
 
   filteredUseCases: Signal<UseCase[]> = computed(() => {
-    return this.selectedType() ? this.availableUseCases().filter(u => u.type === this.selectedType()) : [];
+    return this.availableUseCases().filter(u => u.type === this.store.selectedLicenceType());
   });
 
   ngOnInit(): void {
-    // Load app configuration to get feature flags - set the flag once
-    this.appConfigService.loadAppConfig().subscribe(config => {
-      this.isMdlEnabled = config?.featureFlags?.enableMdl ?? false;
-
-      // Set initial selectedType based on MDL state
-      if (!this.isMdlEnabled) {
-        this.selectedType.set('elfa');
-      }
-    });
-  }
-
-  onTypeChange(event: MatSelectChange) {
-    this.selectedType.set(event.value || null);
+    if (!this.isMdlEnabled) {
+      // if mDL feature is not enabled, the selected licence type is fixed to 'elfa'
+      this.store.setSelectedLicenceType('elfa');
+    }
   }
 
   async createVerificationRequest(useCase: UseCase) {
     this.store.reset();
     this.store.setUseCase(useCase);
 
-    // Check if MDL is enabled, this is the mdl-validity-single-category use case, and it has selection input elements
-    const hasSelectionInput = useCase.inputElements?.some(element => element.type === 'selection');
-
-    if (this.isMdlEnabled && hasSelectionInput) {
-      // Navigate to input selection page
-      this.router.navigate(['/input-selection']);
-    } else {
-      // For other use cases, or when MDL is disabled, or no selection input, proceed directly to verification
-      await this.store.beginVerification();
-      this.router.navigate(['/scan-qr-code']);
-    }
+    await this.store.beginVerification();
+    this.router.navigate(['/scan-qr-code']);
   }
+
   openInfoDialog(useCase: UseCase) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.maxWidth = window.innerWidth <= 600 ? '90vw' : '35vw';
+    dialogConfig.maxWidth = window.innerWidth <= 600 ? '90vw' : '50vw';
     dialogConfig.maxHeight = '90vh';
     dialogConfig.autoFocus = false;
     dialogConfig.data = {item: useCase};
 
     this.dialog.open(InfoDialogComponent, dialogConfig);
+  }
+
+  /**
+   * @description
+   * Navigate back to the licence type selection page.
+   */
+  protected goBack() {
+    this.router.navigateByUrl('/licence-type');
   }
 }

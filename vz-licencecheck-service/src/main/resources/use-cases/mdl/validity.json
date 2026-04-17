@@ -1,6 +1,6 @@
 {
   "id": "43944b49-7643-401f-94ed-619b0b6c9603",
-  "title": "mdl-validity-single-category",
+  "title": "mdl-validity",
   "description": "mDL - Mobile Driving Licence",
   "type": "mdl",
   "order": 1,
@@ -105,85 +105,28 @@
       ]
     },
     {
-      "name": "learningPerson",
+      "name": "additionalInformation",
       "order": 2,
       "attributes": [
         {
-          "name": "lastName",
-          "type": "string",
-          "order": 2
-        },
-        {
-          "name": "firstName",
-          "type": "string",
-          "order": 3
-        },
-        {
-          "name": "dateOfBirth",
-          "type": "date",
-          "order": 4
-        },
-        {
-          "name": "hometown",
-          "type": "string",
-          "order": 5
-        },
-        {
-          "name": "signatureImage",
-          "type": "image",
-          "order": 6
-        }
-      ]
-    },
-    {
-      "name": "validity",
-      "order": 3,
-      "attributes": [
-        {
-          "name": "issuerEntityDate",
-          "type": "date",
-          "order": 7
-        },
-        {
           "name": "dateOfExpiration",
           "type": "date",
-          "order": 8
-        }
-      ]
-    },
-    {
-      "name": "additionalInformation",
-      "order": 4,
-      "attributes": [
-        {
-          "name": "issuerEntity",
-          "type": "string",
-          "order": 9
-        },
-        {
-          "name": "dlNumber",
-          "type": "string",
-          "order": 10
+          "order": 2
         },
         {
           "name": "licenceCategories",
           "type": "string",
-          "order": 12
+          "order": 3
         },
         {
           "name": "restrictionsA",
           "type": "string",
-          "order": 15
+          "order": 5
         },
         {
           "name": "restrictionsB",
           "type": "string",
-          "order": 16
-        },
-        {
-          "name": "policeQRImage",
-          "type": "image",
-          "order": 17
+          "order": 6
         }
       ]
     }

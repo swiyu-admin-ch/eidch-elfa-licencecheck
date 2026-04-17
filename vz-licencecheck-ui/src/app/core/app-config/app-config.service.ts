@@ -1,13 +1,14 @@
-import {Injectable, signal} from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
-import {AppConfig, AppConfigApi} from '@app/core/api/generated';
+import {AppConfig, AppConfigApi, FeatureFlags} from '@app/core/api/generated';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppConfigService {
   private readonly _appConfig = signal<AppConfig | undefined>(undefined);
+  private readonly _featureFlags = computed<FeatureFlags | undefined>(() => this._appConfig()?.featureFlags);
 
   constructor(private readonly appConfigApi: AppConfigApi) {}
 
@@ -25,5 +26,12 @@ export class AppConfigService {
 
   get appConfig(): AppConfig | undefined {
     return this._appConfig();
+  }
+
+  /**
+   * Indicates whether mDL feature is enabled.
+   */
+  get isMdlFeatureEnabled(): boolean {
+    return this._featureFlags()?.enableMdl ?? false;
   }
 }

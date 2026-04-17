@@ -1,8 +1,35 @@
 @use "styles";
 @use "colors";
 
-.mat-card {
-  background-color: colors.$lightGrey;
+#use-cases {
+  margin-top: 16px;
+  padding-bottom: 16px;
+
+  .mat-card {
+    background-color: colors.$lightGrey;
+
+    .licence-type-icon {
+      margin-right: 16px;
+    }
+  }
+}
+
+.title {
+  display: flex !important;
+  gap: 16px;
+  padding-right: 30px;
+}
+
+.mat-mdc-card-content {
+  margin-top: 0 !important;
+}
+
+.navigation-buttons {
+  padding: 16px 0;
+
+  button {
+    width: 100%;
+  }
 }
 
 .info-icon {

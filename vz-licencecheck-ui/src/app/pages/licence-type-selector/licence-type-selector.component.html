@@ -1,0 +1,54 @@
+<div class="centered-component">
+  <div class="content">
+    @if (displayAlert()) {
+      <ob-alert type="error">{{ "i18n.verifier.licence-type-selector.alert" | translate }}</ob-alert>
+    }
+    <div class="title">{{ "i18n.verifier.licence-type-selector.title" | translate }}</div>
+
+    <div class="licence-type-selection" obSelectableGroup mode="radio" (selected$)="doSelectLicenceType($event)">
+      <mat-card
+        data-testid="mdl-selector"
+        obSelectable
+        appRadioCard
+        value="mdl"
+        [selected]="isLicenceTypeSelected('mdl')"
+      >
+        <mat-card-content>
+          <img
+            class="licence-type-icon"
+            ngSrc="assets/images/mdl_logo.svg"
+            alt="Driver Licence"
+            width="24"
+            height="24"
+          />
+          {{ "i18n.verifier.licence-type-selector.mdl" | translate }}
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card
+        data-testid="elfa-selector"
+        obSelectable
+        appRadioCard
+        value="elfa"
+        [selected]="isLicenceTypeSelected('elfa')"
+      >
+        <mat-card-content>
+          <img
+            class="licence-type-icon"
+            ngSrc="assets/images/elfa_logo.svg"
+            alt="Lerner's Permit"
+            width="24"
+            height="24"
+          />
+          {{ "i18n.verifier.licence-type-selector.elfa" | translate }}
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="navigation-buttons">
+      <button id="continue-button" mat-button obButton="primary" (click)="doContinue()">
+        {{ "i18n.core.button.continue" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

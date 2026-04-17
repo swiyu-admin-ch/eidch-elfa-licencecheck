@@ -56,7 +56,7 @@ public class MockVerifierServiceImpl implements VerifierServiceClient {
                     new SimpleEntry<>("restrictionsB", "05.04 Fahren nur mit Beifahrer"),
                     new SimpleEntry<>("firstName", "Seraina Manuela"),
                     new SimpleEntry<>("lastName", "Muster"),
-                        new SimpleEntry<>("dateOfExpiration", "2025-12-31"),
+                        new SimpleEntry<>("dateOfExpiration", "2099-12-31"),
                         new SimpleEntry<>("hometown", "Bern"),
                     new SimpleEntry<>("faberPin", "123456789"),
                     new SimpleEntry<>("licenceNumber", "123456789001"),

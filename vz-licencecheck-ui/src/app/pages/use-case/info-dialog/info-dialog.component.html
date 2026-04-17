@@ -12,12 +12,14 @@
     <div class="info-title">
       {{ "i18n.verifier.use-case.info-dialog.info" | translate }}
     </div>
-    <ng-container *ngFor="let attributeGroup of item.attributeGroups">
-      <div *ngFor="let attribute of attributeGroup.attributes">
-        <img src="assets/images/checkmark.svg" alt="Checkmark" />
-        {{ "i18n.verifier.verification-result.attribute." + attribute.name | translate }}
-      </div>
-    </ng-container>
+    @for (attributeGroup of item.attributeGroups; track attributeGroup.order) {
+      @for (attribute of attributeGroup.attributes; track attribute.order) {
+        <div>
+          <img src="assets/images/checkmark.svg" alt="Checkmark" />
+          {{ "i18n.verifier.verification-result.attribute." + attribute.name | translate }}
+        </div>
+      }
+    }
   </div>
 
   <div class="close">

@@ -4,20 +4,26 @@ import {PolicyService} from '@app/_services/policy.service';
 import {Router} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {AppConfigService} from '@app/core/app-config/app-config.service';
 
-// jest.mock('../../_services/policy.service');
 jest.mock('@angular/router');
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let policyServiceStub: {isPolicyConfirmed: any; setPolicyConfirmed?: jest.Mock<any, any>};
-  let routerStub: {navigateByUrl: jest.Mock<any, any>};
+  let policyServiceStub: {isPolicyConfirmed: any; setPolicyConfirmed?: jest.Mock};
+  let appConfigServiceStub: {isMdlFeatureEnabled: boolean};
+  let routerStub: {navigateByUrl: jest.Mock};
+  let nextPageUrl: string;
 
   beforeEach(async () => {
     policyServiceStub = {
       isPolicyConfirmed: jest.fn(),
       setPolicyConfirmed: jest.fn()
+    };
+
+    appConfigServiceStub = {
+      isMdlFeatureEnabled: false
     };
 
     routerStub = {
@@ -28,12 +34,14 @@ describe('HomeComponent', () => {
       imports: [HomeComponent, TranslateModule.forRoot(), MatCheckboxModule],
       providers: [
         {provide: PolicyService, useValue: policyServiceStub},
+        {provide: AppConfigService, useValue: appConfigServiceStub},
         {provide: Router, useValue: routerStub}
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
+    nextPageUrl = appConfigServiceStub.isMdlFeatureEnabled ? '/licence-type' : '/use-case';
   });
 
   it('should create the component', () => {
@@ -46,7 +54,7 @@ describe('HomeComponent', () => {
     // simulate first time loading
     component.ngOnInit();
 
-    expect(routerStub.navigateByUrl).toHaveBeenCalledWith('/use-case');
+    expect(routerStub.navigateByUrl).toHaveBeenCalledWith(nextPageUrl);
   });
 
   it('should not navigate if policy is not confirmed', () => {
@@ -63,7 +71,7 @@ describe('HomeComponent', () => {
 
     component.confirmPolicy();
 
-    expect(routerStub.navigateByUrl).toHaveBeenCalledWith('/use-case');
+    expect(routerStub.navigateByUrl).toHaveBeenCalledWith(nextPageUrl);
     expect(component.showMessage).toBe(false);
   });
 

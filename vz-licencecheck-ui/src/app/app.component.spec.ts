@@ -1,28 +1,26 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
-import {of} from 'rxjs';
 import {TranslateLoader, TranslateModule, TranslateNoOpLoader} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideNoopAnimations} from '@angular/platform-browser/animations';
 import {provideRouter} from '@angular/router';
-import {ObMockMasterLayoutModule, WINDOW} from '@oblique/oblique';
+import {ObMasterLayoutModule, WINDOW} from '@oblique/oblique';
+import {MatIconTestingModule} from '@angular/material/icon/testing';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
 
-  let mockAppConfigService!: {loadAppConfig: jest.Mock};
+  let mockAppConfigService: {appConfig: any};
 
   beforeEach(async () => {
     mockAppConfigService = {
-      loadAppConfig: jest.fn().mockReturnValue(
-        of({
-          version: '1.2.0',
-          environment: 'LOCAL'
-        })
-      )
+      appConfig: {
+        version: '1.2.0',
+        environment: 'LOCAL'
+      }
     };
 
     await TestBed.configureTestingModule({
@@ -31,7 +29,8 @@ describe('AppComponent', () => {
         TranslateModule.forRoot({
           loader: {provide: TranslateLoader, useClass: TranslateNoOpLoader}
         }),
-        ObMockMasterLayoutModule
+        ObMasterLayoutModule,
+        MatIconTestingModule
       ],
       providers: [
         provideRouter([]),

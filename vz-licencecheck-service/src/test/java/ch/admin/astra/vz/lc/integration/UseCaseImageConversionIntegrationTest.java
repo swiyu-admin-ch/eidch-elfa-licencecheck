@@ -15,7 +15,7 @@ class UseCaseImageConversionIntegrationTest extends BaseIntegrationTest {
     @Test
     void shouldLoadValidityJsonWithImagePaths() throws IOException {
         // Given
-        ClassPathResource resource = new ClassPathResource("use-cases/mdl/validity_single_category.json");
+        ClassPathResource resource = new ClassPathResource("use-cases/mdl/validity.json");
 
         // When
         UseCase useCase = objectMapper.readValue(resource.getInputStream(), UseCase.class);

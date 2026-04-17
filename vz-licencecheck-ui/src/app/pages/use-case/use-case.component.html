@@ -1,33 +1,26 @@
 <div class="centered-component">
   <div class="content">
-    <div class="title">{{ "i18n.verifier.use-case-selector.title" | translate }}</div>
-    <div class="description">{{ "i18n.verifier.use-case-selector.description" | translate }}</div>
-
-    <div class="type-selector" *ngIf="isMdlEnabled">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ "i18n.verifier.use-case-selector.type-selector.label" | translate }}</mat-label>
-        <mat-select id="select-type" (selectionChange)="onTypeChange($event)">
-          <mat-option *ngIf="!selectedType()" id="select-type-none" value="">
-            {{ "i18n.verifier.use-case-selector.type-selector.choose" | translate }}
-          </mat-option>
-          <mat-option *ngFor="let type of availableTypes()" [id]="'select-type-' + type" [value]="type">
-            {{ "i18n.verifier.use-case-selector.type-selector." + type | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <div class="title">{{ `i18n.verifier.use-case-selector.${selectedType()}.title` | translate }}</div>
+    <div class="description">{{ `i18n.verifier.use-case-selector.${selectedType()}.description` | translate }}</div>
 
     <div id="use-cases" class="ob-grid">
-      <ng-container *ngFor="let item of filteredUseCases(); let i = index">
+      @for (useCase of filteredUseCases(); track useCase.id) {
         <div class="ob-span-12">
-          <mat-card id="use-case-{{ i }}">
-            <mat-icon class="info-icon" [svgIcon]="'info-circle'" (click)="openInfoDialog(item)"></mat-icon>
+          <mat-card id="use-case-{{ $index }}">
+            <mat-icon class="info-icon" [svgIcon]="'info-circle'" (click)="openInfoDialog(useCase)"></mat-icon>
             <mat-card-header>
               <mat-card-title class="title">
-                {{ "i18n.verifier.use-cases." + item.title | translate }}
+                <img
+                  class="licence-type-icon"
+                  [ngSrc]="`assets/images/${selectedType()}_logo.svg`"
+                  alt="Permit Logo"
+                  width="30"
+                  height="30"
+                />
+                {{ "i18n.verifier.use-cases." + useCase.title | translate }}
               </mat-card-title>
               <mat-card-subtitle class="description">
-                {{ "i18n.verifier.use-cases." + item.title + ".description" | translate }}
+                {{ "i18n.verifier.use-cases." + useCase.title + ".description" | translate }}
               </mat-card-subtitle>
             </mat-card-header>
 
@@ -37,17 +30,24 @@
                   class="ob-button"
                   mat-button
                   obButton="primary"
-                  (click)="createVerificationRequest(item)"
                   type="button"
+                  (click)="createVerificationRequest(useCase)"
                 >
-                  {{ "i18n.verifier.use-cases." + item.title + ".button" | translate }}
+                  {{ "i18n.verifier.use-cases." + useCase.title + ".button" | translate }}
                 </button>
               </div>
             </mat-card-content>
           </mat-card>
         </div>
-        <br />
-      </ng-container>
+      }
     </div>
+
+    @if (isMdlEnabled) {
+      <div class="navigation-buttons">
+        <button id="back-button" mat-button obButton="secondary" (click)="goBack()">
+          {{ "i18n.core.button.back" | translate }}
+        </button>
+      </div>
+    }
   </div>
 </div>

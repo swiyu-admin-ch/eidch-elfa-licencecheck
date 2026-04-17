@@ -29,8 +29,8 @@ export class VerificationStore {
   private readonly pollingRunner = new VerificationPollingRunner(this, this.api);
 
   // --- STATE (signals)
+  private readonly _selectedLicenceType = signal<string | null>(null);
   private readonly _useCase = signal<UseCase | null>(null);
-  private readonly _selectedCategory = signal<string | null>(null);
   private readonly _verification = signal<VerificationState | null>(null);
   private readonly _verificationId = signal<string | null>(null);
   private readonly _beginResponse = signal<VerificationBeginResponse | null>(null);
@@ -38,8 +38,8 @@ export class VerificationStore {
   private readonly _errorCode = signal<VerificationErrorResponseCode | null>(null);
 
   // --- SELECTORS / COMPUTEDS
+  readonly selectedLicenceType = this._selectedLicenceType.asReadonly();
   readonly useCase = this._useCase.asReadonly();
-  readonly selectedCategory = this._selectedCategory.asReadonly();
   readonly verification = this._verification.asReadonly();
   readonly status = this._status.asReadonly();
 
@@ -84,19 +84,18 @@ export class VerificationStore {
 
     this._status.set(Idle);
     this._useCase.set(null);
-    this._selectedCategory.set(null);
     this._verification.set(null);
     this._verificationId.set(null);
     this._beginResponse.set(null);
     this._errorCode.set(null);
   }
 
-  setUseCase(useCase: UseCase | null) {
-    this._useCase.set(useCase);
+  setSelectedLicenceType(licenceType: string | null): void {
+    this._selectedLicenceType.set(licenceType);
   }
 
-  setSelectedCategory(category: string | null) {
-    this._selectedCategory.set(category);
+  setUseCase(useCase: UseCase | null) {
+    this._useCase.set(useCase);
   }
 
   async beginVerification() {

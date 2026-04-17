@@ -6,6 +6,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {ObButtonModule} from '@oblique/oblique';
+import {AppConfigService} from '@app/core/app-config/app-config.service';
 
 @Component({
   selector: 'app-home',
@@ -14,17 +15,29 @@ import {ObButtonModule} from '@oblique/oblique';
   imports: [CommonModule, TranslateModule, MatCheckboxModule, MatButtonModule, ObButtonModule]
 })
 export class HomeComponent implements OnInit {
+  readonly titleKey: string;
   showMessage: boolean = false;
   policyGroup: string = 'policy-group';
 
+  private readonly nextPageUrl: string;
+
   constructor(
     private readonly router: Router,
-    private readonly policyService: PolicyService
-  ) {}
+    private readonly policyService: PolicyService,
+    private readonly appConfigService: AppConfigService
+  ) {
+    if (this.appConfigService.isMdlFeatureEnabled) {
+      this.titleKey = 'i18n.verifier.home.title';
+      this.nextPageUrl = '/licence-type';
+    } else {
+      this.titleKey = 'i18n.verifier.home.title.old';
+      this.nextPageUrl = '/use-case';
+    }
+  }
 
   ngOnInit() {
     if (this.isPolicyConfirmed()) {
-      this.router.navigateByUrl('/use-case');
+      this.router.navigateByUrl(this.nextPageUrl);
     }
   }
 
@@ -33,8 +46,8 @@ export class HomeComponent implements OnInit {
   }
 
   confirmPolicy() {
-    if (this.policyService.isPolicyConfirmed()) {
-      this.router.navigateByUrl('/use-case');
+    if (this.isPolicyConfirmed()) {
+      this.router.navigateByUrl(this.nextPageUrl);
     } else {
       this.showMessage = true;
       this.policyGroup = 'policy-group-error';

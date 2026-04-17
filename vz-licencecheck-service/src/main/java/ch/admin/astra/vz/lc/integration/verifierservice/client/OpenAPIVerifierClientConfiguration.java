@@ -84,7 +84,6 @@ public class OpenAPIVerifierClientConfiguration {
         // Configure RestClient with all necessary interceptors and error handling
         restClientBuilder
                 .requestFactory(httpFactory)
-                .baseUrl(endpoint)
                 .defaultStatusHandler(
                         HttpStatusCode::isError, // 4xx oder 5xx
                         restErrorHandler)
@@ -112,7 +111,9 @@ public class OpenAPIVerifierClientConfiguration {
         // This ensures that the ObjectMapper with NON_EMPTY configuration is used
         ApiClient apiClient = new ApiClient(restClient, configuredMapper, ApiClient.createDefaultDateFormat());
 
-        log.info("OpenAPI VerifierServiceClient configured with endpoint: {}", endpoint);
+        // Override Verifier URL - needs to happen here because the generated ApiClient
+        // uses a hardcoded default base path which we need to override
+        apiClient.setBasePath(endpoint);
 
         VerifierManagementApiApi api = new VerifierManagementApiApi(apiClient);
 

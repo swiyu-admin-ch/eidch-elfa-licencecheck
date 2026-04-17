@@ -62,10 +62,8 @@ export class AppComponent implements OnInit {
     this.updateTitle(this.router.url);
     this.appVersion = VERSION;
     this.currentYear = new Date().getFullYear();
-    this.appConfigService.loadAppConfig().subscribe(({environment}) => {
-      const env = environment || 'PROD';
-      this.banner = banner(env);
-    });
+    const env = this.appConfigService.appConfig.environment || 'PROD';
+    this.banner = banner(env);
 
     this.meta.addTags([
       {

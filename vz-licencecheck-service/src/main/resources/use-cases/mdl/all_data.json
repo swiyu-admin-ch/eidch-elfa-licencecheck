@@ -1,6 +1,6 @@
 {
   "id": "8bd5d405-5951-4a72-bfab-b6279c79c615",
-  "title": "mdl-validity-all-categories",
+  "title": "mdl-all-data",
   "description": "mDL - Mobile Driving Licence",
   "type": "mdl",
   "order": 2,
@@ -85,17 +85,17 @@
         {
           "name": "restrictionsA",
           "type": "string",
-          "order": 15
+          "order": 13
         },
         {
           "name": "restrictionsB",
           "type": "string",
-          "order": 16
+          "order": 14
         },
         {
           "name": "policeQRImage",
           "type": "image",
-          "order": 17
+          "order": 15
         }
       ]
     }

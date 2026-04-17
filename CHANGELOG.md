@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.0]
+- [EIDRAEDA-1669](https://jira.bit.admin.ch/browse/EIDRAEDA-1669): Adapt LC UI for mDL to new specifications
+- [EIDRAEDA-1855](https://jira.bit.admin.ch/browse/EIDRAEDA-1855): Handling of new error responses from Verifier Service
+- [EIDRAEDA-1686](https://jira.bit.admin.ch/browse/EIDRAEDA-1686): Enable prometheus metrics for LicenceCheck
+- [EIDRAEDA-1827](https://jira.bit.admin.ch/browse/EIDRAEDA-1827): fix EnvironmentUrl VERIFIER_SERVICE_ENDPOINT is now actually used in OpenApiClient
+
 ## [2.1.0]
 - [EIDRAEDA-1697](https://jira.bit.admin.ch/browse/EIDRAEDA-1697):implement OpenAPI-based VerifierServiceClient and related configurations based on Version 2.1.2 
 - [EIDRAEDA-1619](https://jira.bit.admin.ch/browse/EIDRAEDA-1619): Started verifications show universal deep-link in QR-Code

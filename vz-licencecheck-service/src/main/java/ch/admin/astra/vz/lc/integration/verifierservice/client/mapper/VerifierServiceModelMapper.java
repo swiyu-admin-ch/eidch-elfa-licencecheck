@@ -3,9 +3,11 @@ package ch.admin.astra.vz.lc.integration.verifierservice.client.mapper;
 import ch.admin.astra.vz.controller.verifier.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.controller.verifier.model.FormatAlgorithmDto;
 import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.ResponseModeTypeDto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 /**
  * MapStruct mapper for converting between OpenAPI generated models and domain DTOs.
@@ -15,7 +17,9 @@ public interface VerifierServiceModelMapper {
 
     /**
      * Convert domain DTO to OpenAPI model for request.
+     * Uses custom mapping for responseMode to handle case conversion.
      */
+    @Mapping(source = "responseMode", target = "responseMode", qualifiedByName = "mapResponseMode")
     CreateVerificationManagementDto toOpenApiModel(ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto dto);
 
     /**
@@ -39,5 +43,17 @@ public interface VerifierServiceModelMapper {
     @Mapping(source = "sdJwtAlgValues", target = "alg")
     @Mapping(source = "kbJwtAlgValues", target = "keyBindingAlg")
     ch.admin.astra.vz.lc.integration.verifierservice.client.model.FormatAlgorithmDto toDomainFormatAlgorithm(FormatAlgorithmDto model);
+
+    /**
+     * Convert String responseMode to ResponseModeTypeDto enum.
+     * Handles case conversion from lowercase (e.g., "direct_post") to uppercase enum constant (e.g., "DIRECT_POST").
+     */
+    @Named("mapResponseMode")
+    default ResponseModeTypeDto mapResponseMode(String responseMode) {
+        if (responseMode == null) {
+            return null;
+        }
+        return ResponseModeTypeDto.valueOf(responseMode.toUpperCase());
+    }
 }
 
