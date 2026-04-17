@@ -6,6 +6,7 @@ import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierExcept
 import ch.admin.astra.vz.lc.modules.verification.exception.FileMappingException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileStorageException;
 import ch.admin.astra.vz.lc.modules.verification.exception.ImageHandlingException;
+import ch.admin.astra.vz.lc.modules.verification.exception.UseCaseNotFoundException;
 import io.micrometer.tracing.Tracer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @RestControllerAdvice
@@ -38,21 +40,28 @@ public class DefaultExceptionHandler {
     @ResponseStatus(SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleFileMappingException(FileMappingException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-       return buildResponse(FileMappingException.EXCEPTION_MSG, request, ex);
+        return buildResponse(FileMappingException.EXCEPTION_MSG, request, ex);
     }
 
     @ExceptionHandler(FileStorageException.class)
     @ResponseStatus(SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleFileStorageException(FileStorageException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-       return buildResponse(FileStorageException.EXCEPTION_MSG, request, ex);
+        return buildResponse(FileStorageException.EXCEPTION_MSG, request, ex);
+    }
+
+    @ExceptionHandler(UseCaseNotFoundException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ResponseEntity<ErrorResponseDto> handleUseCaseNotFoundException(UseCaseNotFoundException ex, HttpServletRequest request) {
+        loggingService.logException(ex);
+        return buildResponse(UseCaseNotFoundException.EXCEPTION_MSG, request, ex);
     }
 
     @ExceptionHandler(VerifierException.class)
     @ResponseStatus(SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleVerifierException(VerifierException ex, HttpServletRequest request) {
-        loggingService.logApiException(ex, ex.getIsBusinessError());
-       return buildResponse(VerifierException.EXCEPTION_MSG, request, ex);
+        loggingService.logException(ex);
+        return buildResponse(VerifierException.EXCEPTION_MSG, request, ex);
     }
 
     @ExceptionHandler(Exception.class)
@@ -74,7 +83,7 @@ public class DefaultExceptionHandler {
                 .status(SERVICE_UNAVAILABLE)
                 .body(response);
     }
-    
+
     @NotNull
     String getTraceId() {
         var currentSpan = this.tracer.currentSpan();

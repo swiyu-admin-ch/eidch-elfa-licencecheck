@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.1.0]
+- [EIDRAEDA-1697](https://jira.bit.admin.ch/browse/EIDRAEDA-1697):implement OpenAPI-based VerifierServiceClient and related configurations based on Version 2.1.2 
+- [EIDRAEDA-1619](https://jira.bit.admin.ch/browse/EIDRAEDA-1619): Started verifications show universal deep-link in QR-Code
+- [EIDRAEDA-1685](https://jira.bit.admin.ch/browse/EIDRAEDA-1685): Improve logging and error handling for better observability
+
 ## [2.0.0]
 - [EIDRAEDA-1513](https://jira.bit.admin.ch/browse/EIDRAEDA-1513): Adjust LC so that mDLs can be verified
 - [EIDRAEDA-1433](https://jira.bit.admin.ch/browse/EIDRAEDA-1433): Integrate Keycloak - Verifier Service

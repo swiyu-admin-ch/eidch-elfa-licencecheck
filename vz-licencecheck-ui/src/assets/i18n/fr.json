@@ -114,5 +114,6 @@
   "i18n.exception.image-handling": "Appel non valide. Veuillez vérifier vos données et réessayer",
   "i18n.exception.verifier": "Erreur lors de l'accès à l'infrastructure de confiance",
   "i18n.exception.file-storage": "Erreur du système de fichiers. Veuillez contacter l'administrateur.",
-  "i18n.exception.file-mapping": "Erreur lors du chargement des méthodes de vérification. Veuillez contacter l'administrateur."
+  "i18n.exception.file-mapping": "Erreur lors du chargement des méthodes de vérification. Veuillez contacter l'administrateur.",
+  "i18n.exception.use-case-not-found": "Le cas d'utilisation demandé est inconnu."
 }

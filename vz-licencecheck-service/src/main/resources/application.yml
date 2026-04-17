@@ -22,10 +22,10 @@ jeap:
     headers:
       content-security-policy: "default-src 'self' *.admin.ch; script-src 'self' 'unsafe-inline' *.admin.ch; style-src 'self' 'unsafe-inline'; frame-src 'self' *.admin.ch; img-src 'self' data:;"
   # jeap http logging
-  # rest:
-  #  tracing:
-  #    application-name: vz-issuer-controller
-  #    full-response-details-in-message: true
+  rest:
+   tracing:
+     application-name: vz-licencecheck
+     full-response-details-in-message: true
 
 server:
   port: 8888
@@ -50,26 +50,35 @@ springdoc:
   default-produces-media-type: application/json
   show-actuator: true
 
-# default logging level
 logging:
   level:
     root: info
-    # jeap http logging
-    # ch.admin.bit.jeap.log.RestRequestTracer: DEBUG
+    # Application code debug logging - controlled by env variable
+    # Set LOGGING_LEVEL_APP=DEBUG to enable (recommended for dev/local)
+    ch.admin.astra.vz.lc: ${LOGGING_LEVEL_APP:INFO}
+
+    # jEAP HTTP Request Tracing logging
+    # Set LOGGING_LEVEL_JEAP_TRACER=DEBUG to enable
+    ch.admin.bit.jeap.log.RestRequestTracer: ${LOGGING_LEVEL_JEAP_TRACER:INFO}
+
+    # IF needed, enable debug logging for specific libraries:
+    # org.springframework.web: DEBUG                          # Spring Web (very verbose!)
+    # org.springframework.security: DEBUG                     # Spring Security
+    # org.hibernate: DEBUG                                    # Hibernate SQL
 
 verifier-service:
   endpoint: "${VERIFIER_SERVICE_ENDPOINT}"
   allowed-issuer-did: ${ALLOWED_ISSUER_DID}
   use-case-folderPath: "use-cases"
   logging:
-    # "NONE", "BASIC", "HEADERS", "BODY"
-    # Sensible Daten
-    #  - Headers und Body können sensible Daten enthalten. Dies muss man abwägen bevor man zum Debuggen den HttpLogRequestInterceptor einsetzt.
-    #  - jEAP Logging löst dieses Problem, deswegen wurde es als Alternative aufgenommen.
-    level: ${VERIFIER_SERVICE_LOGGING_LEVEL:HEADERS}
+    # Custom HTTP interceptor: NONE, BASIC (method/URI), HEADERS, BODY (includes response bodies)
+    # WARNING: HEADERS/BODY may contain sensitive data. For production, use jEAP tracing instead.
+    # Requires LOGGING_LEVEL_APP=DEBUG to see output
+    level: ${VERIFIER_SERVICE_LOGGING_LEVEL:BODY}
   oauth2:
     enable: ${VERIFIER_SERVICE_OAUTH2_ENABLE:false}
     client-registration-id: ${spring.security.oauth2.client.registration.licencecheck.client-id}
 
 features:
   ENABLE_MDL: ${FEATURE_ENABLE_MDL:false}
+  GENERATED_VERIFIER_CLIENT: ${FEATURE_GENERATED_VERIFIER_CLIENT:true}

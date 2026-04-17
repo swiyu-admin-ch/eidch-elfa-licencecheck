@@ -4,7 +4,7 @@
     <parent>
         <groupId>ch.admin.astra.vz.lc</groupId>
         <artifactId>vz-licencecheck-scs</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -91,6 +91,13 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
 
+        <!-- OpenAPI -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+
         <!-- mapper -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -123,6 +130,11 @@
             <artifactId>annotations</artifactId>
             <version>26.0.2</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- Apache HttpClient 5 for RestClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
         </dependency>
     </dependencies>
 
@@ -175,6 +187,39 @@
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.17.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
+                            <library>restclient</library>
+                            <generatorName>java</generatorName>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <apiPackage>ch.admin.astra.vz.controller.verifier.api</apiPackage>
+                            <modelPackage>ch.admin.astra.vz.controller.verifier.model</modelPackage>
+                            <invokerPackage>ch.admin.astra.vz.controller.verifier.invoker</invokerPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <configOptions>
+                                <generateClientAsBean>true</generateClientAsBean>
+                                <dateLibrary>java8</dateLibrary>
+                                <useJakartaEe>true</useJakartaEe>
+                                <output>${project.build.directory}/generated-sources/openapi</output>
+                                <cleanupOutput>true</cleanupOutput>
+                            </configOptions>
+                            <!-- necessary because verifier can´t handle null values and we don´t use the full PresentationDefinitionDto -->
+                            <additionalProperties>
+                                <additionalProperty>additionalModelTypeAnnotations=@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY)</additionalProperty>
+                            </additionalProperties>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

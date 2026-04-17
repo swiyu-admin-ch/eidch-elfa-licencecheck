@@ -6,11 +6,11 @@
     <div class="type-selector" *ngIf="isMdlEnabled">
       <mat-form-field appearance="outline">
         <mat-label>{{ "i18n.verifier.use-case-selector.type-selector.label" | translate }}</mat-label>
-        <mat-select (selectionChange)="onTypeChange($event)">
-          <mat-option *ngIf="!selectedType()" value="">
+        <mat-select id="select-type" (selectionChange)="onTypeChange($event)">
+          <mat-option *ngIf="!selectedType()" id="select-type-none" value="">
             {{ "i18n.verifier.use-case-selector.type-selector.choose" | translate }}
           </mat-option>
-          <mat-option *ngFor="let type of availableTypes()" [value]="type">
+          <mat-option *ngFor="let type of availableTypes()" [id]="'select-type-' + type" [value]="type">
             {{ "i18n.verifier.use-case-selector.type-selector." + type | translate }}
           </mat-option>
         </mat-select>

@@ -28,7 +28,7 @@ public class E2ETraceContextFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException
     {
-        log.debug("Request: {} {} Headers: {}",
+        log.trace("Request: {} {} Headers: {}",
                 request.getMethod(), request.getRequestURI(),
                 request.getHeaderNames());
 

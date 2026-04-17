@@ -8,6 +8,11 @@ public record FeatureFlagsDto(
 
     @NotNull
     @Schema(description = "Whether MDL functionality is enabled")
-    boolean enableMdl
+    boolean enableMdl,
+
+    @NotNull
+    @Schema(description = "Whether Verifier Service integration uses OpenApi Generator")
+    boolean generatedVerifierClient
+
 
 ){}

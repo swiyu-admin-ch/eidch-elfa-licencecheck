@@ -44,6 +44,7 @@ public class MockVerifierServiceImpl implements VerifierServiceClient {
             .id(verificationId)
             .state(status)
             .verificationUrl("https://www.eid.admin.ch/")
+            .verificationDeeplink("swiyu://blahblah")
             .walletResponse(ResponseDataDto.builder()
                 .errorCode(null)
                 .credentialSubjectData(Map.ofEntries(

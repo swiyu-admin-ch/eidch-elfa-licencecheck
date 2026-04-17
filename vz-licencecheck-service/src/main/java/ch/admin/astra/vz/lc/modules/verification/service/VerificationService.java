@@ -78,20 +78,22 @@ public class VerificationService {
         ManagementResponseDto response = verifierServiceClient.createVerification(request);
 
         log.debug("Create QR-Code");
-        QrCode qrCode = qrCodeService.create(response.verificationUrl(), 500);
+        QrCode qrCode = qrCodeService.create(response.verificationDeeplink(), 500);
 
         var responseDto = new VerificationBeginResponseDto(response.id(), qrCode.getImageData(), qrCode.getFormat());
 
         loggingService.addVerificationStatusContext(useCaseId, response);
+        log.debug("Verification created successfully with ID: {}", response.id());
 
         return responseDto;
     }
 
     public VerificationStateDto getVerificationStatus(UUID verificationId) {
-        log.debug("Get verification status from Verifier Service for verificationId: {}", verificationId);
+        log.debug("Retrieving verification status for ID: {}", verificationId);
         ManagementResponseDto managementResponseDto = verifierServiceClient.getVerificationStatus(verificationId);
 
         loggingService.addVerificationStatusContext(managementResponseDto);
+        log.debug("Verification status retrieved: {}", managementResponseDto.state());
 
         return verificationMapper.map(managementResponseDto);
     }

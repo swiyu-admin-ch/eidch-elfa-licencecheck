@@ -63,16 +63,21 @@ public class LoggingService {
 
     public void logException(Exception e) {
         LoggingUtil.setStatus(ERROR);
-        log.error("%s Reason: %s" .formatted(OPERATION_FINISHED_WITH_ERROR, e.getMessage()), e);
-    }
 
-    public void logApiException(VerifierException e, boolean logDebug) {
-        LoggingUtil.setStatus(ERROR);
-        if(logDebug) {
-            log.debug("%s Code: %s Reason: %s" .formatted(OPERATION_FINISHED_WITH_ERROR, e.getStatus(), e.getMessage()), e);
-            log.info(OPERATION_FINISHED);
-        } else {
-            log.error("%s Code: %s Reason: %s".formatted(OPERATION_FINISHED_WITH_ERROR, e.getStatus(), e.getMessage()), e);
+        // Verifier exceptions can be business or system errors
+        if (e instanceof VerifierException verifierException) {
+            if(verifierException.getIsBusinessError()) {
+                log.info(OPERATION_FINISHED, e);
+            } else {
+                String errorMessage = "%s ResponseStatusCode: %s Reason: %s"
+                        .formatted(OPERATION_FINISHED_WITH_ERROR, verifierException.getStatus(), verifierException.getMessage());
+                log.error(errorMessage, verifierException);
+            }
+        }
+        // All other exceptions are system errors
+        else {
+            log.error("%s Reason: %s".formatted(OPERATION_FINISHED_WITH_ERROR, e.getMessage()), e);
         }
     }
+
 }

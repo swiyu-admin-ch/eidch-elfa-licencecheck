@@ -12,4 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class FeaturesProperties {
 
     private boolean enableMdl;
+
+    private boolean generatedVerifierClient;
 }

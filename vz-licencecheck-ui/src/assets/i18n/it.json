@@ -114,5 +114,6 @@
   "i18n.exception.image-handling": "Chiamata non valida. Controllare i dettagli e riprovare",
   "i18n.exception.verifier": "Errore durante l'accesso all'infrastruttura di fiducia",
   "i18n.exception.file-storage": "Errore nel file system. Si prega di contattare l'amministratore.",
-  "i18n.exception.file-mapping": "Errore durante il caricamento dei metodi di verifica. Si prega di contattare l'amministratore."
+  "i18n.exception.file-mapping": "Errore durante il caricamento dei metodi di verifica. Si prega di contattare l'amministratore.",
+  "i18n.exception.use-case-not-found": "Tipo di verifica non trovato."
 }

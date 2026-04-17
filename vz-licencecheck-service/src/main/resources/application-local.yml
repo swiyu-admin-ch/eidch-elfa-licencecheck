@@ -15,6 +15,11 @@ jeap:
   swagger:
     status: OPEN
 
+
+logging:
+  level:
+    ch.admin.astra.vz.lc: DEBUG
+
 cors:
   allowed-origins:
     - 'http://localhost:8888'

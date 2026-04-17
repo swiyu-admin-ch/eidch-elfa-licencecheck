@@ -114,5 +114,6 @@
   "i18n.exception.image-handling": "Ungültiger Aufruf. Bitte kontrollieren sie ihre Angaben und versuchen Sie es erneut.",
   "i18n.exception.verifier": "Fehler beim Zugriff auf die Vertrauensinfrastruktur",
   "i18n.exception.file-storage": "Fehler im Filesystem. Bitte kontaktieren Sie den Administrator.",
-  "i18n.exception.file-mapping": "Fehler im beim Laden der Verifikationsmethoden. Bitte kontaktieren Sie den Administrator."
+  "i18n.exception.file-mapping": "Fehler im beim Laden der Verifikationsmethoden. Bitte kontaktieren Sie den Administrator.",
+  "i18n.exception.use-case-not-found": "Die angeforderte Verifikationsmethode wurde nicht gefunden."
 }

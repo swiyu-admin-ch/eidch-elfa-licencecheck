@@ -128,16 +128,17 @@ class VerificationServiceTest {
 
         // mock verifierManagementClient
         UUID verificationId = UUID.randomUUID();
-        String verificationUrlExpected = "URL";
+        String verificationDeeplinkExpected = "DEEPLINK";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
             .id(verificationId)
                 .state(VerificationStatusDto.SUCCESS)
-            .verificationUrl(verificationUrlExpected)
+            .verificationUrl("URL")
+                .verificationDeeplink(verificationDeeplinkExpected)
             .build();
         when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
 
         // mock qrCodeService
-        when(qrCodeService.create(verificationUrlExpected, 500)).thenThrow(ImageHandlingException.class);
+        when(qrCodeService.create(verificationDeeplinkExpected, 500)).thenThrow(ImageHandlingException.class);
 
         // when
         assertThrows(ImageHandlingException.class, () -> verificationService.createVerification(useCaseId));
@@ -146,7 +147,7 @@ class VerificationServiceTest {
         // assert useCaseService
         Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
         Mockito.verify(verifierServiceClient).createVerification(Mockito.any());
-        Mockito.verify(qrCodeService).create(verificationUrlExpected, 500);
+        Mockito.verify(qrCodeService).create(verificationDeeplinkExpected, 500);
     }
 
 
@@ -159,11 +160,12 @@ class VerificationServiceTest {
 
         // mock verifierManagementClient
         UUID verificationId = UUID.randomUUID();
-        String verificationUrlExpected = "URL";
+        String verificationDeeplinkExpected = "DEEPLINK";
         ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
             .id(verificationId)
                 .state(VerificationStatusDto.SUCCESS)
-            .verificationUrl(verificationUrlExpected)
+            .verificationUrl("URL")
+            .verificationDeeplink(verificationDeeplinkExpected)
             .build();
 
         when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
@@ -171,7 +173,7 @@ class VerificationServiceTest {
         // mock qrCodeService
         byte[] imageBytes = "image".getBytes();
         String imageFormat = "format";
-        when(qrCodeService.create(verificationUrlExpected, 500)).thenReturn(QrCode.builder().imageData(imageBytes).format(imageFormat).build());
+        when(qrCodeService.create(verificationDeeplinkExpected, 500)).thenReturn(QrCode.builder().imageData(imageBytes).format(imageFormat).build());
 
         // when
         VerificationBeginResponseDto result = verificationService.createVerification(useCaseId);
@@ -196,8 +198,7 @@ class VerificationServiceTest {
         // assert QrCode
         ArgumentCaptor<String> qrCodeArgumentCaptor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(qrCodeService).create(qrCodeArgumentCaptor.capture(), eq(500));
-        String verificationUrlActual = qrCodeArgumentCaptor.getValue();
-        assertEquals(verificationUrlExpected, verificationUrlActual);
+        assertEquals(verificationDeeplinkExpected, qrCodeArgumentCaptor.getValue());
     }
 
     @Test

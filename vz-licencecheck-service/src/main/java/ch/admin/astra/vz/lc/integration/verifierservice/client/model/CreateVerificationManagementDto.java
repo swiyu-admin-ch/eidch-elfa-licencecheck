@@ -24,14 +24,18 @@ public record CreateVerificationManagementDto(
         @Schema(description = "Toggle whether the request-object is available as plain object or" +
                 "as jwt object signed by the verifier as additional security measure")
         @Valid
-    @JsonProperty("jwt_secured_authorization_request")
+        @JsonProperty("jwt_secured_authorization_request")
         Boolean jwtSecuredAuthorizationRequest,
+
+        @Schema(description = "Response mode for the authorization response. Must be 'direct_post' for OpenID4VP.")
+        @JsonProperty("response_mode")
+        String responseMode,
 
         @Schema(description = "Presentation definition according to " +
                 "https://identity.foundation/presentation-exchange/#presentation-definition")
         @Valid
         @NotNull
-    @JsonProperty("presentation_definition")
+        @JsonProperty("presentation_definition")
         PresentationDefinitionDto presentationDefinition
 ) {
 
@@ -40,6 +44,7 @@ public record CreateVerificationManagementDto(
                 .presentationDefinition(presentationDefinition)
                 .acceptedIssuerDids(List.of(allowedIssuerDid))
                 .jwtSecuredAuthorizationRequest(isJwtSecuredAuthorizationRequest)
+                .responseMode("direct_post")
                 .build();
     }
 }

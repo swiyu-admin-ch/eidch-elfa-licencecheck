@@ -29,13 +29,14 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 
 /**
- * Integration test for VerificationController 'old' VerifierServiceClient not OpenApi Client.
+ * Integration test for VerificationController with OpenAPI-based VerifierServiceClient.
+ * Tests the controller with the OpenAPI implementation when the feature flag is enabled.
  */
 @SpringBootTest(properties = {
         "spring.main.lazy-initialization=true",
-        "features.GENERATED_VERIFIER_CLIENT=false"
+        "features.GENERATED_VERIFIER_CLIENT=true"
 })
-class VerificationControllerIT extends BaseIntegrationTest {
+class VerificationControllerOpenApiIT extends BaseIntegrationTest {
 
     public static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
     private static final String EXISTING_USE_CASE = "c2041c31-db6b-4cf1-871d-6a24d400159b";
@@ -124,3 +125,4 @@ class VerificationControllerIT extends BaseIntegrationTest {
             .build();
     }
 }
+
