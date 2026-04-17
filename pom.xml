@@ -7,14 +7,14 @@
     <parent>
         <groupId>ch.admin.bit.jeap</groupId>
         <artifactId>jeap-spring-boot-parent</artifactId>
-        <version>31.4.0</version>
+        <version>33.2.0</version>
         <relativePath/>
     </parent>
 
     <groupId>ch.admin.astra.vz.lc</groupId>
     <artifactId>vz-licencecheck-scs</artifactId>
     <description>e-ID LicenceCheck App</description>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -28,6 +28,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jackson-databind-nullable.version>0.2.9</jackson-databind-nullable.version>
         <org.jetbrains.annotations.version>26.1.0</org.jetbrains.annotations.version>
+        <vz-commons.version>0.2.1</vz-commons.version>
 
         <!-- PLUGIN VERSIONS -->
         <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
@@ -63,9 +64,9 @@
         <module>vz-licencecheck-ui</module>
     </modules>
 
-    <!-- VULNERABILITY FIXES -->
     <dependencyManagement>
         <dependencies>
+            <!-- VULNERABILITY FIXES -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>

@@ -1,8 +1,9 @@
 package ch.admin.astra.vz.lc.core.logging;
 
+import ch.admin.astra.vz.commons.error.exception.ExternalServiceException;
+import ch.admin.astra.vz.commons.error.exception.ExternalServiceExceptionLogger;
 import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
 import ch.admin.astra.vz.controller.verifier.model.VerificationStatusDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -63,15 +64,9 @@ public class LoggingService {
     public void logException(Exception e) {
         LoggingUtil.setStatus(ERROR);
 
-        // Verifier exceptions can be business or system errors
-        if (e instanceof VerifierException verifierException) {
-            if(verifierException.getIsBusinessError()) {
-                log.info(OPERATION_FINISHED, e);
-            } else {
-                String errorMessage = "%s ResponseStatusCode: %s Reason: %s"
-                        .formatted(OPERATION_FINISHED_WITH_ERROR, verifierException.getStatus(), verifierException.getMessage());
-                log.error(errorMessage, verifierException);
-            }
+        // External service exceptions can be business or system errors
+        if (e instanceof ExternalServiceException externalServiceException) {
+            ExternalServiceExceptionLogger.log(log, externalServiceException, OPERATION_FINISHED, OPERATION_FINISHED_WITH_ERROR);
         }
         // All other exceptions are system errors
         else {

@@ -1,6 +1,9 @@
 package ch.admin.astra.vz.lc.api.common;
 
+import ch.admin.astra.vz.commons.error.exception.ErrorType;
+import ch.admin.astra.vz.commons.mapper.EnumMapper;
 import ch.admin.astra.vz.lc.api.common.model.ErrorResponseDto;
+import ch.admin.astra.vz.lc.api.common.model.ErrorTypeDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
 import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileMappingException;
@@ -16,72 +19,71 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
+import static ch.admin.astra.vz.lc.core.exception.GeneralErrorType.*;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class DefaultExceptionHandler {
+public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final LoggingService loggingService;
     private final Tracer tracer;
 
     @ExceptionHandler(ImageHandlingException.class)
-    @ResponseStatus(SERVICE_UNAVAILABLE)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleImageHandlingException(ImageHandlingException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-        return buildResponse(ImageHandlingException.EXCEPTION_MSG, request, ex);
+        return buildResponse(IMAGE_HANDLING_ERROR, request);
     }
 
     @ExceptionHandler(FileMappingException.class)
-    @ResponseStatus(SERVICE_UNAVAILABLE)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleFileMappingException(FileMappingException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-        return buildResponse(FileMappingException.EXCEPTION_MSG, request, ex);
+        return buildResponse(FILE_MAPPING_ERROR, request);
     }
 
     @ExceptionHandler(FileStorageException.class)
-    @ResponseStatus(SERVICE_UNAVAILABLE)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleFileStorageException(FileStorageException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-        return buildResponse(FileStorageException.EXCEPTION_MSG, request, ex);
+        return buildResponse(FILE_STORAGE_ERROR, request);
     }
 
     @ExceptionHandler(UseCaseNotFoundException.class)
-    @ResponseStatus(BAD_REQUEST)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseDto> handleUseCaseNotFoundException(UseCaseNotFoundException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-        return buildResponse(UseCaseNotFoundException.EXCEPTION_MSG, request, ex);
+        return buildResponse(USE_CASE_NOT_FOUND, request);
     }
 
     @ExceptionHandler(VerifierException.class)
-    @ResponseStatus(SERVICE_UNAVAILABLE)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorResponseDto> handleVerifierException(VerifierException ex, HttpServletRequest request) {
         loggingService.logException(ex);
-        return buildResponse(VerifierException.EXCEPTION_MSG, request, ex);
+        return buildResponse(VERIFIER_SERVICE_ERROR, request);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleException(Exception ex) {
+    public ResponseEntity<ErrorResponseDto> handleException(Exception ex, HttpServletRequest request) {
         loggingService.logException(ex);
+        return buildResponse(UNEXPECTED_ERROR, request);
     }
 
-    private ResponseEntity<ErrorResponseDto> buildResponse(String errorCode, HttpServletRequest request, Exception ex) {
-        var traceId = getTraceId();
+    private ResponseEntity<ErrorResponseDto> buildResponse(ErrorType errorType, HttpServletRequest request) {
         var response = new ErrorResponseDto(
-                errorCode,
-                SERVICE_UNAVAILABLE.value(),
-                ex.getMessage(),
-                traceId,
+                EnumMapper.mapEnum(ErrorTypeDto.class, errorType.getName()),
+                errorType.getMessage(),
+                errorType.getDetail(),
+                getTraceId(),
                 request.getRequestURI(),
-                LocalDateTime.now());
-        return ResponseEntity
-                .status(SERVICE_UNAVAILABLE)
-                .body(response);
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(errorType.getHttpStatus()).body(response);
     }
 
     @NotNull

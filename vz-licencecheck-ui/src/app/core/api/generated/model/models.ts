@@ -2,6 +2,7 @@ export * from './app-config';
 export * from './attribute';
 export * from './attribute-group';
 export * from './error-response';
+export * from './error-type';
 export * from './feature-flags';
 export * from './holder-attributes';
 export * from './input-element';

@@ -6,11 +6,11 @@ import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs';
 import {Meta, Title} from '@angular/platform-browser';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {NgOptimizedImage} from '@angular/common';
 import {ObButtonModule, ObIBanner, ObIconModule, ObMasterLayoutModule, ObPopoverModule} from '@oblique/oblique';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {TimedOut, VerificationStore} from '@app/_services/verification.store';
+import {NgOptimizedImage} from '@angular/common';
 import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
@@ -43,12 +43,14 @@ export class AppComponent implements OnInit {
   appVersion: any;
   currentYear: number;
   title: string;
-  supportItems = [
-    {link: 'https://findmind.ch/c/Ce39-nUQL', label: 'i18n.support.feedback'},
-    {link: 'https://www.eid.admin.ch/de/help-pilot', label: 'i18n.support.help'},
-    {link: 'https://forms.eid.admin.ch/elfa', label: 'i18n.support.contact'},
-    {link: 'https://www.eid.admin.ch/de/pilotprojekte', label: 'i18n.support.more-information'}
+  supportItemKeys = [
+    'i18n.support.feedback',
+    'i18n.support.help',
+    'i18n.support.contact',
+    'i18n.support.more-information'
   ];
+
+  readonly supportItemUrl = (key: string) => this.translate.instant(`${key}.url`);
 
   constructor() {
     this.router.events

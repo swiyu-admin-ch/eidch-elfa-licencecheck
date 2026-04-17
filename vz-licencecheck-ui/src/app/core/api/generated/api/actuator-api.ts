@@ -9,7 +9,7 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import {Inject, Injectable, Optional} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpContext} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {OpenApiHttpParams, QueryParamStyle} from '../query.params';
@@ -33,11 +33,12 @@ export interface ScrapeRequestParams {
   providedIn: 'root'
 })
 export class ActuatorApi extends BaseService {
-  constructor(
-    protected httpClient: HttpClient,
-    @Optional() @Inject(BASE_PATH) basePath: string | string[],
-    @Optional() configuration?: Configuration
-  ) {
+  protected httpClient = inject(HttpClient);
+
+  constructor() {
+    const basePath = inject(BASE_PATH, {optional: true});
+    const configuration = inject(Configuration, {optional: true});
+
     super(basePath, configuration);
   }
 

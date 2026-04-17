@@ -1,10 +1,13 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
+import ch.admin.astra.vz.commons.error.rest.BusinessErrorClassifier;
+import ch.admin.astra.vz.commons.error.rest.ExternalServiceRestErrorHandler;
 import ch.admin.astra.vz.controller.verifier.api.VerifierManagementApiApi;
 import ch.admin.astra.vz.controller.verifier.invoker.ApiClient;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.OAuth2ClientCredentialsInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.VerifierHeaderInterceptor;
+import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +41,9 @@ import java.util.Optional;
 )
 public class OpenAPIVerifierClientConfiguration {
 
+    private static final String VERIFICATION_NOT_FOUND_REGEX =
+            "The verification with the identifier '(.+?)' was not found";
+
     private final VerifierHeaderInterceptor verifierHeaderInterceptor;
     private final Optional<OAuth2AuthorizedClientManager> oAuth2AuthorizedClientManager;
 
@@ -50,8 +56,10 @@ public class OpenAPIVerifierClientConfiguration {
 
     @Bean
     @NotNull
-    public RestErrorHandler restErrorHandler(ObjectMapper objectMapper) {
-        return new RestErrorHandler(objectMapper);
+    public ExternalServiceRestErrorHandler restErrorHandler(ObjectMapper objectMapper) {
+        BusinessErrorClassifier classifier = (status, detail, errorDescription) ->
+                detail != null && detail.matches(VERIFICATION_NOT_FOUND_REGEX);
+        return new ExternalServiceRestErrorHandler(objectMapper, classifier, VerifierException::new);
     }
 
     @Bean
@@ -65,7 +73,7 @@ public class OpenAPIVerifierClientConfiguration {
         @Value("${verifier-service.endpoint}") String endpoint,
         @Value("${verifier-service.oauth2.enable:false}") boolean oauth2Enabled,
         @Value("${verifier-service.oauth2.client-registration-id:licencecheck}") String oauth2ClientRegistrationId,
-        RestErrorHandler restErrorHandler,
+        ExternalServiceRestErrorHandler restErrorHandler,
         HttpLogRequestInterceptor httpLogRequestInterceptor,
         ObjectMapper objectMapper) {
 

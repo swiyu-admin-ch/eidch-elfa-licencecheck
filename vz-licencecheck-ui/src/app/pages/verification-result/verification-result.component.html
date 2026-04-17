@@ -58,9 +58,13 @@
                     @switch (item.type) {
                       <!-- Date -->
                       @case ("date") {
-                        <div>
-                          {{ DateUtils.parseDate(getAttribute(item.name)) | date: "dd.MM.yyyy" }}
-                        </div>
+                        @if (getAttribute(item.name) === "-") {
+                          <div>-</div>
+                        } @else {
+                          <div>
+                            {{ DateUtils.parseDate(getAttribute(item.name)) | date: "dd.MM.yyyy" }}
+                          </div>
+                        }
                       }
                       <!-- Image -->
                       @case ("image") {

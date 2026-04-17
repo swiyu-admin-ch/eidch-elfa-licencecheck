@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.4.0]
+- fix: Show Verification Result when expirationDate is '-'
+- [EIDRAEDA-1788](https://jira.bit.admin.ch/browse/EIDRAEDA-1788): Extracted IssuerClient error handling into vz-commons library
+- [EIDRAEDA-1787](https://jira.bit.admin.ch/browse/EIDRAEDA-1787): Incorporate vz-commons library + update jEAP to 31.4.0
+- [EIDRAEDA-2002](https://jira.bit.admin.ch/browse/EIDRAEDA-2002): route to language specific support link
+
 ## [2.3.0]
 - chore: Update jEAP to 31.4.0
 - [EIDRAEDA-1833](https://jira.bit.admin.ch/browse/EIDRAEDA-1833): Implement DCQL Queries vs Verifier Service. Remove old verify flow.

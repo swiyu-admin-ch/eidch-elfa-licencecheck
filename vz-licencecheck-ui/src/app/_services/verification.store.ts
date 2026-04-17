@@ -38,7 +38,7 @@ export class VerificationStore {
 
   readonly isValid = computed(() => {
     const v = this._verification();
-    return v?.status === Status.Success && this.isDateOfExpirationValid(v);
+    return v?.status === Status.Success;
   });
 
   readonly isPremature = computed(
@@ -90,6 +90,15 @@ export class VerificationStore {
   setUseCase(useCase: UseCase | null) {
     this._useCase.set(useCase);
   }
+  // --- HELPERS
+  private isDateOfExpirationValid(v: VerificationState | null | undefined): boolean {
+    const expirationStr = v?.holderAttributes?.attributes?.dateOfExpiration;
+    if (!expirationStr) return true;
+    const dateOfExpiration = DateUtils.parseDate(expirationStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return !!dateOfExpiration && dateOfExpiration >= today;
+  }
 
   async beginVerification() {
     if (!this._useCase()) return;
@@ -114,15 +123,5 @@ export class VerificationStore {
 
   markTimedOut() {
     this._status.set(TimedOut);
-  }
-
-  // --- HELPERS
-  private isDateOfExpirationValid(v: VerificationState | null | undefined): boolean {
-    const expirationStr = v?.holderAttributes?.attributes?.dateOfExpiration;
-    if (!expirationStr) return true;
-    const dateOfExpiration = DateUtils.parseDate(expirationStr);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return !!dateOfExpiration && dateOfExpiration >= today;
   }
 }

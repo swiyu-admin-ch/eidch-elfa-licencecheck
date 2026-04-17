@@ -1,5 +1,6 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
+import ch.admin.astra.vz.commons.error.rest.ExternalServiceRestErrorHandler;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.VerifierHeaderInterceptor;
 import ch.admin.astra.vz.controller.verifier.api.VerifierManagementApiApi;
@@ -25,14 +26,14 @@ class OpenAPIVerifierClientConfigurationTest {
 
     private OpenAPIVerifierClientConfiguration configuration;
     private ObjectMapper objectMapper;
-    private RestErrorHandler restErrorHandler;
+    private ExternalServiceRestErrorHandler restErrorHandler;
     private HttpLogRequestInterceptor httpLogRequestInterceptor;
 
     @BeforeEach
     void setUp() {
         configuration = new OpenAPIVerifierClientConfiguration(verifierHeaderInterceptor, null);
         objectMapper = new ObjectMapper();
-        restErrorHandler = new RestErrorHandler(objectMapper);
+        restErrorHandler = configuration.restErrorHandler(objectMapper);
         httpLogRequestInterceptor = new HttpLogRequestInterceptor();
     }
 
@@ -72,5 +73,3 @@ class OpenAPIVerifierClientConfigurationTest {
         return api;
     }
 }
-
-

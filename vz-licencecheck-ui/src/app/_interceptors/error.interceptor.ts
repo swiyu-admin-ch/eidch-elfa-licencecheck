@@ -23,9 +23,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      catchError((errorResponse: ErrorResponse) => {
-        if (isErrorResponse(errorResponse)) {
-          this.handleHttpError(errorResponse);
+      catchError((errorResponse: HttpErrorResponse) => {
+        if (isErrorResponse(errorResponse.error)) {
+          this.handleError(errorResponse.error);
         } else {
           this.handleUnknownError();
         }
@@ -35,8 +35,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     );
   }
 
-  private handleHttpError(error: HttpErrorResponse): void {
-    this.notifyError(httpErrorTranslationKeys(error.error));
+  private handleError(error: ErrorResponse): void {
+    this.notifyError(errorTranslationKeys(error?.errorType));
   }
 
   private handleUnknownError(): void {
@@ -62,16 +62,16 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 }
 
-function isErrorResponse(error: any): error is HttpErrorResponse {
-  return error?.status;
+function isErrorResponse(error: any): error is ErrorResponse {
+  return error?.errorType;
 }
 
-export function httpErrorTranslationKeys(error: ErrorResponse): I18nNotification {
-  if (!error) {
-    return defaultErrorTranslationKeys;
+export function errorTranslationKeys(errorType: string): I18nNotification {
+  if (errorType) {
+    return {
+      messageKey: `i18n.error.${errorType}`,
+      titleKey: 'i18n.exception'
+    };
   }
-  return {
-    titleKey: 'i18n.exception',
-    messageKey: `i18n.exception.${error.errorCode}`
-  };
+  return defaultErrorTranslationKeys;
 }

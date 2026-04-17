@@ -37,9 +37,9 @@
 <ng-template #popoverM>
   <div class="popover-title">{{ "i18n.support.title" | translate }}</div>
   <div class="popover-content">
-    @for (item of supportItems; track item) {
+    @for (supportItemKey of supportItemKeys; track supportItemKey) {
       <div class="support-item">
-        <a [href]="item.link" class="ext-link">{{ item.label | translate }}</a>
+        <a [href]="supportItemUrl(supportItemKey)" class="ext-link">{{ supportItemKey | translate }}</a>
       </div>
     }
   </div>

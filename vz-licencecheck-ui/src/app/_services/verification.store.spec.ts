@@ -120,19 +120,6 @@ describe('VerificationStore', () => {
     expect(store.isInvalid()).toBe(false);
   });
 
-  it('completeVerification -> Succeeded, but isValid() false when expired', () => {
-    // GIVEN
-    const v = successVerification(past(1));
-
-    // WHEN
-    store.completeVerification(v);
-
-    // THEN
-    expect(store.status()).toBe(Succeeded);
-    expect(store.isValid()).toBe(false);
-    expect(store.isInvalid()).toBe(false); // it’s still success, just expired attr
-  });
-
   it('Failed + ClientRejected -> isRejected() true, isInvalid() false', () => {
     // GIVEN
     const v = failedVerification(VerificationState.ErrorCodeEnum.ClientRejected);

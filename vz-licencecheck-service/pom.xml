@@ -6,12 +6,24 @@
     <parent>
         <groupId>ch.admin.astra.vz.lc</groupId>
         <artifactId>vz-licencecheck-scs</artifactId>
-        <version>2.3.0</version>
+        <version>2.4.0</version>
     </parent>
 
     <artifactId>vz-licencecheck-service</artifactId>
 
     <dependencies>
+        <!-- VZ Commons -->
+        <dependency>
+            <groupId>ch.admin.astra.vz</groupId>
+            <artifactId>commons-core</artifactId>
+            <version>${vz-commons.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.admin.astra.vz</groupId>
+            <artifactId>commons-error</artifactId>
+            <version>${vz-commons.version}</version>
+        </dependency>
+
         <!-- UI -->
         <dependency>
             <groupId>ch.admin.astra.vz.lc</groupId>

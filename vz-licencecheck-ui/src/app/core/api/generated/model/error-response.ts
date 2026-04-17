@@ -7,12 +7,32 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import {ErrorType} from './error-type';
 
 export interface ErrorResponse {
-  errorCode?: string;
-  status?: number;
+  /**
+   * Type of error that occurred
+   */
+  errorType?: ErrorType;
+  /**
+   * Human-readable error message
+   */
   message?: string;
+  /**
+   * Detailed error description
+   */
+  detail?: string;
+  /**
+   * Unique trace ID for error tracking
+   */
   traceId?: string;
-  requestUri?: string;
+  /**
+   * API path where the error occurred
+   */
+  path?: string;
+  /**
+   * Timestamp when the error occurred
+   */
   timestamp?: string;
 }
+export namespace ErrorResponse {}
