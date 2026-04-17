@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *

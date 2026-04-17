@@ -5,8 +5,7 @@ import org.slf4j.MDC;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 class LoggingUtilTest {
 
@@ -16,7 +15,8 @@ class LoggingUtilTest {
         LoggingUtil.setOperation(Operation.GET_USE_CASES);
 
         // then
-        assertEquals(Operation.GET_USE_CASES.getOperationName(), MDC.get(LoggingUtil.KEY_OPERATION));
+        assertThat(MDC.get(LoggingUtil.KEY_OPERATION))
+            .isEqualTo(Operation.GET_USE_CASES.getOperationName());
     }
 
     @Test
@@ -27,7 +27,8 @@ class LoggingUtilTest {
         LoggingUtil.setUseCaseId(useCaseId);
 
         // then
-        assertEquals(useCaseId.toString(), MDC.get(LoggingUtil.KEY_USE_CASE_ID));
+        assertThat(MDC.get(LoggingUtil.KEY_USE_CASE_ID))
+            .isEqualTo(useCaseId.toString());
     }
 
     @Test
@@ -37,6 +38,7 @@ class LoggingUtilTest {
         LoggingUtil.setVerificationId(verificationId);
 
         // then
-        assertEquals(verificationId.toString(), MDC.get(LoggingUtil.KEY_VERIFICATION_ID));
+        assertThat(MDC.get(LoggingUtil.KEY_VERIFICATION_ID))
+            .isEqualTo(verificationId.toString());
     }
 }

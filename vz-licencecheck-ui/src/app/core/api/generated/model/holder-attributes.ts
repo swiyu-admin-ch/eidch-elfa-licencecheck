@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -10,5 +9,5 @@
  */
 
 export interface HolderAttributes {
-  attributes?: {[key: string]: string};
+  attributes?: {[key: string]: any};
 }

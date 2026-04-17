@@ -1,11 +1,14 @@
 package ch.admin.astra.vz.lc.modules.verification.mapper;
 
+import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.ResponseDataDto;
 import ch.admin.astra.vz.lc.api.verification.model.HolderAttributesDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationStateDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ResponseDataDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper(uses = StatusMapper.class)
 public interface VerificationMapper {
@@ -17,10 +20,21 @@ public interface VerificationMapper {
     VerificationStateDto map(ManagementResponseDto managementResponseDto);
 
     default HolderAttributesDto map(ResponseDataDto responseDataDto) {
-        if (responseDataDto == null || responseDataDto.getCredentialSubject() == null) {
+        if (responseDataDto == null || responseDataDto.getCredentialSubjectData() == null) {
             return null;
         }
 
-        return new HolderAttributesDto(responseDataDto.getCredentialSubject());
+        Map<String, Object> data = responseDataDto.getCredentialSubjectData();
+
+        if (data.size() == 1) {
+            Object value = data.values().iterator().next();
+            if (value instanceof List<?> list
+                    && !list.isEmpty()
+                    && list.getFirst() instanceof Map<?, ?> attrs) {
+                return new HolderAttributesDto((Map<String, Object>) attrs);
+            }
+        }
+
+        return new HolderAttributesDto(data);
     }
 }

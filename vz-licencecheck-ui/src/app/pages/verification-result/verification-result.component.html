@@ -1,21 +1,18 @@
 <div class="centered-component">
   <div class="content">
-    <ob-sticky [footerSize]="'sm'" [headerSize]="'sm'" class="feature">
-      <ng-template #obStickyMain>
-        <!-- Success + photo + attributes -->
-        <div *ngIf="store.isValid()">
-          <div class="ob-grid">
-            <ng-container *ngFor="let group of getSortedAttributeGroups(); let last = last">
-              <h5 *ngIf="shouldDisplayGroupHeader(group)" class="ob-full text-alignment">
+    <!-- Success + photo + attributes -->
+    @if (store.isValid()) {
+      <div>
+        <div class="ob-grid">
+          @for (group of getSortedAttributeGroups(); track group; let last = $last) {
+            @if (shouldDisplayGroupHeader(group)) {
+              <h5 class="ob-full text-alignment">
                 <strong>{{ "i18n.verifier.verification-result.attributeGroup." + group.name | translate }}</strong>
               </h5>
-
-              <!-- Photo image section -->
-              <div
-                *ngIf="group.name === 'photoImage'"
-                class="ob-full image-content {{ statusStyleClass() }}"
-                id="{{ group.attributes[0].name }}"
-              >
+            }
+            <!-- Photo image section -->
+            @if (group.name === "photoImage") {
+              <div class="ob-full image-content {{ statusStyleClass() }}" id="{{ group.attributes[0].name }}">
                 <div class="status-container">
                   <div class="ob-grid">
                     <div class="ob-half center-validity-content">
@@ -23,7 +20,7 @@
                         {{ "i18n.verifier.verification-result.lfa.label" | translate }}
                       </div>
                       <div class="ob-full status-icon" id="status">
-                        <mat-icon [svgIcon]="'checkmark-circle'"></mat-icon>
+                        <mat-icon [svgIcon]="'checkmark_circle'"></mat-icon>
                       </div>
                       <div class="ob-full status-text" id="status-success-message">
                         {{ "i18n.verifier.verification-result.status.valid" | translate }}
@@ -40,116 +37,129 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Attributes -->
-              <ng-container *ngFor="let item of getSortedAttributesWithoutPhotoImage(group); let first = first">
-                <div *ngIf="first && group.name === 'validity'" class="ob-full text-alignment">
+            }
+            <!-- Attributes -->
+            @for (item of getSortedAttributesWithoutPhotoImage(group); track item; let first = $first) {
+              @if (first && group.name === "validity") {
+                <div class="ob-full text-alignment">
                   <div class="ob-full validity-valid">
                     <strong>{{
                       "i18n.verifier.verification-result.attributeGroup.validity.status" | translate
                     }}</strong>
                   </div>
                 </div>
-
-                <div class="ob-full text-alignment" id="{{ item.name }}">
-                  <div class="attribute">
-                    <div class="ob-full attribute-label" id="{{ item.name }}-label">
-                      {{ "i18n.verifier.verification-result.attribute." + item.name | translate }}:
-                    </div>
-                    <div [ngSwitch]="item.type" class="ob-full" id="{{ item.name }}-value">
+              }
+              <div class="ob-full text-alignment" id="{{ item.name }}">
+                <div class="attribute">
+                  <div class="ob-full attribute-label" id="{{ item.name }}-label">
+                    {{ "i18n.verifier.verification-result.attribute." + item.name | translate }}:
+                  </div>
+                  <div class="ob-full" id="{{ item.name }}-value">
+                    @switch (item.type) {
                       <!-- Date -->
-                      <div *ngSwitchCase="'date'">
-                        {{ DateUtils.parseDate(getAttribute(item.name)) | date: "dd.MM.yyyy" }}
-                      </div>
-
+                      @case ("date") {
+                        <div>
+                          {{ DateUtils.parseDate(getAttribute(item.name)) | date: "dd.MM.yyyy" }}
+                        </div>
+                      }
                       <!-- Image -->
-                      <ng-container *ngSwitchCase="'image'">
+                      @case ("image") {
                         <img alt="{{ item.name }}" class="attribute-image" [src]="base64image(item.name)" />
-                      </ng-container>
-
+                      }
                       <!-- Default -->
-                      <div *ngSwitchDefault>
-                        {{ getAttribute(item.name) }}
-                      </div>
-                    </div>
+                      @default {
+                        <div>
+                          {{ getAttribute(item.name) }}
+                        </div>
+                      }
+                    }
                   </div>
                 </div>
-              </ng-container>
-
-              <mat-divider *ngIf="!last" style="margin-top: 10px" class="ob-full"></mat-divider>
-            </ng-container>
-          </div>
+              </div>
+            }
+            @if (!last) {
+              <mat-divider style="margin-top: 10px" class="ob-full"></mat-divider>
+            }
+          }
         </div>
+      </div>
+    }
 
-        <!-- Timeout -->
-        <div *ngIf="store.status() === TimedOut" class="image-content">
-          <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
-          <div class="verification-error status-container">
-            <div class="ob-grid">
-              <div class="ob-full">
-                <div class="ob-full status-icon-error">
-                  <mat-icon [svgIcon]="'warning-triangle'"></mat-icon>
-                </div>
-                <div class="ob-full error-text">
-                  <strong>{{ "i18n.verifier.verification-result.timeout.description" | translate }}</strong>
-                </div>
+    <!-- Timeout -->
+    @if (store.status() === TimedOut) {
+      <div class="image-content">
+        <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
+        <div class="verification-error status-container">
+          <div class="ob-grid">
+            <div class="ob-full">
+              <div class="ob-full status-icon-error">
+                <mat-icon [svgIcon]="'exclamation_triangle'"></mat-icon>
+              </div>
+              <div class="ob-full error-text">
+                <strong>{{ "i18n.verifier.verification-result.timeout.description" | translate }}</strong>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    }
 
-        <!-- Rejection -->
-        <div *ngIf="store.isRejected()" class="image-content">
-          <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
-          <div class="verification-error status-container">
-            <div class="ob-grid">
-              <div class="ob-full">
-                <div class="ob-full status-icon-error">
-                  <mat-icon [svgIcon]="'eye-slash'"></mat-icon>
-                </div>
-                <div class="ob-full error-text">
-                  <strong>{{ "i18n.verifier.verification-result.rejection.description" | translate }}</strong>
-                </div>
+    <!-- Rejection -->
+    @if (store.isRejected()) {
+      <div class="image-content">
+        <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
+        <div class="verification-error status-container">
+          <div class="ob-grid">
+            <div class="ob-full">
+              <div class="ob-full status-icon-error">
+                <mat-icon [svgIcon]="'eye_off'"></mat-icon>
+              </div>
+              <div class="ob-full error-text">
+                <strong>{{ "i18n.verifier.verification-result.rejection.description" | translate }}</strong>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    }
 
-        <!-- Invalid -->
-        <div *ngIf="store.isInvalid()" class="image-content">
-          <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
-          <div class="invalid-screen status-container">
-            <div class="ob-grid">
-              <div class="ob-full">
-                <div class="ob-full status-icon">
-                  <mat-icon class="icon-ban" [svgIcon]="'ban'"></mat-icon>
-                </div>
-                <div class="ob-full error-text">
-                  <strong>{{ "i18n.verifier.verification-result.invalid.description" | translate }}</strong>
-                </div>
+    <!-- Invalid -->
+    @if (store.isInvalid()) {
+      <div class="image-content">
+        <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
+        <div class="invalid-screen status-container">
+          <div class="ob-grid">
+            <div class="ob-full">
+              <div class="ob-full status-icon">
+                <mat-icon class="icon-ban" [svgIcon]="'prohibition'"></mat-icon>
+              </div>
+              <div class="ob-full error-text">
+                <strong>{{ "i18n.verifier.verification-result.invalid.description" | translate }}</strong>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    }
 
-        <!-- Premature -->
-        <div *ngIf="store.isPremature()" class="image-content">
-          <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
-          <div class="invalid-screen status-container">
-            <div class="ob-grid">
-              <div class="ob-full">
-                <div class="ob-full status-icon">
-                  <mat-icon class="icon-ban" [svgIcon]="'ban'"></mat-icon>
-                </div>
-                <div class="ob-full error-text">
-                  <strong>{{ "i18n.verifier.verification-result.premature.description" | translate }}</strong>
-                </div>
+    <!-- Premature -->
+    @if (store.isPremature()) {
+      <div class="image-content">
+        <div class="component-title">{{ "i18n.verifier.use-cases." + store.useCase()?.title | translate }}</div>
+        <div class="invalid-screen status-container">
+          <div class="ob-grid">
+            <div class="ob-full">
+              <div class="ob-full status-icon">
+                <mat-icon class="icon-ban" [svgIcon]="'prohibition'"></mat-icon>
+              </div>
+              <div class="ob-full error-text">
+                <strong>{{ "i18n.verifier.verification-result.premature.description" | translate }}</strong>
               </div>
             </div>
           </div>
         </div>
-      </ng-template>
-    </ob-sticky>
+      </div>
+    }
 
     <div class="verification-footer-buttons">
       <button

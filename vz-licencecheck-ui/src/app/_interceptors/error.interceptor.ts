@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -18,10 +18,8 @@ export const defaultErrorTranslationKeys: I18nNotification = {
 
 @Injectable({providedIn: 'root'})
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private readonly notificationService: ObNotificationService,
-    private readonly translate: TranslateService
-  ) {}
+  private readonly notificationService = inject(ObNotificationService);
+  private readonly translate = inject(TranslateService);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

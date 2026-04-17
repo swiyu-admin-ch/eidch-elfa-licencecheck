@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "7.8.0",
+    "version": "7.20.0",
     "repository": {
       "queryUrl": "https://repo.bit.admin.ch/#browse/search=group.raw%3D${group.id}%20AND%20name.raw%3D${artifact.id}",
       "downloadUrl": "https://repo.bit.admin.ch/repository/maven-central/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
@@ -14,7 +14,7 @@
           "fileNaming": "kebab-case",
           "serviceFileSuffix": "-api",
           "serviceSuffix": "Api",
-          "ngVersion": "15.2.0",
+          "ngVersion": "20.3.17",
           "ngVersion_hint": "see here for supported versions: https://openapi-generator.tech/docs/generators/typescript-angular/",
           "supportsES6": "true",
           "useSingleRequestParameter": "true",

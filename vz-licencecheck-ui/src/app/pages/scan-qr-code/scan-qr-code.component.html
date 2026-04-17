@@ -5,7 +5,9 @@
 
   <div class="content mat-card">
     <div class="text" id="title">{{ "i18n.verifier.start-verification.title" | translate }}</div>
-    <img *ngIf="store.qrDataUrl()" [src]="store.qrDataUrl()" alt="qr code" class="qrcode-image" />
+    @if (store.qrDataUrl()) {
+      <img [src]="store.qrDataUrl()" alt="qr code" class="qrcode-image" />
+    }
   </div>
 
   <div class="scan-qr-code-cancel-button">

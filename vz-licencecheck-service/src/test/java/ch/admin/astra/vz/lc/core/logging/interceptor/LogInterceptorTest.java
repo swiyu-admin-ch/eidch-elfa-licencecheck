@@ -10,15 +10,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.ModelAndView;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class LogInterceptorTest {
     @Mock
     private LoggingService loggingService;
-
-    private LogInterceptor interceptor;
 
     @Mock
     private HttpServletRequest request;
@@ -32,6 +30,8 @@ class LogInterceptorTest {
     @Mock
     private ModelAndView modelAndView;
 
+    private LogInterceptor interceptor;
+
     @BeforeEach
     void setUp() {
         interceptor = new LogInterceptor(loggingService);
@@ -40,13 +40,13 @@ class LogInterceptorTest {
     @Test
     void postHandle_shouldLogOperationFinishedWithSuccess() {
         // Given
-        when(request.getRequestURI()).thenReturn("/api/v1/verification");
+        given(request.getRequestURI()).willReturn("/api/v1/verification");
 
         // When
         interceptor.postHandle(request, response, handler, modelAndView);
 
         // Then
-        verify(loggingService).logOperationFinished();
+        then(loggingService).should().logOperationFinished();
     }
 
 
@@ -56,7 +56,7 @@ class LogInterceptorTest {
         interceptor.afterCompletion(request, response, handler, null);
 
         // Then
-        verify(loggingService).clearMDC();
+        then(loggingService).should().clearMDC();
     }
 
     @Test
@@ -67,6 +67,6 @@ class LogInterceptorTest {
         interceptor.afterCompletion(request, response, handler, exception);
 
         // Then
-        verify(loggingService).clearMDC();
+        then(loggingService).should().clearMDC();
     }
 }

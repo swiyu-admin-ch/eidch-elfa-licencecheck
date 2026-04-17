@@ -6,7 +6,7 @@ import {Attribute, AttributeGroup} from '@app/core/api/generated';
 import {CommonModule} from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatIconModule} from '@angular/material/icon';
-import {ObButtonModule, ObIconModule, ObStickyModule} from '@oblique/oblique';
+import {ObButtonModule, ObIconModule} from '@oblique/oblique';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {TimedOut, VerificationStore} from '@app/_services/verification.store';
@@ -23,8 +23,7 @@ import {DateUtils} from '@app/core/utils';
     MatButtonModule,
     MatDividerModule,
     ObButtonModule,
-    ObIconModule,
-    ObStickyModule
+    ObIconModule
   ]
 })
 export class VerificationResultComponent implements OnDestroy {

@@ -2,7 +2,7 @@ package ch.admin.astra.vz.lc.core.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ImageUtilsTest {
 
@@ -15,19 +15,20 @@ class ImageUtilsTest {
         String result = ImageUtils.convertToBase64(imageFilePath);
 
         // Then
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
-        // Base64 strings should start with valid characters
-        assertTrue(result.matches("^[A-Za-z0-9+/]*={0,2}$"));
+        assertThat(result)
+            .isNotNull()
+            .isNotEmpty()
+            .matches("^[A-Za-z0-9+/]*={0,2}$");
     }
 
     @Test
     void convertToBase64_shouldReturnNull_whenNullPath() {
         // When
+        @SuppressWarnings("ConstantValue")
         String result = ImageUtils.convertToBase64(null);
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -36,7 +37,7 @@ class ImageUtilsTest {
         String result = ImageUtils.convertToBase64("");
 
         // Then
-        assertNull(result);
+        assertThat(result).isNull();
     }
 
     @Test
@@ -48,6 +49,6 @@ class ImageUtilsTest {
         String result = ImageUtils.convertToBase64(invalidImageFilePath);
 
         // Then - Should return null when image file doesn't exist (handled gracefully)
-        assertNull(result);
+        assertThat(result).isNull();
     }
 }

@@ -1,7 +1,7 @@
 package ch.admin.astra.vz.lc.core.logging;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.OPERATION_FINISHED_W
 import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.RequestStatus.ERROR;
 import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.RequestStatus.SUCCESS;
 import static ch.admin.astra.vz.lc.core.logging.Operation.*;
-import static ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto.hasFailed;
 
 
 @Slf4j
@@ -30,7 +29,7 @@ public class LoggingService {
     public void addStartVerificationContext(UUID usecaseId) {
         LoggingUtil.setOperation(START_VERIFICATION_PROCESS);
         LoggingUtil.setUseCaseId(usecaseId);
-        LoggingUtil.setVerificationStatus(VerificationStatusDto.PENDING);
+        LoggingUtil.setVerificationStatus(VerificationStatusDto.PENDING.toString());
     }
 
     public void addGetVerificationProcessContext(UUID verificationId) {
@@ -44,10 +43,10 @@ public class LoggingService {
     }
 
     public void addVerificationStatusContext(ManagementResponseDto response) {
-        LoggingUtil.setVerificationId(response.id());
-        LoggingUtil.setVerificationStatus(response.state());
-        if (hasFailed(response.state())) {
-            LoggingUtil.setErrorCode(response.walletResponse().getErrorCode());
+        LoggingUtil.setVerificationId(response.getId());
+        LoggingUtil.setVerificationStatus(response.getState().toString());
+        if (VerificationStatusDto.FAILED.toString().equals(response.getState())) {
+            LoggingUtil.setErrorCode(response.getWalletResponse().getErrorCode());
         }
     }
 

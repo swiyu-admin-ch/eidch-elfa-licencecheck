@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {CookieConstants} from '@app/core/utils';
 import {environment} from '@environments/environment';
@@ -7,7 +7,7 @@ import {environment} from '@environments/environment';
   providedIn: 'root'
 })
 export class PolicyService {
-  constructor(private readonly cookieService: CookieService) {}
+  private readonly cookieService = inject(CookieService);
 
   isPolicyConfirmed(): boolean {
     return this.cookieService.get(CookieConstants.POLICY_CONFIRMED) === CookieConstants.BOOL_TRUE;

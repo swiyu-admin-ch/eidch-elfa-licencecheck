@@ -7,32 +7,31 @@
     <parent>
         <groupId>ch.admin.bit.jeap</groupId>
         <artifactId>jeap-spring-boot-parent</artifactId>
-        <version>30.15.0</version>
+        <version>31.4.0</version>
         <relativePath/>
     </parent>
 
     <groupId>ch.admin.astra.vz.lc</groupId>
     <artifactId>vz-licencecheck-scs</artifactId>
-    <version>2.2.0</version>
-    <packaging>pom</packaging>
     <description>e-ID LicenceCheck App</description>
+    <version>2.3.0</version>
+    <packaging>pom</packaging>
 
     <properties>
         <!-- JAVA VERSION -->
-        <java.version>21</java.version>
+        <java.version>25</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- LIBRARY VERSIONS -->
-        <com.google.zxing.version>3.5.3</com.google.zxing.version>
-        <org.apache.commons.version>3.18.0</org.apache.commons.version>
+        <com.google.zxing.version>3.5.4</com.google.zxing.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
-        <logging-interceptor.version>4.12.0</logging-interceptor.version>
-        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
-        <lombok.version>1.18.34</lombok.version>
-        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
-        <micrometer-registry-prometheus.version>1.16.2</micrometer-registry-prometheus.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <jackson-databind-nullable.version>0.2.9</jackson-databind-nullable.version>
+        <org.jetbrains.annotations.version>26.1.0</org.jetbrains.annotations.version>
 
         <!-- PLUGIN VERSIONS -->
-        <exec-maven-plugin.version>3.5.1</exec-maven-plugin.version>
+        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.20.0</openapi-generator-maven-plugin.version>
 
         <!-- TEST CONFIGURATION -->
         <skipTests>false</skipTests> <!-- for compatibility with Maven / IntelliJ -->
@@ -53,6 +52,10 @@
         <sonar.coverage.exclusions>
             **/*Dto.java,**/config/*,**/generated/*,**/*Exception.java,**/*Type.java,**/*ExceptionHandler.java,**/*Constants.java,**/*Registry.java,**/*Config.java,**/*Mock*,**/*Application.java
         </sonar.coverage.exclusions>
+
+        <!-- VULNERABILITY FIXES -->
+        <tomcat.version>10.1.52</tomcat.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <modules>
@@ -60,13 +63,29 @@
         <module>vz-licencecheck-ui</module>
     </modules>
 
+    <!-- VULNERABILITY FIXES -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.21.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>9.37.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>4.0.0.4121</version>
+                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -1,6 +1,6 @@
 package ch.admin.astra.vz.lc.api.verification.model;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationErrorResponseCodeDto;
+import ch.admin.astra.vz.controller.verifier.model.VerificationErrorResponseCodeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.NonNull;

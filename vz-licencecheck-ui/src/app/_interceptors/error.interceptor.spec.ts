@@ -1,9 +1,8 @@
+import {ObENotificationType, ObNotificationService, provideObliqueTestingConfiguration} from '@oblique/oblique';
 import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {HTTP_INTERCEPTORS, HttpHandler, HttpRequest} from '@angular/common/http';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
+import {HttpHandler, HttpRequest} from '@angular/common/http';
 import {ErrorInterceptor} from './error.interceptor';
-import {ObENotificationType, ObNotificationService} from '@oblique/oblique';
-import {TranslateLoader, TranslateModule, TranslateNoOpLoader} from '@ngx-translate/core';
 
 describe('ErrorInterceptor', () => {
   let interceptor: ErrorInterceptor;
@@ -13,17 +12,7 @@ describe('ErrorInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: TranslateNoOpLoader}
-        })
-      ],
-      providers: [
-        ErrorInterceptor,
-        {provide: ObNotificationService, useValue: {error: jest.fn()}},
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-      ]
+      providers: [provideObliqueTestingConfiguration(), provideHttpClientTesting()]
     });
 
     interceptor = TestBed.inject(ErrorInterceptor);

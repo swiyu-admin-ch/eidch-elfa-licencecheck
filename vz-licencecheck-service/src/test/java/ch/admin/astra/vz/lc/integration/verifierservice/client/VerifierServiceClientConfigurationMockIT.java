@@ -1,16 +1,12 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
+import ch.admin.astra.vz.lc.junit.VZIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@TestPropertySource(locations="classpath:application.yml")
-@ActiveProfiles(value = "local")
-@SpringBootTest(properties="spring.main.lazy-initialization=true")
+@VZIntegrationTest
 class VerifierServiceClientConfigurationMockIT {
 
     @Autowired
@@ -18,6 +14,6 @@ class VerifierServiceClientConfigurationMockIT {
 
     @Test
     void assertTechAdapterClient() {
-        assertInstanceOf(MockVerifierServiceImpl.class, verifierServiceClient);
+        assertThat(verifierServiceClient).isInstanceOf(MockVerifierServiceImpl.class);
     }
 }

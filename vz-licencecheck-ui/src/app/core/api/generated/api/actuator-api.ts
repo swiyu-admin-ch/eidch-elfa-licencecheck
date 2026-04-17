@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -11,17 +10,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import {Inject, Injectable, Optional} from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpResponse,
-  HttpEvent,
-  HttpParameterCodec,
-  HttpContext
-} from '@angular/common/http';
-import {CustomHttpParameterCodec} from '../encoder';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpContext} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {OpenApiHttpParams, QueryParamStyle} from '../query.params';
 
 // @ts-ignore
 import {ErrorResponse} from '../model/error-response';
@@ -31,6 +22,7 @@ import {Link} from '../model/link';
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
 import {Configuration} from '../configuration';
+import {BaseService} from '../api.base.service';
 
 export interface ScrapeRequestParams {
   format?: 'CONTENT_TYPE_004' | 'CONTENT_TYPE_OPENMETRICS_100' | 'CONTENT_TYPE_PROTOBUF';
@@ -40,75 +32,21 @@ export interface ScrapeRequestParams {
 @Injectable({
   providedIn: 'root'
 })
-export class ActuatorApi {
-  protected basePath = 'http://localhost:8888';
-  public defaultHeaders = new HttpHeaders();
-  public configuration = new Configuration();
-  public encoder: HttpParameterCodec;
-
+export class ActuatorApi extends BaseService {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string | string[],
-    @Optional() configuration: Configuration
+    @Optional() configuration?: Configuration
   ) {
-    if (configuration) {
-      this.configuration = configuration;
-    }
-    if (typeof this.configuration.basePath !== 'string') {
-      const firstBasePath = Array.isArray(basePath) ? basePath[0] : undefined;
-      if (firstBasePath != undefined) {
-        basePath = firstBasePath;
-      }
-
-      if (typeof basePath !== 'string') {
-        basePath = this.basePath;
-      }
-      this.configuration.basePath = basePath;
-    }
-    this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-  }
-
-  // @ts-ignore
-  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-    if (typeof value === 'object' && value instanceof Date === false) {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value);
-    } else {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-    }
-    return httpParams;
-  }
-
-  private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-    if (value == null) {
-      return httpParams;
-    }
-
-    if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        (value as any[]).forEach(elem => (httpParams = this.addToHttpParamsRecursive(httpParams, elem, key)));
-      } else if (value instanceof Date) {
-        if (key != null) {
-          httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
-        } else {
-          throw Error('key may not be null if value is Date');
-        }
-      } else {
-        Object.keys(value).forEach(
-          k => (httpParams = this.addToHttpParamsRecursive(httpParams, value[k], key != null ? `${key}.${k}` : k))
-        );
-      }
-    } else if (key != null) {
-      httpParams = httpParams.append(key, value);
-    } else {
-      throw Error('key may not be null if value is not object or array');
-    }
-    return httpParams;
+    super(basePath, configuration);
   }
 
   /**
    * Actuator web endpoint \&#39;health\&#39;
+   * @endpoint get /actuator/health
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public health(
     observe?: 'body',
@@ -119,6 +57,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<object>;
   public health(
@@ -130,6 +69,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpResponse<object>>;
   public health(
@@ -141,6 +81,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpEvent<object>>;
   public health(
@@ -152,28 +93,25 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = [
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept([
         'application/json',
         'application/vnd.spring-boot.actuator.v3+json',
         'application/vnd.spring-boot.actuator.v2+json'
-      ];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+      ]);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -187,20 +125,24 @@ export class ActuatorApi {
     }
 
     let localVarPath = `/actuator/health`;
-    return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<object>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }
 
   /**
    * Actuator web endpoint \&#39;info\&#39;
+   * @endpoint get /actuator/info
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public info(
     observe?: 'body',
@@ -211,6 +153,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<object>;
   public info(
@@ -222,6 +165,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpResponse<object>>;
   public info(
@@ -233,6 +177,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpEvent<object>>;
   public info(
@@ -244,28 +189,25 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = [
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept([
         'application/json',
         'application/vnd.spring-boot.actuator.v3+json',
         'application/vnd.spring-boot.actuator.v2+json'
-      ];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+      ]);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -279,20 +221,24 @@ export class ActuatorApi {
     }
 
     let localVarPath = `/actuator/info`;
-    return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<object>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }
 
   /**
    * Actuator root web endpoint
+   * @endpoint get /actuator
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public links(
     observe?: 'body',
@@ -303,6 +249,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<{[key: string]: {[key: string]: Link}}>;
   public links(
@@ -314,6 +261,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpResponse<{[key: string]: {[key: string]: Link}}>>;
   public links(
@@ -325,6 +273,7 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpEvent<{[key: string]: {[key: string]: Link}}>>;
   public links(
@@ -336,28 +285,25 @@ export class ActuatorApi {
         | 'application/vnd.spring-boot.actuator.v3+json'
         | 'application/vnd.spring-boot.actuator.v2+json';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = [
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept([
         'application/json',
         'application/vnd.spring-boot.actuator.v3+json',
         'application/vnd.spring-boot.actuator.v2+json'
-      ];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+      ]);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -371,25 +317,25 @@ export class ActuatorApi {
     }
 
     let localVarPath = `/actuator`;
-    return this.httpClient.request<{[key: string]: {[key: string]: Link}}>(
-      'get',
-      `${this.configuration.basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        responseType: <any>responseType_,
-        withCredentials: this.configuration.withCredentials,
-        headers: localVarHeaders,
-        observe: observe,
-        reportProgress: reportProgress
-      }
-    );
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<{[key: string]: {[key: string]: Link}}>('get', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? {withCredentials} : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
+      reportProgress: reportProgress
+    });
   }
 
   /**
    * Actuator web endpoint \&#39;prometheus\&#39;
+   * @endpoint get /actuator/prometheus
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public scrape(
     requestParameters?: ScrapeRequestParams,
@@ -402,6 +348,7 @@ export class ActuatorApi {
         | 'application/openmetrics-text;version=1.0.0;charset=utf-8'
         | 'application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<object>;
   public scrape(
@@ -415,6 +362,7 @@ export class ActuatorApi {
         | 'application/openmetrics-text;version=1.0.0;charset=utf-8'
         | 'application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpResponse<object>>;
   public scrape(
@@ -428,6 +376,7 @@ export class ActuatorApi {
         | 'application/openmetrics-text;version=1.0.0;charset=utf-8'
         | 'application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<HttpEvent<object>>;
   public scrape(
@@ -441,40 +390,47 @@ export class ActuatorApi {
         | 'application/openmetrics-text;version=1.0.0;charset=utf-8'
         | 'application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited';
       context?: HttpContext;
+      transferCache?: boolean;
     }
   ): Observable<any> {
     const format = requestParameters?.format;
     const includedNames = requestParameters?.includedNames;
 
-    let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-    if (format !== undefined && format !== null) {
-      localVarQueryParameters = this.addToHttpParams(localVarQueryParameters, <any>format, 'format');
-    }
-    if (includedNames !== undefined && includedNames !== null) {
-      localVarQueryParameters = this.addToHttpParams(localVarQueryParameters, <any>includedNames, 'includedNames');
-    }
+    let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
+
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
+      'format',
+      <any>format,
+      QueryParamStyle.Form,
+      true
+    );
+
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
+      'includedNames',
+      <any>includedNames,
+      QueryParamStyle.Form,
+      true
+    );
 
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = [
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept([
         'application/json',
         'text/plain;version=0.0.4;charset=utf-8',
         'application/openmetrics-text;version=1.0.0;charset=utf-8',
         'application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited'
-      ];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+      ]);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -488,13 +444,15 @@ export class ActuatorApi {
     }
 
     let localVarPath = `/actuator/prometheus`;
-    return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<object>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
-      params: localVarQueryParameters,
+      params: localVarQueryParameters.toHttpParams(),
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }

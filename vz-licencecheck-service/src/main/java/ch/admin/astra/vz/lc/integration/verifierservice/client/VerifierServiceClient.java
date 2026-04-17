@@ -1,7 +1,7 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.CreateVerificationManagementDto;
+import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
 
 import java.util.UUID;
 

@@ -1,5 +1,5 @@
-import {ObIBanner} from '@oblique/oblique/lib/utilities.model';
 import {banner} from './banner';
+import {ObIBanner} from '@oblique/oblique';
 
 describe('banner', () => {
   it('returns local banner if environment is LOCAL', () => {

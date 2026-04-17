@@ -1,5 +1,7 @@
-const mock = () => {
+const storageMock = () => {
   let storage: {[key: string]: string} = {};
+
+  // noinspection JSUnusedGlobalSymbols
   return {
     getItem: (key: string) => (key in storage ? storage[key] : null),
     setItem: (key: string, value: string) => (storage[key] = value || ''),
@@ -8,21 +10,26 @@ const mock = () => {
   };
 };
 
-Object.defineProperty(window, 'localStorage', {value: mock()});
-Object.defineProperty(window, 'sessionStorage', {value: mock()});
-Object.defineProperty(window, 'scrollIntoView', {value: mock()});
+Object.defineProperty(window, 'localStorage', {value: storageMock()});
+Object.defineProperty(window, 'sessionStorage', {value: storageMock()});
+Object.defineProperty(window, 'scrollIntoView', {value: storageMock()});
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ['-webkit-appearance']
 });
-(window as any).HTMLElement.prototype.scrollIntoView = function () {};
-if (!Object.getOwnPropertyDescriptor(document.body.style, 'transform')?.configurable) {
-  try {
-    Object.defineProperty(document.body.style, 'transform', {
-      value: '',
-      writable: true,
-      configurable: true
-    });
-  } catch (e) {
-    // some environments may not allow it at all — silently fail
-  }
+
+// fix for TypeError: this.window.matchMedia is not a function
+if (!Object.hasOwn(window, 'matchMedia')) {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn()
+    }))
+  });
 }

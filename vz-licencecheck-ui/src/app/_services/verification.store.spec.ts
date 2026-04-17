@@ -2,14 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {of} from 'rxjs';
 
 import {Failed, Idle, Polling, Succeeded, VerificationStore} from './verification.store';
-import {
-  Status,
-  UseCase,
-  VerificationBeginResponse,
-  VerificationErrorResponseCode,
-  VerificationState,
-  VerifierApi
-} from '@app/core/api/generated';
+import {Status, UseCase, VerificationBeginResponse, VerificationState, VerifierApi} from '@app/core/api/generated';
 
 // --------- TEST HELPERS ---------
 
@@ -56,7 +49,7 @@ const successVerification = (dateOfExpiration: string): VerificationState => ({
   }
 });
 
-const failedVerification = (code: VerificationErrorResponseCode): VerificationState => ({
+const failedVerification = (code: VerificationState.ErrorCodeEnum): VerificationState => ({
   id: 'verif-1',
   status: Status.Failed,
   errorCode: code,
@@ -142,7 +135,7 @@ describe('VerificationStore', () => {
 
   it('Failed + ClientRejected -> isRejected() true, isInvalid() false', () => {
     // GIVEN
-    const v = failedVerification(VerificationErrorResponseCode.ClientRejected);
+    const v = failedVerification(VerificationState.ErrorCodeEnum.ClientRejected);
 
     // WHEN
     store.completeVerification(v);
@@ -156,7 +149,7 @@ describe('VerificationStore', () => {
 
   it('Failed + JwtPremature -> isPremature() true', () => {
     // GIVEN
-    const v = failedVerification(VerificationErrorResponseCode.JwtPremature);
+    const v = failedVerification(VerificationState.ErrorCodeEnum.JwtPremature);
 
     // WHEN
     store.completeVerification(v);
@@ -170,7 +163,7 @@ describe('VerificationStore', () => {
 
   it('Failed + other error -> isInvalid() true', () => {
     // GIVEN
-    const v = failedVerification(VerificationErrorResponseCode.InvalidFormat);
+    const v = failedVerification(VerificationState.ErrorCodeEnum.InvalidFormat);
 
     // WHEN
     store.completeVerification(v);

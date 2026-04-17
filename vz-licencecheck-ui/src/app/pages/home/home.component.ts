@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PolicyService} from '@app/_services/policy.service';
-import {CommonModule} from '@angular/common';
+
 import {TranslateModule} from '@ngx-translate/core';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
@@ -12,20 +12,20 @@ import {AppConfigService} from '@app/core/app-config/app-config.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [CommonModule, TranslateModule, MatCheckboxModule, MatButtonModule, ObButtonModule]
+  imports: [TranslateModule, MatCheckboxModule, MatButtonModule, ObButtonModule]
 })
 export class HomeComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly policyService = inject(PolicyService);
+  private readonly appConfigService = inject(AppConfigService);
+
   readonly titleKey: string;
   showMessage: boolean = false;
   policyGroup: string = 'policy-group';
 
   private readonly nextPageUrl: string;
 
-  constructor(
-    private readonly router: Router,
-    private readonly policyService: PolicyService,
-    private readonly appConfigService: AppConfigService
-  ) {
+  constructor() {
     if (this.appConfigService.isMdlFeatureEnabled) {
       this.titleKey = 'i18n.verifier.home.title';
       this.nextPageUrl = '/licence-type';
@@ -54,13 +54,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  checkPolicy(checked: boolean) {
-    if (checked) {
-      this.policyService.setPolicyConfirmed(true);
+  checkPolicy(confirmed: boolean) {
+    this.policyService.setPolicyConfirmed(confirmed);
+    if (confirmed) {
       this.showMessage = false;
       this.policyGroup = 'policy-group';
-    } else {
-      this.policyService.setPolicyConfirmed(false);
     }
   }
 }

@@ -2,7 +2,6 @@ openapi: 3.1.0
 info:
   title: Verifier API
   description: Generic Verifier service
-  version: "0.1"
 servers:
   - url: https://astra-vz-verifier-service-d.apps.p-szb-ros-shrd-npr-01.cloud.admin.ch
     description: Generated server url
@@ -100,8 +99,8 @@ paths:
       tags:
         - Verfifier OID4VP API
       summary: Get Request Object
-      description: Can return a RequestObjectDto as JSON Object or a SignedJwt String
-        depending of JAR (JWT secured authorization request) flag in verifier management
+      description: Can return a RequestObjectDto as JSON Object or a SignedJWT String
+        depending on JAR (JWT secured authorization request) flag in verifier management
       operationId: getRequestObject
       parameters:
         - name: request_id
@@ -324,6 +323,69 @@ paths:
             application/json:
               schema:
                 type: object
+  /actuator/env:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'env'
+      operationId: environment
+      parameters:
+        - name: pattern
+          in: query
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+  /actuator/env/{toMatch}:
+    get:
+      tags:
+        - Actuator
+      summary: Actuator web endpoint 'env-toMatch'
+      operationId: environmentEntry
+      parameters:
+        - name: toMatch
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Not Found
 components:
   schemas:
     VerificationPresentationUnion:
@@ -885,6 +947,7 @@ components:
         - invalid_presentation_definition_uri
         - invalid_presentation_definition_reference
         - jwt_premature
+        - invalid_token_status_list
     VerificationStatus:
       type: string
       enum:
@@ -1058,8 +1121,6 @@ components:
         Additional Verifier metadata parameters MAY be defined and used, as described in [RFC7591].
         The Wallet MUST ignore any unrecognized parameters.
       properties:
-        version:
-          type: string
         additionalProperties:
           type: object
           additionalProperties: {}

@@ -2,7 +2,7 @@ import {Component, effect, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {ObButtonModule} from '@oblique/oblique';
 import {UntilDestroy} from '@ngneat/until-destroy';
-import {CommonModule} from '@angular/common';
+
 import {TranslateModule} from '@ngx-translate/core';
 import {MatButtonModule} from '@angular/material/button';
 import {VerificationStore} from '@app/_services/verification.store';
@@ -12,7 +12,7 @@ import {VerificationStore} from '@app/_services/verification.store';
   selector: 'app-scan-qr-code',
   templateUrl: './scan-qr-code.component.html',
   styleUrls: ['./scan-qr-code.component.scss'],
-  imports: [CommonModule, TranslateModule, MatButtonModule, ObButtonModule]
+  imports: [TranslateModule, MatButtonModule, ObButtonModule]
 })
 export class ScanQrCodeComponent {
   private readonly router = inject(Router);

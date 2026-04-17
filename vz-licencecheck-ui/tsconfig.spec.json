@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["jest"]
+    "types": ["jest"],
+    "isolatedModules": true
   },
   "files": ["polyfills.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts", "**/__mocks__/*.ts"]

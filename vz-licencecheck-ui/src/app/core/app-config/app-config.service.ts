@@ -1,4 +1,4 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {AppConfig, AppConfigApi, FeatureFlags} from '@app/core/api/generated';
@@ -7,10 +7,10 @@ import {AppConfig, AppConfigApi, FeatureFlags} from '@app/core/api/generated';
   providedIn: 'root'
 })
 export class AppConfigService {
+  private readonly appConfigApi = inject(AppConfigApi);
+
   private readonly _appConfig = signal<AppConfig | undefined>(undefined);
   private readonly _featureFlags = computed<FeatureFlags | undefined>(() => this._appConfig()?.featureFlags);
-
-  constructor(private readonly appConfigApi: AppConfigApi) {}
 
   loadAppConfig(): Observable<AppConfig | undefined> {
     return this.appConfigApi.getConfiguration().pipe(

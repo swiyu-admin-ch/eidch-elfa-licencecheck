@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -11,17 +10,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import {Inject, Injectable, Optional} from '@angular/core';
-import {
-  HttpClient,
-  HttpContext,
-  HttpEvent,
-  HttpHeaders,
-  HttpParameterCodec,
-  HttpParams,
-  HttpResponse
-} from '@angular/common/http';
-import {CustomHttpParameterCodec} from '../encoder';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpContext} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {OpenApiHttpParams, QueryParamStyle} from '../query.params';
 
 // @ts-ignore
 import {ErrorResponse} from '../model/error-response';
@@ -37,6 +28,7 @@ import {VerificationState} from '../model/verification-state';
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
 import {Configuration} from '../configuration';
+import {BaseService} from '../api.base.service';
 
 export interface GetVerificationProcessRequestParams {
   verificationId: string;
@@ -49,113 +41,54 @@ export interface StartVerificationProcessRequestParams {
 @Injectable({
   providedIn: 'root'
 })
-export class VerifierApi {
-  protected basePath = 'http://localhost:8888';
-  public defaultHeaders = new HttpHeaders();
-  public configuration = new Configuration();
-  public encoder: HttpParameterCodec;
-
+export class VerifierApi extends BaseService {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string | string[],
-    @Optional() configuration: Configuration
+    @Optional() configuration?: Configuration
   ) {
-    if (configuration) {
-      this.configuration = configuration;
-    }
-    if (typeof this.configuration.basePath !== 'string') {
-      const firstBasePath = Array.isArray(basePath) ? basePath[0] : undefined;
-      if (firstBasePath != undefined) {
-        basePath = firstBasePath;
-      }
-
-      if (typeof basePath !== 'string') {
-        basePath = this.basePath;
-      }
-      this.configuration.basePath = basePath;
-    }
-    this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-  }
-
-  // @ts-ignore
-  private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-    if (typeof value === 'object' && value instanceof Date === false) {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value);
-    } else {
-      httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-    }
-    return httpParams;
-  }
-
-  private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-    if (value == null) {
-      return httpParams;
-    }
-
-    if (typeof value === 'object') {
-      if (Array.isArray(value)) {
-        (value as any[]).forEach(elem => (httpParams = this.addToHttpParamsRecursive(httpParams, elem, key)));
-      } else if (value instanceof Date) {
-        if (key != null) {
-          httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
-        } else {
-          throw Error('key may not be null if value is Date');
-        }
-      } else {
-        Object.keys(value).forEach(
-          k => (httpParams = this.addToHttpParamsRecursive(httpParams, value[k], key != null ? `${key}.${k}` : k))
-        );
-      }
-    } else if (key != null) {
-      httpParams = httpParams.append(key, value);
-    } else {
-      throw Error('key may not be null if value is not object or array');
-    }
-    return httpParams;
+    super(basePath, configuration);
   }
 
   /**
    * Return a list of possible use-cases
    * Retrieves a list of possible use-cases.
+   * @endpoint get /api/v1/verification/use-cases
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public getUseCases(
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<Array<UseCase>>;
   public getUseCases(
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpResponse<Array<UseCase>>>;
   public getUseCases(
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpEvent<Array<UseCase>>>;
   public getUseCases(
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<any> {
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept(['application/json']);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -169,12 +102,14 @@ export class VerifierApi {
     }
 
     let localVarPath = `/api/v1/verification/use-cases`;
-    return this.httpClient.request<Array<UseCase>>('get', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<Array<UseCase>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }
@@ -182,33 +117,35 @@ export class VerifierApi {
   /**
    * Get the current status of a previously initiated verification process.
    * This endpoint can be used to poll the status and result of a previously initiated verification process.
+   * @endpoint get /api/v1/verification/verify/{verificationId}
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public getVerificationProcess(
-    requestParameters?: GetVerificationProcessRequestParams,
+    requestParameters: GetVerificationProcessRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<VerificationState>;
   public getVerificationProcess(
-    requestParameters?: GetVerificationProcessRequestParams,
+    requestParameters: GetVerificationProcessRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpResponse<VerificationState>>;
   public getVerificationProcess(
-    requestParameters?: GetVerificationProcessRequestParams,
+    requestParameters: GetVerificationProcessRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpEvent<VerificationState>>;
   public getVerificationProcess(
-    requestParameters?: GetVerificationProcessRequestParams,
+    requestParameters: GetVerificationProcessRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<any> {
     const verificationId = requestParameters?.verificationId;
     if (verificationId === null || verificationId === undefined) {
@@ -217,20 +154,15 @@ export class VerifierApi {
 
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept(['application/json']);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     let responseType_: 'text' | 'json' | 'blob' = 'json';
     if (localVarHttpHeaderAcceptSelected) {
@@ -244,12 +176,14 @@ export class VerifierApi {
     }
 
     let localVarPath = `/api/v1/verification/verify/${this.configuration.encodeParam({name: 'verificationId', value: verificationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid'})}`;
-    return this.httpClient.request<VerificationState>('get', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<VerificationState>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }
@@ -257,33 +191,35 @@ export class VerifierApi {
   /**
    * Start a new verification process
    * This endpoint starts a new verification process for a given use-case.
+   * @endpoint post /api/v1/verification/verify
    * @param requestParameters
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
+   * @param options additional options
    */
   public startVerificationProcess(
-    requestParameters?: StartVerificationProcessRequestParams,
+    requestParameters: StartVerificationProcessRequestParams,
     observe?: 'body',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<VerificationBeginResponse>;
   public startVerificationProcess(
-    requestParameters?: StartVerificationProcessRequestParams,
+    requestParameters: StartVerificationProcessRequestParams,
     observe?: 'response',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpResponse<VerificationBeginResponse>>;
   public startVerificationProcess(
-    requestParameters?: StartVerificationProcessRequestParams,
+    requestParameters: StartVerificationProcessRequestParams,
     observe?: 'events',
     reportProgress?: boolean,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<HttpEvent<VerificationBeginResponse>>;
   public startVerificationProcess(
-    requestParameters?: StartVerificationProcessRequestParams,
+    requestParameters: StartVerificationProcessRequestParams,
     observe: any = 'body',
     reportProgress: boolean = false,
-    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext}
+    options?: {httpHeaderAccept?: 'application/json'; context?: HttpContext; transferCache?: boolean}
   ): Observable<any> {
     const startVerification = requestParameters?.startVerification;
     if (startVerification === null || startVerification === undefined) {
@@ -294,20 +230,15 @@ export class VerifierApi {
 
     let localVarHeaders = this.defaultHeaders;
 
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json'];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept(['application/json']);
     if (localVarHttpHeaderAcceptSelected !== undefined) {
       localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
     }
 
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
 
     // to determine the Content-Type header
     const consumes: string[] = ['application/json'];
@@ -328,13 +259,15 @@ export class VerifierApi {
     }
 
     let localVarPath = `/api/v1/verification/verify`;
-    return this.httpClient.request<VerificationBeginResponse>('post', `${this.configuration.basePath}${localVarPath}`, {
+    const {basePath, withCredentials} = this.configuration;
+    return this.httpClient.request<VerificationBeginResponse>('post', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       body: startVerification,
       responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
+      ...(withCredentials ? {withCredentials} : {}),
       headers: localVarHeaders,
       observe: observe,
+      ...(localVarTransferCache !== undefined ? {transferCache: localVarTransferCache} : {}),
       reportProgress: reportProgress
     });
   }

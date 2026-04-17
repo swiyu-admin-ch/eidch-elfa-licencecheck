@@ -1,5 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ObIBanner} from '@oblique/oblique/lib/utilities.model';
+import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {VERSION} from '@environments/environment';
 import {banner} from '@app/core/utils';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
@@ -7,11 +6,12 @@ import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs';
 import {Meta, Title} from '@angular/platform-browser';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {ObButtonModule, ObIconModule, ObMasterLayoutModule, ObPopoverModule} from '@oblique/oblique';
+import {NgOptimizedImage} from '@angular/common';
+import {ObButtonModule, ObIBanner, ObIconModule, ObMasterLayoutModule, ObPopoverModule} from '@oblique/oblique';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {TimedOut, VerificationStore} from '@app/_services/verification.store';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,6 @@ import {TimedOut, VerificationStore} from '@app/_services/verification.store';
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
-    CommonModule,
     TranslateModule,
     MatIconModule,
     MatButtonModule,
@@ -28,10 +27,18 @@ import {TimedOut, VerificationStore} from '@app/_services/verification.store';
     ObPopoverModule,
     ObIconModule,
     ObMasterLayoutModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatTooltip
   ]
 })
 export class AppComponent implements OnInit {
+  private readonly appConfigService = inject(AppConfigService);
+  private readonly router = inject(Router);
+  private readonly store = inject(VerificationStore);
+  private readonly titleService = inject(Title);
+  private readonly translate = inject(TranslateService);
+  private readonly meta = inject(Meta);
+
   banner: ObIBanner;
   appVersion: any;
   currentYear: number;
@@ -43,14 +50,7 @@ export class AppComponent implements OnInit {
     {link: 'https://www.eid.admin.ch/de/pilotprojekte', label: 'i18n.support.more-information'}
   ];
 
-  constructor(
-    private readonly appConfigService: AppConfigService,
-    private readonly router: Router,
-    public store: VerificationStore,
-    private readonly titleService: Title,
-    private readonly translate: TranslateService,
-    private readonly meta: Meta
-  ) {
+  constructor() {
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
@@ -72,6 +72,10 @@ export class AppComponent implements OnInit {
           'LicenceCheck, Licence Check, LicenseCheck, License Check, eLFA prüfen, eLFA verifizieren, elektronischer Lernfahrausweis prüfen, Lernfahrausweis elektronisch prüfen, Lernfahrausweis prüfen'
       }
     ]);
+  }
+
+  get helpToolTip() {
+    return this.translate.instant('i18n.support.help');
   }
 
   private updateTitle(url: string): void {

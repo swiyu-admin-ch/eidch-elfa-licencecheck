@@ -8,7 +8,6 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -16,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class QrCodeServiceTest {
 
@@ -34,9 +34,8 @@ class QrCodeServiceTest {
 
     @Test
     void testCreate_qrCodeContainsTestData_throwsError() {
-        Exception exception = Assertions.assertThrows(Exception.class, () -> qrCodeService.create("test", -11));
-
-        Assertions.assertInstanceOf(ImageHandlingException.class, exception);
+        assertThatExceptionOfType(ImageHandlingException.class)
+            .isThrownBy(() -> qrCodeService.create("test", -11));
     }
 
 }

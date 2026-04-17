@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -14,4 +13,8 @@ export interface FeatureFlags {
    * Whether MDL functionality is enabled
    */
   enableMdl: boolean;
+  /**
+   * Whether Verifier Service integration uses OpenApi Generator
+   */
+  generatedVerifierClient: boolean;
 }

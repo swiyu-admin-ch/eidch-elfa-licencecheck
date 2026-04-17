@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -9,15 +8,47 @@
  * Do not edit the class manually.
  */
 import {Status} from './status';
-import {VerificationErrorResponseCode} from './verification-error-response-code';
 import {HolderAttributes} from './holder-attributes';
 
 export interface VerificationState {
   id?: string;
   status?: Status;
   verificationUrl?: string;
-  errorCode?: VerificationErrorResponseCode;
+  errorCode?: VerificationState.ErrorCodeEnum;
   errorDescription?: string;
   holderAttributes?: HolderAttributes;
 }
-export namespace VerificationState {}
+export namespace VerificationState {
+  export const ErrorCodeEnum = {
+    CredentialInvalid: 'credential_invalid',
+    JwtExpired: 'jwt_expired',
+    InvalidFormat: 'invalid_format',
+    CredentialExpired: 'credential_expired',
+    MissingNonce: 'missing_nonce',
+    UnsupportedFormat: 'unsupported_format',
+    CredentialRevoked: 'credential_revoked',
+    CredentialSuspended: 'credential_suspended',
+    HolderBindingMismatch: 'holder_binding_mismatch',
+    CredentialMissingData: 'credential_missing_data',
+    UnresolvableStatusList: 'unresolvable_status_list',
+    PublicKeyOfIssuerUnresolvable: 'public_key_of_issuer_unresolvable',
+    ClientRejected: 'client_rejected',
+    IssuerNotAccepted: 'issuer_not_accepted',
+    AuthorizationRequestObjectNotFound: 'authorization_request_object_not_found',
+    AuthorizationRequestMissingErrorParam: 'authorization_request_missing_error_param',
+    VerificationProcessClosed: 'verification_process_closed',
+    InvalidPresentationDefinition: 'invalid_presentation_definition',
+    MalformedCredential: 'malformed_credential',
+    PresentationSubmissionConstraintViolated: 'presentation_submission_constraint_violated',
+    InvalidPresentationSubmission: 'invalid_presentation_submission',
+    InvalidScope: 'invalid_scope',
+    InvalidRequest: 'invalid_request',
+    InvalidClient: 'invalid_client',
+    VpFormatsNotSupported: 'vp_formats_not_supported',
+    InvalidPresentationDefinitionUri: 'invalid_presentation_definition_uri',
+    InvalidPresentationDefinitionReference: 'invalid_presentation_definition_reference',
+    JwtPremature: 'jwt_premature',
+    InvalidTokenStatusList: 'invalid_token_status_list'
+  } as const;
+  export type ErrorCodeEnum = (typeof ErrorCodeEnum)[keyof typeof ErrorCodeEnum];
+}

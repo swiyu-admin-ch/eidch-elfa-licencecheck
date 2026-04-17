@@ -1,13 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
-import {TranslateLoader, TranslateModule, TranslateNoOpLoader} from '@ngx-translate/core';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {provideNoopAnimations} from '@angular/platform-browser/animations';
 import {provideRouter} from '@angular/router';
-import {ObMasterLayoutModule, WINDOW} from '@oblique/oblique';
-import {MatIconTestingModule} from '@angular/material/icon/testing';
+import {provideObliqueTestingConfiguration} from '@oblique/oblique';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -24,21 +19,10 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: TranslateNoOpLoader}
-        }),
-        ObMasterLayoutModule,
-        MatIconTestingModule
-      ],
       providers: [
+        provideObliqueTestingConfiguration(),
         provideRouter([]),
-        provideNoopAnimations(),
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        {provide: AppConfigService, useValue: mockAppConfigService},
-        {provide: WINDOW, useValue: window}
+        {provide: AppConfigService, useValue: mockAppConfigService}
       ]
     }).compileComponents();
 

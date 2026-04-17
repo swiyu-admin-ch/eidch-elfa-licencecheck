@@ -1,0 +1,27 @@
+spring:
+  autoconfigure:
+    exclude:
+      # Exclude OAuth2 client autoconfiguration - test profile doesn't use OAuth2 for verifier-service
+      - org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration
+
+jeap:
+  # noinspection SpringBootApplicationYaml
+  logging.platform: local
+
+management.endpoint.health:
+  probes.enabled: false
+
+springdoc:
+  swagger-ui.enabled: false
+  api-docs.enabled: false
+
+verifier-service:
+  client-name: "LicenceCheck (Test)"
+  endpoint: "https://example.com"
+  use-case-folderPath: "use-cases"
+  allowed-issuer-did: "MOCK-DID"
+  mock:
+    failResponse: false
+    errorCode: JWT_PREMATURE
+  logging:
+    level: "NONE"

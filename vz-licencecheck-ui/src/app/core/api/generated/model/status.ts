@@ -1,6 +1,5 @@
 /**
  * LicenceCheck Service API
- * The API to start a verification process, load use-cases and poll for verification status.
  *
  *
  *
@@ -9,10 +8,9 @@
  * Do not edit the class manually.
  */
 
-export type Status = 'PENDING' | 'SUCCESS' | 'FAILED';
-
 export const Status = {
-  Pending: 'PENDING' as Status,
-  Success: 'SUCCESS' as Status,
-  Failed: 'FAILED' as Status
-};
+  Pending: 'PENDING',
+  Success: 'SUCCESS',
+  Failed: 'FAILED'
+} as const;
+export type Status = (typeof Status)[keyof typeof Status];

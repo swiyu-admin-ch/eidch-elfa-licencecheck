@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {UseCase} from '@app/core/api/generated';
-import {CommonModule} from '@angular/common';
+
 import {TranslateModule} from '@ngx-translate/core';
 import {MatButtonModule} from '@angular/material/button';
 import {ObButtonModule} from '@oblique/oblique';
@@ -10,15 +10,15 @@ import {ObButtonModule} from '@oblique/oblique';
   selector: 'app-info-dialog',
   templateUrl: './info-dialog.component.html',
   styleUrls: ['./info-dialog.component.scss'],
-  imports: [CommonModule, TranslateModule, MatDialogModule, MatButtonModule, ObButtonModule]
+  imports: [TranslateModule, MatDialogModule, MatButtonModule, ObButtonModule]
 })
 export class InfoDialogComponent implements OnInit {
-  item: UseCase;
+  dialogRef = inject<MatDialogRef<InfoDialogComponent>>(MatDialogRef);
+  data = inject<{
+    item: any;
+  }>(MAT_DIALOG_DATA);
 
-  constructor(
-    public dialogRef: MatDialogRef<InfoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {item: any}
-  ) {}
+  item: UseCase;
 
   ngOnInit(): void {
     this.item = this.data.item;

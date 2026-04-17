@@ -1,7 +1,6 @@
 package ch.admin.astra.vz.lc.core.logging;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationErrorResponseCodeDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.controller.verifier.model.VerificationErrorResponseCodeDto;
 import lombok.experimental.UtilityClass;
 import org.slf4j.MDC;
 
@@ -36,8 +35,8 @@ public class LoggingUtil {
         MDC.put(KEY_VERIFICATION_ID, verificationId.toString());
     }
 
-    public static void setVerificationStatus(VerificationStatusDto state) {
-        MDC.put(KEY_VERIFICATION_STATUS, state.name());
+    public static void setVerificationStatus(String state) {
+        MDC.put(KEY_VERIFICATION_STATUS, state);
     }
 
     public static void setStatus(RequestStatus state) {

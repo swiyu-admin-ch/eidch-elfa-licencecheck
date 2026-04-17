@@ -2,7 +2,6 @@ package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.VerifierHeaderInterceptor;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.mapper.VerifierServiceModelMapper;
 import ch.admin.astra.vz.controller.verifier.api.VerifierManagementApiApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OpenAPIVerifierClientConfigurationTest {
 
     @Mock
-    private VerifierServiceModelMapper mapper;
-
-    @Mock
     private VerifierHeaderInterceptor verifierHeaderInterceptor;
 
     private OpenAPIVerifierClientConfiguration configuration;
@@ -34,7 +30,7 @@ class OpenAPIVerifierClientConfigurationTest {
 
     @BeforeEach
     void setUp() {
-        configuration = new OpenAPIVerifierClientConfiguration(mapper, verifierHeaderInterceptor, null);
+        configuration = new OpenAPIVerifierClientConfiguration(verifierHeaderInterceptor, null);
         objectMapper = new ObjectMapper();
         restErrorHandler = new RestErrorHandler(objectMapper);
         httpLogRequestInterceptor = new HttpLogRequestInterceptor();

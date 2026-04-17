@@ -1,11 +1,10 @@
 package ch.admin.astra.vz.lc.modules.verification.service;
 
-import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.CreateVerificationManagementDto;
+import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.VerifierServiceClient;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.domain.qrcode.QrCode;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.Attribute;
@@ -17,9 +16,7 @@ import ch.admin.astra.vz.lc.modules.verification.mapper.UseCaseMapper;
 import ch.admin.astra.vz.lc.modules.verification.mapper.VerificationMapper;
 import ch.admin.astra.vz.lc.modules.verification.service.qrcode.QrCodeService;
 import ch.admin.astra.vz.lc.modules.verification.service.usecase.UseCaseCache;
-import ch.qos.logback.classic.Logger;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,23 +25,22 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class VerificationServiceTest {
 
-
     public static final String CLIENT_NAME = "Client";
     public static final String ALLOWED_ISSUER_DID = "did:example:123";
-    private VerificationService verificationService;
+    public static final String VERIFICATION_DEEPLINK_EXPECTED = "DEEPLINK";
 
     @Mock
     private UseCaseCache useCaseCache;
@@ -64,166 +60,153 @@ class VerificationServiceTest {
     @Spy
     private LoggingService loggingService;
 
+    private final UUID useCaseId = UUID.randomUUID();
+    private final UUID verificationId = UUID.randomUUID();
+    private VerificationService verificationService;
+
     @BeforeEach
     void setUp() {
-        verificationService = new VerificationService(useCaseCache, useCaseMapper, verifierServiceClient, verificationMapper, qrCodeService, loggingService, CLIENT_NAME, ALLOWED_ISSUER_DID);
-    }
-
-    @AfterEach
-    void teardown() {
-        ((Logger) LoggerFactory.getLogger(VerificationService.class)).detachAndStopAllAppenders();
+        verificationService = new VerificationService(
+            useCaseCache, useCaseMapper, verifierServiceClient, verificationMapper,
+            qrCodeService, loggingService, CLIENT_NAME, ALLOWED_ISSUER_DID
+        );
     }
 
     @Test
     void testGetUseCases_callsCache() {
+        // when
         verificationService.getUseCases();
-        Mockito.verify(useCaseCache).getUseCases();
+        // then
+        then(useCaseCache).should().getUseCases();
     }
 
     @Test
     void createVerification_UseCaseNotFoundException() {
         // given
-        UUID useCaseId = UUID.randomUUID();
-        when(useCaseCache.getUseCaseById(useCaseId)).thenThrow(UseCaseNotFoundException.class);
+        given(useCaseCache.getUseCaseById(useCaseId)).willThrow(UseCaseNotFoundException.class);
 
         // when
-        Assertions.assertThrows(UseCaseNotFoundException.class, () -> verificationService.createVerification(useCaseId));
+        final ThrowingCallable throwingCallable = () -> verificationService.createVerification(useCaseId);
 
         // then
-        Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
+        assertThatExceptionOfType(UseCaseNotFoundException.class).isThrownBy(throwingCallable);
+        then(useCaseCache).should().getUseCaseById(useCaseId);
     }
 
     @Test
     void createVerification_TechAdapterException() {
         // given
-        // mock useCaseCache
-        UUID useCaseId = UUID.randomUUID();
-        when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
-
-        // mock verifierManagementClient
-        when(verifierServiceClient.createVerification(any())).thenThrow(VerifierException.class);
+        given(useCaseCache.getUseCaseById(useCaseId)).willReturn(mockUseCase());
+        given(verifierServiceClient.createVerification(any())).willThrow(VerifierException.class);
 
         // when
-        Assertions.assertThrows(VerifierException.class, () -> verificationService.createVerification(useCaseId));
+        final ThrowingCallable throwingCallable = () -> verificationService.createVerification(useCaseId);
 
         // then
-        // assert useCaseService
-        Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
+        assertThatExceptionOfType(VerifierException.class).isThrownBy(throwingCallable);
+        then(useCaseCache).should().getUseCaseById(useCaseId);
 
-        // assert CreateVerificationManagementDto
-        ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
-        Mockito.verify(verifierServiceClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
-        CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
-        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
-        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
-        assertEquals(CLIENT_NAME, createVerificationManagementDto.presentationDefinition().getName());
+        final var argumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
+        then(verifierServiceClient).should().createVerification(argumentCaptor.capture());
+
+        final var presentationDefinition = argumentCaptor.getValue().getPresentationDefinition();
+        assertThat(presentationDefinition).isNotNull();
+        assertThat(presentationDefinition.getName()).isEqualTo(CLIENT_NAME);
+
+        final var inputDescriptorConstraintFields = presentationDefinition.getInputDescriptors().getFirst().getConstraints().getFields();
+        assertThat(inputDescriptorConstraintFields.getFirst().getPath()).containsExactly("$.attribute2");
+        assertThat(inputDescriptorConstraintFields.get(1).getPath()).containsExactly("$.attribute");
     }
 
     @Test
     void createVerification_BusinessException() {
         // given
-        // mock useCaseCache
-        UUID useCaseId = UUID.randomUUID();
-        when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
-
-        // mock verifierManagementClient
-        UUID verificationId = UUID.randomUUID();
-        String verificationDeeplinkExpected = "DEEPLINK";
-        ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
-            .id(verificationId)
-                .state(VerificationStatusDto.SUCCESS)
-            .verificationUrl("URL")
-                .verificationDeeplink(verificationDeeplinkExpected)
-            .build();
-        when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
-
-        // mock qrCodeService
-        when(qrCodeService.create(verificationDeeplinkExpected, 500)).thenThrow(ImageHandlingException.class);
+        given(useCaseCache.getUseCaseById(useCaseId)).willReturn(mockUseCase());
+        given(verifierServiceClient.createVerification(any())).willReturn(getManagementResponseDto());
+        given(qrCodeService.create(VERIFICATION_DEEPLINK_EXPECTED, 500)).willThrow(ImageHandlingException.class);
 
         // when
-        assertThrows(ImageHandlingException.class, () -> verificationService.createVerification(useCaseId));
+        final ThrowingCallable throwingCallable = () -> verificationService.createVerification(useCaseId);
 
         // then
-        // assert useCaseService
-        Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
-        Mockito.verify(verifierServiceClient).createVerification(Mockito.any());
-        Mockito.verify(qrCodeService).create(verificationDeeplinkExpected, 500);
+        assertThatExceptionOfType(ImageHandlingException.class).isThrownBy(throwingCallable);
+        then(useCaseCache).should().getUseCaseById(useCaseId);
+        then(verifierServiceClient).should().createVerification(Mockito.any());
+        then(qrCodeService).should().create(VERIFICATION_DEEPLINK_EXPECTED, 500);
     }
 
 
     @Test
     void createVerification_OK() {
         // given
-        // mock useCaseCache
-        UUID useCaseId = UUID.randomUUID();
-        when(useCaseCache.getUseCaseById(useCaseId)).thenReturn(mockUseCase());
+        given(useCaseCache.getUseCaseById(useCaseId)).willReturn(mockUseCase());
+        given(verifierServiceClient.createVerification(any())).willReturn(getManagementResponseDto());
 
-        // mock verifierManagementClient
-        UUID verificationId = UUID.randomUUID();
-        String verificationDeeplinkExpected = "DEEPLINK";
-        ManagementResponseDto managementResponseDto = ManagementResponseDto.builder()
-            .id(verificationId)
-                .state(VerificationStatusDto.SUCCESS)
-            .verificationUrl("URL")
-            .verificationDeeplink(verificationDeeplinkExpected)
-            .build();
-
-        when(verifierServiceClient.createVerification(any())).thenReturn(managementResponseDto);
-
-        // mock qrCodeService
-        byte[] imageBytes = "image".getBytes();
-        String imageFormat = "format";
-        when(qrCodeService.create(verificationDeeplinkExpected, 500)).thenReturn(QrCode.builder().imageData(imageBytes).format(imageFormat).build());
+        // mock QrCodeService
+        final var imageBytes = "image".getBytes();
+        final var imageFormat = "format";
+        given(qrCodeService.create(VERIFICATION_DEEPLINK_EXPECTED, 500))
+            .willReturn(QrCode.builder().imageData(imageBytes).format(imageFormat).build());
 
         // when
-        VerificationBeginResponseDto result = verificationService.createVerification(useCaseId);
+        final var result = verificationService.createVerification(useCaseId);
 
         // then
-        // assert result
-        assertEquals(verificationId, result.id());
-        assertEquals(imageBytes, result.qrCode());
-        assertEquals(imageFormat, result.qrCodeFormat());
+        assertThat(result.id()).isEqualTo(verificationId);
+        assertThat(result.qrCode()).isEqualTo(imageBytes);
+        assertThat(result.qrCodeFormat()).isEqualTo(imageFormat);
 
         // assert useCaseService
-        Mockito.verify(useCaseCache).getUseCaseById(useCaseId);
+        then(useCaseCache).should().getUseCaseById(useCaseId);
 
         // assert CreateVerificationManagementDto
-        ArgumentCaptor<CreateVerificationManagementDto> createVerificationManagementDtoArgumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
-        Mockito.verify(verifierServiceClient).createVerification(createVerificationManagementDtoArgumentCaptor.capture());
-        CreateVerificationManagementDto createVerificationManagementDto = createVerificationManagementDtoArgumentCaptor.getValue();
-        assertIterableEquals(List.of("$.attribute2"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().getFirst().path());
-        assertIterableEquals(List.of("$.attribute"), createVerificationManagementDto.presentationDefinition().getInputDescriptors().getFirst().constraints().fields().get(1).path());
-        assertEquals(CLIENT_NAME, createVerificationManagementDto.presentationDefinition().getName());
+        final var argumentCaptor = ArgumentCaptor.forClass(CreateVerificationManagementDto.class);
+        then(verifierServiceClient).should().createVerification(argumentCaptor.capture());
+
+        final var createVerificationManagementDto = argumentCaptor.getValue();
+        final var presentationDefinition = createVerificationManagementDto.getPresentationDefinition();
+        assertThat(presentationDefinition).isNotNull();
+
+        final var inputDescriptorConstraintFields = presentationDefinition.getInputDescriptors().getFirst().getConstraints().getFields();
+        assertThat(inputDescriptorConstraintFields.getFirst().getPath()).containsExactly("$.attribute2");
+        assertThat(inputDescriptorConstraintFields.get(1).getPath()).containsExactly("$.attribute");
+        assertThat(createVerificationManagementDto.getPresentationDefinition().getName()).isEqualTo(CLIENT_NAME);
 
         // assert QrCode
-        ArgumentCaptor<String> qrCodeArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(qrCodeService).create(qrCodeArgumentCaptor.capture(), eq(500));
-        assertEquals(verificationDeeplinkExpected, qrCodeArgumentCaptor.getValue());
+        final var qrCodeArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        then(qrCodeService).should().create(qrCodeArgumentCaptor.capture(), eq(500));
+        assertThat(qrCodeArgumentCaptor.getValue()).isEqualTo(VERIFICATION_DEEPLINK_EXPECTED);
     }
 
     @Test
     void getVerificationStatus_throwsTechAdapterException() {
-        when(verifierServiceClient.getVerificationStatus(any())).thenThrow(VerifierException.class);
+        given(verifierServiceClient.getVerificationStatus(any())).willThrow(VerifierException.class);
 
-        UUID verificationId = UUID.randomUUID();
-        assertThrows(VerifierException.class, () -> verificationService.getVerificationStatus(verificationId));
+        assertThatExceptionOfType(VerifierException.class)
+            .isThrownBy(() -> verificationService.getVerificationStatus(verificationId));
     }
 
     @Test
     void getVerificationStatus() {
-        var uuid = UUID.randomUUID();
-        var responseDto = ManagementResponseDto.builder()
-                .id(uuid)
-                .state(VerificationStatusDto.SUCCESS)
+        // given
+        final var managementResponse = getManagementResponseDto();
+        given(verifierServiceClient.getVerificationStatus(verificationId)).willReturn(managementResponse);
+
+        // when
+        verificationService.getVerificationStatus(verificationId);
+
+        // then
+        then(verifierServiceClient).should().getVerificationStatus(verificationId);
+        then(loggingService).should().addVerificationStatusContext(managementResponse);
+    }
+
+    private ManagementResponseDto getManagementResponseDto() {
+        return ManagementResponseDto.builder()
+            .id(verificationId)
+            .state(VerificationStatusDto.SUCCESS)
+            .verificationUrl("URL")
+            .verificationDeeplink(VERIFICATION_DEEPLINK_EXPECTED)
             .build();
-
-        // mock verifierManagementClient
-        when(verifierServiceClient.getVerificationStatus(uuid)).thenReturn(responseDto);
-
-        verificationService.getVerificationStatus(uuid);
-
-        Mockito.verify(verifierServiceClient).getVerificationStatus(uuid);
-        Mockito.verify(loggingService).addVerificationStatusContext(responseDto);
     }
 
     private UseCase mockUseCase() {

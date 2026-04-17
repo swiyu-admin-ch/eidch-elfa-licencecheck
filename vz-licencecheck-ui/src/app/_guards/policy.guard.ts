@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {PolicyService} from '@app/_services/policy.service';
 
@@ -6,10 +6,8 @@ import {PolicyService} from '@app/_services/policy.service';
   providedIn: 'root'
 })
 export class PolicyGuard {
-  constructor(
-    private readonly policyService: PolicyService,
-    private readonly router: Router
-  ) {}
+  private readonly policyService = inject(PolicyService);
+  private readonly router = inject(Router);
 
   canActivate(): boolean {
     if (this.policyService.isPolicyConfirmed()) {

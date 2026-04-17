@@ -1,1 +1,4 @@
-import './jestGlobalMocks'; // browser mocks globally available for every test
+import './jestGlobalMocks';
+import {setupZoneTestEnv} from 'jest-preset-angular/setup-env/zone';
+
+setupZoneTestEnv();

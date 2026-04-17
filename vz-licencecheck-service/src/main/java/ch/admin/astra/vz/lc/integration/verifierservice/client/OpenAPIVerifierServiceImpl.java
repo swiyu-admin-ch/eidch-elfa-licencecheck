@@ -17,21 +17,17 @@ import java.util.UUID;
 public class OpenAPIVerifierServiceImpl implements VerifierServiceClient {
 
     private final VerifierManagementApiApi verifierManagementApiApi;
-    private final ch.admin.astra.vz.lc.integration.verifierservice.client.mapper.VerifierServiceModelMapper mapper;
 
     @Override
-    public ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto createVerification(ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto createVerificationManagementDto) {
+    public ManagementResponseDto createVerification(CreateVerificationManagementDto createVerificationManagementDto) {
         log.debug("Creating verification via OpenAPI client");
-        CreateVerificationManagementDto request = mapper.toOpenApiModel(createVerificationManagementDto);
-        ManagementResponseDto response = verifierManagementApiApi.createVerification(request);
-        return mapper.toDomainDto(response);
+        return verifierManagementApiApi.createVerification(createVerificationManagementDto);
     }
 
     @Override
-    public ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto getVerificationStatus(UUID verificationId) {
+    public ManagementResponseDto getVerificationStatus(UUID verificationId) {
         log.debug("Getting verification status for {} via OpenAPI client", verificationId);
-        ManagementResponseDto response = verifierManagementApiApi.getVerification(verificationId);
-        return mapper.toDomainDto(response);
+         return verifierManagementApiApi.getVerification(verificationId);
     }
 }
 

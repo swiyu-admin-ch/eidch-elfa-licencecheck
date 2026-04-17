@@ -1,13 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {firstValueFrom, take} from 'rxjs';
-import {
-  Status,
-  UseCase,
-  VerificationBeginResponse,
-  VerificationErrorResponseCode,
-  VerificationState,
-  VerifierApi
-} from '@app/core/api/generated';
+import {Status, UseCase, VerificationBeginResponse, VerificationState, VerifierApi} from '@app/core/api/generated';
 import {DateUtils} from '@app/core/utils';
 import {VerificationPollingRunner} from '@app/_services/VerificationPollingRunner';
 import {QrCodeUtil} from '@app/core/utils/qr-code-util';
@@ -35,7 +28,7 @@ export class VerificationStore {
   private readonly _verificationId = signal<string | null>(null);
   private readonly _beginResponse = signal<VerificationBeginResponse | null>(null);
   private readonly _status = signal<VerificationFlowStatus>(Idle);
-  private readonly _errorCode = signal<VerificationErrorResponseCode | null>(null);
+  private readonly _errorCode = signal<VerificationState.ErrorCodeEnum | null>(null);
 
   // --- SELECTORS / COMPUTEDS
   readonly selectedLicenceType = this._selectedLicenceType.asReadonly();
@@ -49,11 +42,11 @@ export class VerificationStore {
   });
 
   readonly isPremature = computed(
-    () => this._status() === Failed && this._errorCode() === VerificationErrorResponseCode.JwtPremature
+    () => this._status() === Failed && this._errorCode() === VerificationState.ErrorCodeEnum.JwtPremature
   );
 
   readonly isRejected = computed(
-    () => this._status() === Failed && this._errorCode() === VerificationErrorResponseCode.ClientRejected
+    () => this._status() === Failed && this._errorCode() === VerificationState.ErrorCodeEnum.ClientRejected
   );
 
   readonly isInvalid = computed(() => {
@@ -61,8 +54,8 @@ export class VerificationStore {
     const e = this._errorCode();
     return (
       e != null &&
-      e !== VerificationErrorResponseCode.ClientRejected &&
-      e !== VerificationErrorResponseCode.JwtPremature
+      e !== VerificationState.ErrorCodeEnum.ClientRejected &&
+      e !== VerificationState.ErrorCodeEnum.JwtPremature
     );
   });
 

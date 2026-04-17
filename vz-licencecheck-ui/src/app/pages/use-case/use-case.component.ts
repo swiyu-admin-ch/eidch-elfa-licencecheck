@@ -4,7 +4,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {InfoDialogComponent} from '@app/pages/use-case/info-dialog/info-dialog.component';
 import {UseCase, VerifierApi} from '@app/core/api/generated';
 import {UntilDestroy} from '@ngneat/until-destroy';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
@@ -24,7 +24,6 @@ import {AppConfigService} from '@app/core/app-config/app-config.service';
   styleUrls: ['./use-case.component.scss'],
   encapsulation: ViewEncapsulation.None,
   imports: [
-    CommonModule,
     TranslateModule,
     MatCardModule,
     MatIconModule,

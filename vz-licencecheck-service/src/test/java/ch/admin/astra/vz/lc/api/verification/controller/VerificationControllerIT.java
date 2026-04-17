@@ -1,20 +1,25 @@
 package ch.admin.astra.vz.lc.api.verification.controller;
 
-import ch.admin.astra.vz.lc.BaseIntegrationTest;
-import ch.admin.astra.vz.lc.api.verification.model.*;
+import ch.admin.astra.vz.controller.verifier.model.ManagementResponseDto;
+import ch.admin.astra.vz.controller.verifier.model.ResponseDataDto;
+import ch.admin.astra.vz.controller.verifier.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.api.verification.model.StartVerificationDto;
+import ch.admin.astra.vz.lc.api.verification.model.UseCaseDto;
+import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
+import ch.admin.astra.vz.lc.api.verification.model.VerificationStateDto;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.VerifierServiceClient;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ResponseDataDto;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.junit.VZIntegrationTest;
 import ch.admin.astra.vz.lc.modules.verification.service.qrcode.QrCodeService;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.jupiter.api.Assertions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -22,22 +27,22 @@ import java.util.UUID;
 
 import static ch.admin.astra.vz.lc.api.verification.model.StatusDto.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Integration test for VerificationController 'old' VerifierServiceClient not OpenApi Client.
  */
-@SpringBootTest(properties = {
-        "spring.main.lazy-initialization=true",
-        "features.GENERATED_VERIFIER_CLIENT=false"
-})
-class VerificationControllerIT extends BaseIntegrationTest {
+@VZIntegrationTest
+class VerificationControllerIT {
 
-    public static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
+    private static final String BASE_URL = "/api/v1/verification/";
+    private static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
     private static final String EXISTING_USE_CASE = "c2041c31-db6b-4cf1-871d-6a24d400159b";
 
     @MockitoBean
@@ -49,71 +54,102 @@ class VerificationControllerIT extends BaseIntegrationTest {
     @Autowired
     private QrCodeService qrCodeService;
 
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
     void testGetUseCases_thenSuccess() throws Exception {
+        // when
+        final var mvcResult = mvc.perform(get(BASE_URL + "use-cases"))
+            .andExpect(status().isOk())
+            .andReturn();
 
-        List<UseCaseDto> response = fetchGet("use-cases", new TypeReference<>() {
-        });
+        // then
+        final var response = getResponse(mvcResult, new TypeReference<List<UseCaseDto>>() {});
+        assertThat(response).isNotNull().hasSize(1);
 
-        assertNotNull(response);
-        Assertions.assertEquals(1, response.size());
+        final var useCaseDto = response.getFirst();
+        assertThat(useCaseDto.title()).isEqualTo("title");
+        assertThat(useCaseDto.description()).isEqualTo("description");
 
-        UseCaseDto useCaseDto = response.getFirst();
-        assertEquals("title", useCaseDto.title());
-        assertEquals("description", useCaseDto.description());
+        final var attributeGroups = useCaseDto.attributeGroups();
+        assertThat(attributeGroups).hasSize(1);
 
-        List<AttributeGroupDto> attributeGroups = useCaseDto.attributeGroups();
-        assertEquals(1, attributeGroups.size());
+        final var attributeGroupDto = attributeGroups.getFirst();
+        assertThat(attributeGroupDto.name()).isEqualTo("name");
+        assertThat(attributeGroupDto.order()).isEqualTo(1);
 
-        AttributeGroupDto attributeGroupDto = attributeGroups.getFirst();
-        assertEquals("name", attributeGroupDto.name());
-        assertEquals(1, attributeGroupDto.order());
-
-        List<AttributeDto> attributes = attributeGroupDto.attributes();
-        AttributeDto attributeDto = attributes.getFirst();
-        assertEquals("name", attributeDto.name());
-        assertEquals("type", attributeDto.type());
-        assertEquals(1, attributeDto.order());
+        final var attributeDto = attributeGroupDto.attributes().getFirst();
+        assertThat(attributeDto.name()).isEqualTo("name");
+        assertThat(attributeDto.type()).isEqualTo("type");
+        assertThat(attributeDto.order()).isEqualTo(1);
     }
 
     @Test
     void testStartVerificationProcess_usingExistingUseCase_thenSuccess() throws Exception {
-        doReturn(getTestVerificationResponse()).when(verifierServiceClient)
-            .createVerification(any());
+        // given
+        final var requestContent = new StartVerificationDto(UUID.fromString(EXISTING_USE_CASE));
+        final var expectedQrCode = qrCodeService.create("swiyu://blahblah", 500).getImageData();
+        given(verifierServiceClient.createVerification(any())).willReturn(getTestVerificationResponse());
 
-        StartVerificationDto request = new StartVerificationDto(UUID.fromString(EXISTING_USE_CASE));
-        VerificationBeginResponseDto response = fetchPost("verify", request, new TypeReference<>() {
-        });
+        // when
+        final var mvcResult = mvc.perform(post(BASE_URL + "verify")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestContent)))
+            .andExpect(status().isOk())
+            .andReturn();
 
-        assertNotNull(response);
-        assertEquals(ID, response.id());
-        assertEquals(Base64.getEncoder().encodeToString(qrCodeService.create("swiyu://blahblah", 500).getImageData()), Base64.getEncoder().encodeToString(response.qrCode()));
-        assertEquals("png", response.qrCodeFormat());
+        // then
+        final var response = getResponse(mvcResult, VerificationBeginResponseDto.class);
+        assertThat(response).isNotNull();
+
+        assertThat(response.id()).isEqualTo(ID);
+        assertThat(Base64.getEncoder().encodeToString(response.qrCode()))
+            .isEqualTo(Base64.getEncoder().encodeToString(expectedQrCode));
+        assertThat(response.qrCodeFormat()).isEqualTo("png");
     }
 
     @Test
     void testGetVerificationProcess_usingMockedProcess_thenSuccess() throws Exception {
-        doReturn(getTestVerificationResponse()).when(verifierServiceClient)
-            .getVerificationStatus(argThat(r -> r.equals(ID)));
+        // given
+        given(verifierServiceClient.getVerificationStatus(argThat(uuid -> uuid.equals(ID))))
+            .willReturn(getTestVerificationResponse());
 
+        // when
+        final var mvcResult = mvc.perform(get(BASE_URL + "verify/{id}", ID))
+            .andExpect(status().isOk())
+            .andReturn();
 
-        VerificationStateDto response = fetchGet("verify/" + ID, new TypeReference<>() {
-        });
+        // then
+        final var response = getResponse(mvcResult, VerificationStateDto.class);
+        assertThat(response).isNotNull();
 
-        assertNotNull(response);
+        assertThat(response.id()).isEqualTo(ID.toString());
+        assertThat(response.status()).isEqualTo(SUCCESS);
+        assertThat(response.verificationUrl()).isEqualTo("url");
+        assertThat(response.holderAttributes().attributes())
+            .containsExactlyEntriesOf(Map.of("attributeKey", "attributeValue"));
+    }
 
-        assertEquals(ID.toString(), response.id());
-        assertEquals(SUCCESS, response.status());
-        assertEquals("url", response.verificationUrl());
+    // Helper Methods
 
-        assertThat(response.holderAttributes().attributes()).containsExactlyEntriesOf(
-            Map.of("attributeKey", "attributeValue"));
+    private <T> T getResponse(MvcResult result, TypeReference<T> valueType) throws Exception {
+        final var responseContent = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        return objectMapper.readValue(responseContent, valueType);
+    }
+
+    private <T> T getResponse(MvcResult result, Class<T> valueType) throws Exception {
+        final var responseContent = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        return objectMapper.readValue(responseContent, valueType);
     }
 
     private ManagementResponseDto getTestVerificationResponse() {
         return ManagementResponseDto.builder()
             .id(ID)
-                .state(VerificationStatusDto.SUCCESS)
+            .state(VerificationStatusDto.SUCCESS)
             .verificationUrl("url")
             .verificationDeeplink("swiyu://blahblah")
             .walletResponse(ResponseDataDto.builder()

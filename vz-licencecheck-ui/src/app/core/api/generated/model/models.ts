@@ -11,5 +11,4 @@ export * from './start-verification';
 export * from './status';
 export * from './use-case';
 export * from './verification-begin-response';
-export * from './verification-error-response-code';
 export * from './verification-state';

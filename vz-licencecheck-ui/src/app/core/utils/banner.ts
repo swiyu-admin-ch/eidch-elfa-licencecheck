@@ -1,4 +1,4 @@
-import {ObIBanner} from '@oblique/oblique/lib/utilities.model';
+import {ObIBanner} from '@oblique/oblique';
 
 export function banner(environment: string | undefined): ObIBanner {
   const banners: {[key: string]: ObIBanner} = {

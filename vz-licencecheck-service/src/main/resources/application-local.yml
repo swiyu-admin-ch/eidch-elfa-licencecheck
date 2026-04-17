@@ -21,9 +21,6 @@ jeap:
       user: "prometheus"
       password: "{noop}secret"
 
-toTriggerPipeline:
-    trigger: "true"
-
 logging:
   level:
     ch.admin.astra.vz.lc: DEBUG

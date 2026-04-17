@@ -12,19 +12,18 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
     "importHelpers": true,
-    "esModuleInterop": true,
     "resolveJsonModule": true,
     "target": "ES2022",
+    "useDefineForClassFields": true,
     "module": "ES2022",
-    "lib": ["ES2022", "dom"],
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
     "paths": {
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"]
     },
-    "types": ["jest"]
+    "types": ["jest", "node"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

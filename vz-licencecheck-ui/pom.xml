@@ -1,12 +1,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ch.admin.astra.vz.lc</groupId>
         <artifactId>vz-licencecheck-scs</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>vz-licencecheck-ui</artifactId>
 
@@ -19,39 +19,21 @@
     </properties>
 
     <build>
-        <resources>
-            <resource>
-                <directory>frontend-build</directory>
-            </resource>
-        </resources>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>${exec-maven-plugin.version}</version>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <configuration>
                         <filesets>
                             <fileset>
+                                <directory>.angular/cache</directory>
+                            </fileset>
+                            <fileset>
                                 <directory>node_modules</directory>
-                                <includes>
-                                    <include>**</include>
-                                </includes>
-                                <followSymlinks>false</followSymlinks>
                             </fileset>
                             <fileset>
                                 <directory>coverage</directory>
-                                <includes>
-                                    <include>**</include>
-                                </includes>
-                                <followSymlinks>false</followSymlinks>
-                            </fileset>
-                            <fileset>
-                                <directory>frontend-build</directory>
                             </fileset>
                         </filesets>
                     </configuration>
@@ -75,7 +57,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>npm</id>
+                                <id>npm-clean-install</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>exec</goal>
@@ -96,7 +78,7 @@
             <id>ng-build</id>
             <activation>
                 <file>
-                    <missing>frontend-build/static/</missing> <!-- Execute if the output of ng build is not present -->
+                    <missing>target/classes/static/</missing> <!-- Execute if the output of ng build is not present -->
                 </file>
             </activation>
             <build>
@@ -107,10 +89,10 @@
                         <executions>
                             <execution>
                                 <id>npm-run-lint</id>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
-                                <phase>generate-resources</phase>
                                 <configuration>
                                     <executable>npm</executable>
                                     <arguments>
@@ -121,10 +103,10 @@
                             </execution>
                             <execution>
                                 <id>npm-run-tests</id>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
-                                <phase>generate-resources</phase>
                                 <configuration>
                                     <executable>npm</executable>
                                     <arguments>

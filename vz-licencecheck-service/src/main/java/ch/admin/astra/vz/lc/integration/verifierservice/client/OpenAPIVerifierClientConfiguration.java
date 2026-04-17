@@ -1,11 +1,10 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
+import ch.admin.astra.vz.controller.verifier.api.VerifierManagementApiApi;
+import ch.admin.astra.vz.controller.verifier.invoker.ApiClient;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.OAuth2ClientCredentialsInterceptor;
 import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.VerifierHeaderInterceptor;
-import ch.admin.astra.vz.lc.integration.verifierservice.client.mapper.VerifierServiceModelMapper;
-import ch.admin.astra.vz.controller.verifier.api.VerifierManagementApiApi;
-import ch.admin.astra.vz.controller.verifier.invoker.ApiClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -31,23 +30,20 @@ import java.util.Optional;
  */
 @Slf4j
 @Configuration
-@Profile("!local")
+@Profile("!local & !test")
 @ConditionalOnProperty(
-        name = "features.GENERATED_VERIFIER_CLIENT",
-        havingValue = "true",
-        matchIfMissing = true
+    name = "features.GENERATED_VERIFIER_CLIENT",
+    havingValue = "true",
+    matchIfMissing = true
 )
 public class OpenAPIVerifierClientConfiguration {
 
-    private final VerifierServiceModelMapper mapper;
     private final VerifierHeaderInterceptor verifierHeaderInterceptor;
     private final Optional<OAuth2AuthorizedClientManager> oAuth2AuthorizedClientManager;
 
     public OpenAPIVerifierClientConfiguration(
-            VerifierServiceModelMapper mapper,
-            VerifierHeaderInterceptor verifierHeaderInterceptor,
-            @Autowired(required = false) OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
-        this.mapper = mapper;
+        VerifierHeaderInterceptor verifierHeaderInterceptor,
+        @Autowired(required = false) OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         this.verifierHeaderInterceptor = verifierHeaderInterceptor;
         this.oAuth2AuthorizedClientManager = Optional.ofNullable(oAuth2AuthorizedClientManager);
     }
@@ -66,36 +62,36 @@ public class OpenAPIVerifierClientConfiguration {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public VerifierServiceClient verifierServiceClient(
-            @Value("${verifier-service.endpoint}") String endpoint,
-            @Value("${verifier-service.oauth2.enable:false}") boolean oauth2Enabled,
-            @Value("${verifier-service.oauth2.client-registration-id:licencecheck}") String oauth2ClientRegistrationId,
-            RestErrorHandler restErrorHandler,
-            HttpLogRequestInterceptor httpLogRequestInterceptor,
-            ObjectMapper objectMapper) {
+        @Value("${verifier-service.endpoint}") String endpoint,
+        @Value("${verifier-service.oauth2.enable:false}") boolean oauth2Enabled,
+        @Value("${verifier-service.oauth2.client-registration-id:licencecheck}") String oauth2ClientRegistrationId,
+        RestErrorHandler restErrorHandler,
+        HttpLogRequestInterceptor httpLogRequestInterceptor,
+        ObjectMapper objectMapper) {
 
 
         RestClient.Builder restClientBuilder = RestClient.builder();
 
         // Buffered request factory to allow multiple reads of the response body (for logging)
         var httpFactory = new BufferingClientHttpRequestFactory(
-                new HttpComponentsClientHttpRequestFactory()
+            new HttpComponentsClientHttpRequestFactory()
         );
 
         // Configure RestClient with all necessary interceptors and error handling
         restClientBuilder
-                .requestFactory(httpFactory)
-                .defaultStatusHandler(
-                        HttpStatusCode::isError, // 4xx oder 5xx
-                        restErrorHandler)
-                .requestInterceptor(verifierHeaderInterceptor)
-                .requestInterceptor(httpLogRequestInterceptor);
+            .requestFactory(httpFactory)
+            .defaultStatusHandler(
+                HttpStatusCode::isError, // 4xx oder 5xx
+                restErrorHandler)
+            .requestInterceptor(verifierHeaderInterceptor)
+            .requestInterceptor(httpLogRequestInterceptor);
 
         // Add OAuth2 interceptor if enabled
         if (oauth2Enabled && oAuth2AuthorizedClientManager.isPresent()) {
             OAuth2ClientCredentialsInterceptor oauth2Interceptor =
-                    new OAuth2ClientCredentialsInterceptor(
-                            oAuth2AuthorizedClientManager.get(),
-                            oauth2ClientRegistrationId);
+                new OAuth2ClientCredentialsInterceptor(
+                    oAuth2AuthorizedClientManager.get(),
+                    oauth2ClientRegistrationId);
             restClientBuilder.requestInterceptor(oauth2Interceptor);
             log.info("OAuth2 interceptor enabled for OpenAPI client with registration: {}", oauth2ClientRegistrationId);
         }
@@ -117,7 +113,6 @@ public class OpenAPIVerifierClientConfiguration {
 
         VerifierManagementApiApi api = new VerifierManagementApiApi(apiClient);
 
-        return new OpenAPIVerifierServiceImpl(api, mapper);
+        return new OpenAPIVerifierServiceImpl(api);
     }
 }
-

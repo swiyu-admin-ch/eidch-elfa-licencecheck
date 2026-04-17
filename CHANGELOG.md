@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0]
+- chore: Update jEAP to 31.4.0
+- [EIDRAEDA-1833](https://jira.bit.admin.ch/browse/EIDRAEDA-1833): Implement DCQL Queries vs Verifier Service. Remove old verify flow.
+- [EIDRAEDA-1614](https://jira.bit.admin.ch/browse/EIDRAEDA-1614): Update project to Java 25 and Node 22
+- [EIDRAEDA-1884](https://jira.bit.admin.ch/browse/EIDRAEDA-1884): Upgrade Oblique to 15 and Angular to 21 (two major versions)
+
 ## [2.2.0]
 - [EIDRAEDA-1669](https://jira.bit.admin.ch/browse/EIDRAEDA-1669): Adapt LC UI for mDL to new specifications
 - [EIDRAEDA-1855](https://jira.bit.admin.ch/browse/EIDRAEDA-1855): Handling of new error responses from Verifier Service

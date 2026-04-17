@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 import {ObAlertComponent, ObButtonDirective, ObSelectableDirective, ObSelectableModule} from '@oblique/oblique';
 import {TranslatePipe} from '@ngx-translate/core';
 import {VerificationStore} from '@app/_services/verification.store';
@@ -11,7 +11,6 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-licence-type-chooser',
   imports: [
-    CommonModule,
     ObSelectableModule,
     TranslatePipe,
     MatCard,

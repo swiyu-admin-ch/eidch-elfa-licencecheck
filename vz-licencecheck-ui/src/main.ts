@@ -4,14 +4,14 @@ import {
   importProvidersFrom,
   inject,
   LOCALE_ID,
-  provideAppInitializer
+  provideAppInitializer,
+  provideZoneChangeDetection
 } from '@angular/core';
 
 import {environment} from '@environments/environment';
 import {
   OB_BANNER,
   ObHttpApiInterceptor,
-  ObIconModule,
   ObMasterLayoutConfig,
   ObMasterLayoutModule,
   provideObliqueConfiguration,
@@ -22,15 +22,14 @@ import {banner} from '@app/core/utils';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {ErrorInterceptor} from '@app/_interceptors';
 import {PolicyService} from '@app/_services/policy.service';
-import {CommonModule, registerLocaleData} from '@angular/common';
+import {registerLocaleData} from '@angular/common';
 import localeDECH from '@angular/common/locales/de-CH';
 import localeFRCH from '@angular/common/locales/fr-CH';
 import localeITCH from '@angular/common/locales/it-CH';
 import localeENCH from '@angular/common/locales/en-CH';
 import localeRM from '@angular/common/locales/rm';
 import {AppComponent} from '@app/app.component';
-import {bootstrapApplication} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
 import {PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
 import {routes} from '@app/app.routes';
 import {ApiModule, Configuration} from '@app/core/api/generated';
@@ -60,10 +59,12 @@ const appConfig: ApplicationConfig = {
     }),
     provideObliqueConfiguration({
       accessibilityStatement: {
+        createdOn: new Date('2026-03-03'),
+        conformity: 'none',
         applicationName: "Replace me with the application's name",
         applicationOperator:
           'Replace me with the name and address of the federal office that exploit this application, HTML is permitted',
-        contact: {/* at least 1 email or phone number has to be provided */ emails: [''], phones: ['']}
+        contact: [{email: ''}, {phone: ''}]
       }
     }),
     {
@@ -81,10 +82,9 @@ const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom([
-      CommonModule,
-      BrowserAnimationsModule,
       ObMasterLayoutModule,
-      ObIconModule.forRoot(),
+      BrowserModule,
+
       ApiModule.forRoot(
         () =>
           new Configuration({
@@ -95,4 +95,7 @@ const appConfig: ApplicationConfig = {
   ]
 };
 
-bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  ...appConfig,
+  providers: [provideZoneChangeDetection(), ...appConfig.providers]
+}).catch(err => console.error(err));

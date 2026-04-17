@@ -1,6 +1,6 @@
 package ch.admin.astra.vz.lc.integration.verifierservice.client;
 
-import ch.admin.astra.vz.lc.integration.verifierservice.client.model.*;
+import ch.admin.astra.vz.controller.verifier.model.*;
 import ch.admin.astra.vz.lc.modules.verification.exception.ImageHandlingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;

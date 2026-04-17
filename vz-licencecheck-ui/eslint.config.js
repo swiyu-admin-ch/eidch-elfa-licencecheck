@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 
 module.exports = defineConfig([
   {},
-  globalIgnores(["projects/**/*"]),
+  globalIgnores(["projects/**/*", "**/core/api/generated/**"]),
   {
     files: ["**/*.ts"],
 
