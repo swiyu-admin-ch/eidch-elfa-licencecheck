@@ -1,3 +1,5 @@
+@use "colors";
+
 .ob-grid {
   gap: 10px !important;
 }
@@ -40,7 +42,7 @@
   font-size: 16px;
   line-height: 24px;
   padding-bottom: 15px;
-  color: $black;
+  color: colors.$black;
 }
 
 .footer-buttons {

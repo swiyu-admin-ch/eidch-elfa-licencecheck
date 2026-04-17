@@ -10,12 +10,12 @@ import {ObButtonModule, ObIconModule, ObStickyModule} from '@oblique/oblique';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {TimedOut, VerificationStore} from '@app/_services/verification.store';
+import {DateUtils} from '@app/core/utils';
 
 @Component({
   selector: 'app-verification-result',
   templateUrl: './verification-result.component.html',
   styleUrls: ['./verification-result.component.scss'],
-  standalone: true,
   imports: [
     CommonModule,
     TranslateModule,
@@ -58,9 +58,10 @@ export class VerificationResultComponent implements OnDestroy {
     return group.attributes.filter(a => a.name !== 'photoImage').sort((a, b) => a.order - b.order);
   }
 
-  shouldDisplayGroup(group: AttributeGroup) {
+  shouldDisplayGroupHeader(group: AttributeGroup) {
     return group.name !== 'photoImage';
   }
 
   protected readonly TimedOut = TimedOut;
+  protected readonly DateUtils = DateUtils;
 }

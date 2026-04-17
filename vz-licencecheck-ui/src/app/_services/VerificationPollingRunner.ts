@@ -7,7 +7,10 @@ export class VerificationPollingRunner {
   private pollSub: Subscription | null = null;
   private timeoutHandle: any = null;
 
-  constructor(private readonly store: VerificationStore, private readonly api: VerifierApi) {}
+  constructor(
+    private readonly store: VerificationStore,
+    private readonly api: VerifierApi
+  ) {}
 
   start(verificationId: string) {
     this.stop(); // clean up old timers first
@@ -27,7 +30,7 @@ export class VerificationPollingRunner {
         this.store.markTimedOut();
         this.stop();
       }
-    }, environment.navigationDelay);
+    }, environment.pollingTimeoutTime);
   }
 
   stop() {

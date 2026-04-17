@@ -1,58 +1,50 @@
+// File: vz-licencecheck-service/src/test/java/ch/admin/astra/vz/lc/integration/verifiermanagement/client/VerifierServiceImplTest.java
 package ch.admin.astra.vz.lc.integration.verifiermanagement.client;
 
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import retrofit2.Call;
-import retrofit2.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.io.IOException;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class VerifierServiceImplTest {
+@TestPropertySource(locations={"classpath:application.yml", "classpath:application-ref.yml"})
+@ActiveProfiles(value = "ref")
+@SpringBootTest(properties="spring.main.lazy-initialization=true")
+class VerifierServiceImplTest  {
 
-    @InjectMocks
-    private VerifierServiceImpl verifierManagement;
+    @Autowired
+    private VerifierServiceClient verifierService;
 
-    @Mock
-    private VerifierManagementApi verifierManagementApi;
-
-    @Mock
-    private ObjectMapper objectMapper;
-
-    @Mock
-    private Call<ManagementResponseDto> call;
-
-    @Mock
-    private Response<ManagementResponseDto> responseMock;
+    @MockitoBean
+    private VerifierApi verifierApi;
 
     @Test
-    void createVerification_success() throws IOException {
-        CreateVerificationManagementDto createVerificationManagementDto = CreateVerificationManagementDto.builder().build();
-        Mockito.when(verifierManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
-
+    void createVerification_success() {
+        CreateVerificationManagementDto dto = CreateVerificationManagementDto.builder().build();
         ManagementResponseDto expected = ManagementResponseDto.builder().build();
-        Mockito.when(call.execute()).thenReturn(Response.success(expected));
 
-        ManagementResponseDto result = verifierManagement.createVerification(createVerificationManagementDto);
+        when(verifierApi.createVerification(dto)).thenReturn(expected);
+
+        ManagementResponseDto result = verifierService.createVerification(dto);
 
         Assertions.assertEquals(expected, result);
     }
 
     @Test
-    void createVerification_exception() throws IOException {
-        CreateVerificationManagementDto createVerificationManagementDto = CreateVerificationManagementDto.builder().build();
-        Mockito.when(verifierManagementApi.createVerification(createVerificationManagementDto)).thenReturn(call);
-        Mockito.when(call.execute()).thenThrow(IOException.class);
+    void createVerification_exception() {
+        CreateVerificationManagementDto dto = CreateVerificationManagementDto.builder().build();
 
-        Assertions.assertThrows(VerifierException.class, () -> verifierManagement.createVerification(createVerificationManagementDto));
+        when(verifierApi.createVerification(dto))
+                .thenThrow(new VerifierException(HttpStatus.BAD_GATEWAY, "error", false));
+
+        Assertions.assertThrows(VerifierException.class, () -> verifierService.createVerification(dto));
     }
 }

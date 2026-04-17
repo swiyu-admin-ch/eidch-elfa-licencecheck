@@ -10,6 +10,7 @@ import {
 } from '@app/core/api/generated';
 import {DateUtils} from '@app/core/utils';
 import {VerificationPollingRunner} from '@app/_services/VerificationPollingRunner';
+import {QrCodeUtil} from '@app/core/utils/qr-code-util';
 
 enum VerificationFlowStatus {
   Idle = 'idle',
@@ -71,7 +72,9 @@ export class VerificationStore {
   readonly qrDataUrl = computed<string | null>(() => {
     const r = this._beginResponse();
     if (!r) return null;
-    return `data:image/${r.qrCodeFormat};base64,${r.qrCode}`;
+    const sanitizedQrCode = QrCodeUtil.sanitize(r.qrCode, r.qrCodeFormat);
+    if (!sanitizedQrCode) return null;
+    return `data:image/${r.qrCodeFormat};base64,${sanitizedQrCode}`;
   });
 
   // --- COMMANDS (public API)

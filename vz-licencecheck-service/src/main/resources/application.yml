@@ -8,6 +8,11 @@ jeap:
   web:
     headers:
       content-security-policy: "default-src 'self' *.admin.ch; script-src 'self' 'unsafe-inline' *.admin.ch; style-src 'self' 'unsafe-inline'; frame-src 'self' *.admin.ch; img-src 'self' data:;"
+  # jeap http logging
+  # rest:
+  #  tracing:
+  #    application-name: vz-issuer-controller
+  #    full-response-details-in-message: true
 
 server:
   port: 8888
@@ -21,6 +26,12 @@ server:
 verifier:
   allowed-issuer-did: ${ALLOWED_ISSUER_DID}
   use-case-folderPath: "use-cases"
+  logging:
+    # "NONE", "BASIC", "HEADERS", "BODY"
+    # Sensible Daten
+    #  - Headers und Body können sensible Daten enthalten. Dies muss man abwägen bevor man zum Debuggen den HttpLogRequestInterceptor einsetzt.
+    #  - jEAP Logging löst dieses Problem, deswegen wurde es als Alternative aufgenommen.
+    level: ${VERIFIER_LOGGING_LEVEL:NONE}
 
 management:
   endpoint:
@@ -40,11 +51,11 @@ springdoc:
 logging:
   level:
     root: info
+    # jeap http logging
+    # ch.admin.bit.jeap.log.RestRequestTracer: DEBUG
 
 verifier-service:
   endpoint: "${VERIFIER_SERVICE_ENDPOINT}"
-  logging:
-    level: NONE # "NONE", "BASIC", "HEADERS", "BODY"
 
 features:
   USE_SINGLE_VERIFIER_ENABLED: ${FEATURE_USE_SINGLE_VERIFIER:false}

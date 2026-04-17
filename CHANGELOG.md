@@ -1,10 +1,17 @@
 # Changelog
 
+## [1.13.0]
+- [EIDRAEDA-1395](https://jira.bit.admin.ch/browse/EIDRAEDA-1395): Improved error handling and logging from verifier-service
+- [EIDRAEDA-1464](https://jira.bit.admin.ch/browse/EIDRAEDA-1464): Fixed handling of new date format in VC verification for expiration dates
+- fix: fixed browser refresh on QR-Code page leading to inconsistent state
+- [EIDRAEDA-1160](https://jira.bit.admin.ch/browse/EIDRAEDA-1160): Update to Angular 19 and Oblique 13 and other UI dependencies
+- [EIDRAEDA-1160](https://jira.bit.admin.ch/browse/EIDRAEDA-1160): Upgrade and cleanup of java dependencies
+- [EIDRAEDA-1480](https://jira.bit.admin.ch/browse/EIDRAEDA-1480): Migration Retrofit nach Spring, E2E Trace Context, Http Logging.
+
 ## [1.12.0]
 - [EIDRAEDA-1366](https://jira.bit.admin.ch/browse/EIDRAEDA-1366): Transition omni issuer/verifier components to single issuer/verifier
 - [EIDRAEDA-1318](https://jira.bit.admin.ch/browse/EUDRAEDA-1318): VCs that are only valid in the future get verified appropriately
 - [EIDRAEDA-1421](https://jira.bit.admin.ch/browse/EIDRAEDA-1421): Swapped incorrect support link in menu navigation
-- [EIDRAEDA-1395](https://jira.bit.admin.ch/browse/EIDRAEDA-1395): Improved error handling and logging from verifier-service
 
 ## [1.11.0]
 - [EIDRAEDA-EIDRAEDA-1391](https://jira.bit.admin.ch/browse/EIDRAEDA-EIDRAEDA-1391): Refactor & improve Logging

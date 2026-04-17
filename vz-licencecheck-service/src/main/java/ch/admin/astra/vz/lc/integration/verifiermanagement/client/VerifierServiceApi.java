@@ -2,34 +2,36 @@ package ch.admin.astra.vz.lc.integration.verifiermanagement.client;
 
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
+import org.springframework.web.client.RestClient;
 
 import java.util.UUID;
 
-public interface VerifierServiceApi extends VerifierApi {
+public class VerifierServiceApi implements VerifierApi {
 
-    /**
-     * Creates a new verification process with the given attributes
-     *
-     * @param createVerificationManagementDto (required)
-     * @return Call<ManagementResponseDto>
-     */
-    @Headers({"Content-Type:application/json"})
-    @POST("/management/api/verifications")
-    Call<ManagementResponseDto> createVerification(
-            @retrofit2.http.Body CreateVerificationManagementDto createVerificationManagementDto
-    );
+    public static final String CREATE_VERIFICATIONS = "/management/api/verifications";
+    public static final String GET_VERIFICATIONS = "/management/api/verifications/{verificationId}";
 
-    /**
-     * @param verificationId (required)
-     * @return Call<ManagementResponseDto>
-     */
-    @GET("/management/api/verifications/{verificationId}")
-    Call<ManagementResponseDto> getVerification(
-            @retrofit2.http.Path("verificationId") UUID verificationId
-    );
+    private final RestClient restClient;
+
+    public VerifierServiceApi(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    @Override
+    public ManagementResponseDto createVerification(CreateVerificationManagementDto createVerificationManagementDto) {
+        return restClient.post()
+                .uri(CREATE_VERIFICATIONS)
+                .body(createVerificationManagementDto)
+                .retrieve()
+                .body(ManagementResponseDto.class);
+    }
+
+    @Override
+    public ManagementResponseDto getVerification(UUID verificationId) {
+        return restClient.get()
+                .uri(GET_VERIFICATIONS, verificationId)
+                .retrieve()
+                .body(ManagementResponseDto.class);
+    }
 
 }

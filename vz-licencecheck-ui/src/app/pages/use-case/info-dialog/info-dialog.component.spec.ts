@@ -13,8 +13,7 @@ describe('InfoDialogComponent', () => {
     dataMock = {item: {id: '1', title: 'Test title', description: 'Test description', order: 1, attributeGroups: []}};
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [InfoDialogComponent],
+      imports: [InfoDialogComponent, TranslateModule.forRoot()],
       // Mock dialog reference and data for Angular Material Dialog
       providers: [
         {provide: MatDialogRef, useValue: dialogMock},

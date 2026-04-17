@@ -11,14 +11,16 @@ import {ObButtonModule} from '@oblique/oblique';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: true,
   imports: [CommonModule, TranslateModule, MatCheckboxModule, MatButtonModule, ObButtonModule]
 })
 export class HomeComponent implements OnInit {
   showMessage: boolean = false;
   policyGroup: string = 'policy-group';
 
-  constructor(private readonly router: Router, private readonly policyService: PolicyService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly policyService: PolicyService
+  ) {}
 
   ngOnInit() {
     if (this.isPolicyConfirmed()) {

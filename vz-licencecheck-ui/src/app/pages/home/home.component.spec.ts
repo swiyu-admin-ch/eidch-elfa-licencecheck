@@ -25,8 +25,7 @@ describe('HomeComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), MatCheckboxModule],
-      declarations: [HomeComponent],
+      imports: [HomeComponent, TranslateModule.forRoot(), MatCheckboxModule],
       providers: [
         {provide: PolicyService, useValue: policyServiceStub},
         {provide: Router, useValue: routerStub}

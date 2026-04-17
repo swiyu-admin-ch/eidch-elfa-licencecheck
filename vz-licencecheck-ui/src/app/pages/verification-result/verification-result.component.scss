@@ -1,4 +1,5 @@
-@import "styles";
+@use "styles";
+@use "colors";
 
 .center-validity-content {
   display: flex;
@@ -10,27 +11,27 @@
 .verification {
   padding: 20px;
   border-radius: 20px;
-  color: $white;
+  color: colors.$white;
 }
 
 .verification-success {
   @extend .verification;
-  background-color: $green;
+  background-color: colors.$green;
 }
 
 .verification-invalid {
   @extend .verification;
-  background-color: $red;
+  background-color: colors.$red;
 }
 
 .verification-error {
   @extend .verification;
   height: 517px;
   width: 350px;
-  background-color: $lightGrey;
+  background-color: colors.$lightGrey;
 
   .error-text {
-    color: $black !important;
+    color: colors.$black !important;
     font-size: 16px;
     text-align: center;
     margin: 0 20px;
@@ -41,7 +42,7 @@
   @extend .verification;
   height: 517px;
   width: 350px;
-  background-color: $red;
+  background-color: colors.$red;
 
   .error-text {
     font-size: 20px;
@@ -80,7 +81,7 @@
 }
 
 .status-icon-error {
-  color: $red;
+  color: colors.$red;
   font-size: 50px;
   text-align: center;
 }
@@ -105,7 +106,7 @@
 }
 
 .attribute-label {
-  color: $darkGrey;
+  color: colors.$darkGrey;
 }
 
 .attribute {
@@ -113,7 +114,7 @@
 }
 
 .validity-valid {
-  color: $green;
+  color: colors.$green;
 }
 
 .content {

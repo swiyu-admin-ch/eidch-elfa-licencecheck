@@ -1,14 +1,15 @@
-@import "styles";
+@use "styles";
+@use "colors";
 
 .mat-card {
-  background-color: $lightGrey;
+  background-color: colors.$lightGrey;
 }
 
 .info-icon {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: $slategray;
+  color: colors.$slategray;
   cursor: pointer;
   font-size: 30px;
 }

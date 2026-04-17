@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {PolicyGuard} from '@app/_guards/policy.guard';
 import {HomeComponent} from '@app/pages/home/home.component';
 import {verificationResultGuard} from '@app/_guards/verification-result.guard';
+import {scanQrCodeGuard} from '@app/_guards/scan-qr-code.guard';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
@@ -14,7 +15,7 @@ export const routes: Routes = [
   {
     path: 'scan-qr-code',
     loadComponent: () => import('./pages/scan-qr-code/scan-qr-code.component').then(m => m.ScanQrCodeComponent),
-    canActivate: [PolicyGuard],
+    canActivate: [PolicyGuard, scanQrCodeGuard],
     pathMatch: 'full'
   },
   {

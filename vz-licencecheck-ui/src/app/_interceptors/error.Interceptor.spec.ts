@@ -3,6 +3,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {HTTP_INTERCEPTORS, HttpHandler, HttpRequest} from '@angular/common/http';
 import {ErrorInterceptor} from './error.interceptor';
 import {ObENotificationType, ObNotificationService} from '@oblique/oblique';
+import {TranslateLoader, TranslateModule, TranslateNoOpLoader} from '@ngx-translate/core';
 
 describe('ErrorInterceptor', () => {
   let interceptor: ErrorInterceptor;
@@ -12,7 +13,12 @@ describe('ErrorInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {provide: TranslateLoader, useClass: TranslateNoOpLoader}
+        })
+      ],
       providers: [
         ErrorInterceptor,
         {provide: ObNotificationService, useValue: {error: jest.fn()}},

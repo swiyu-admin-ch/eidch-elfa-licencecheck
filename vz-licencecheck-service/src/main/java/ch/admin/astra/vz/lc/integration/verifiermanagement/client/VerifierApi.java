@@ -2,7 +2,8 @@ package ch.admin.astra.vz.lc.integration.verifiermanagement.client;
 
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import retrofit2.Call;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
@@ -14,16 +15,16 @@ public interface VerifierApi {
      * @param createVerificationManagementDto (required)
      * @return Call<ManagementResponseDto>
      */
-    Call<ManagementResponseDto> createVerification(
-            @retrofit2.http.Body CreateVerificationManagementDto createVerificationManagementDto
+    ManagementResponseDto createVerification(
+            @RequestBody CreateVerificationManagementDto createVerificationManagementDto
     );
 
     /**
      * @param verificationId (required)
      * @return Call<ManagementResponseDto>
      */
-    Call<ManagementResponseDto> getVerification(
-            @retrofit2.http.Path("verificationId") UUID verificationId
+    ManagementResponseDto getVerification(
+            @PathVariable("verificationId") UUID verificationId
     );
 
 }

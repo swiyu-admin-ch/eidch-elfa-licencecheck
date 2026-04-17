@@ -1,4 +1,5 @@
-@import "styles";
+@use "styles";
+@use "colors";
 
 .center-image {
   text-align: center;
@@ -14,12 +15,12 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: $lightBlue;
+  background-color: colors.$lightBlue;
 }
 
 .policy-group-error {
   @extend .policy-group;
-  background-color: $lightRed;
+  background-color: colors.$lightRed;
 }
 
 .flex-container {
@@ -33,7 +34,7 @@
 }
 
 .message {
-  color: $red;
+  color: colors.$red;
   margin-top: -40px;
 }
 

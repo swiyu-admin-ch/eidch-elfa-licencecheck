@@ -6,7 +6,10 @@ import {PolicyService} from '@app/_services/policy.service';
   providedIn: 'root'
 })
 export class PolicyGuard {
-  constructor(private readonly policyService: PolicyService, private readonly router: Router) {}
+  constructor(
+    private readonly policyService: PolicyService,
+    private readonly router: Router
+  ) {}
 
   canActivate(): boolean {
     if (this.policyService.isPolicyConfirmed()) {

@@ -16,8 +16,7 @@ describe('UseCaseSelectorComponent', () => {
     dialogMock = {close: () => {}};
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TranslateModule.forRoot(), ObStickyModule],
-      declarations: [UseCaseComponent],
+      imports: [UseCaseComponent, HttpClientTestingModule, TranslateModule.forRoot(), ObStickyModule],
       providers: [{provide: MatDialog, useValue: dialogMock}]
     }).compileComponents();
 

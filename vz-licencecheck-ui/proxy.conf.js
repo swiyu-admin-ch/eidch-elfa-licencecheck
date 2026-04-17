@@ -1,5 +1,5 @@
 module.exports = {
-  "/api/*": {
+  "/api": {
     target: "http://localhost:8888",
     changeOrigin: true,
     secure: false,

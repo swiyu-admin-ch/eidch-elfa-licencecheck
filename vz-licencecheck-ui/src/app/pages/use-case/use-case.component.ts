@@ -20,7 +20,6 @@ import {map} from 'rxjs';
   templateUrl: './use-case.component.html',
   styleUrls: ['./use-case.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [CommonModule, TranslateModule, MatCardModule, MatButtonModule, MatIconModule, ObButtonModule, ObIconModule]
 })
 export class UseCaseComponent {

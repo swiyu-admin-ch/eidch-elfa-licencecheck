@@ -1,14 +1,22 @@
-import {APP_INITIALIZER, ApplicationConfig, enableProdMode, importProvidersFrom, LOCALE_ID} from '@angular/core';
+import {
+  ApplicationConfig,
+  enableProdMode,
+  importProvidersFrom,
+  LOCALE_ID,
+  inject,
+  provideAppInitializer
+} from '@angular/core';
 
 import {environment} from '@environments/environment';
 import {
   multiTranslateLoader,
   OB_BANNER,
   ObHttpApiInterceptor,
-  ObHttpApiInterceptorConfig,
   ObIconModule,
   ObMasterLayoutConfig,
-  ObMasterLayoutModule
+  ObMasterLayoutModule,
+  provideObliqueConfiguration,
+  WINDOW
 } from '@oblique/oblique';
 import {AppConfigService} from '@app/core/app-config/app-config.service';
 import {banner} from '@app/core/utils';
@@ -25,9 +33,15 @@ import {AppComponent} from '@app/app.component';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TranslateModule} from '@ngx-translate/core';
-import {ApiModule, Configuration} from '@app/core/api/generated';
 import {PreloadAllModules, provideRouter, withPreloading} from '@angular/router';
 import {routes} from '@app/app.routes';
+import {ApiModule, Configuration} from '@app/core/api/generated';
+
+registerLocaleData(localeDECH);
+registerLocaleData(localeFRCH);
+registerLocaleData(localeITCH);
+registerLocaleData(localeENCH);
+registerLocaleData(localeRM);
 
 if (environment.production) {
   enableProdMode();
@@ -36,18 +50,23 @@ if (environment.production) {
 const appConfig: ApplicationConfig = {
   providers: [
     /* Initialize Services and/or run code on application initialization. */
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (config: ObMasterLayoutConfig) => {
+    provideAppInitializer(() => {
+      const initializerFn = ((config: ObMasterLayoutConfig) => {
         return () => {
           config.locale.locales = ['de-CH', 'fr-CH', 'it-CH', 'en-CH', 'rm'];
           config.homePageRoute = '/use-case';
         };
-      },
-      deps: [ObMasterLayoutConfig, ObHttpApiInterceptorConfig],
-      multi: true
-    },
-    // Oblique: show environment in top header
+      })(inject(ObMasterLayoutConfig));
+      return initializerFn();
+    }),
+    provideObliqueConfiguration({
+      accessibilityStatement: {
+        applicationName: "Replace me with the application's name",
+        applicationOperator:
+          'Replace me with the name and address of the federal office that exploit this application, HTML is permitted',
+        contact: {/* at least 1 email or phone number has to be provided */ emails: [''], phones: ['']}
+      }
+    }),
     {
       provide: OB_BANNER,
       useFactory: (appConfigService: AppConfigService) => {
@@ -56,8 +75,8 @@ const appConfig: ApplicationConfig = {
       deps: [AppConfigService]
     },
     {provide: LOCALE_ID, useValue: 'de-CH'},
+    {provide: WINDOW, useValue: window},
     {provide: HTTP_INTERCEPTORS, useClass: ObHttpApiInterceptor, multi: true},
-    // provider used to create fake backend
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     PolicyService,
     provideHttpClient(withInterceptorsFromDi()),
@@ -77,11 +96,5 @@ const appConfig: ApplicationConfig = {
     ])
   ]
 };
-
-registerLocaleData(localeDECH);
-registerLocaleData(localeFRCH);
-registerLocaleData(localeITCH);
-registerLocaleData(localeENCH);
-registerLocaleData(localeRM);
 
 bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));

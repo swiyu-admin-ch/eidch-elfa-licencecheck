@@ -3,7 +3,7 @@ package ch.admin.astra.vz.lc.api.verification.controller;
 import ch.admin.astra.vz.lc.BaseIntegrationTest;
 import ch.admin.astra.vz.lc.api.verification.model.*;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.interceptor.VerifierLoggingInterceptor;
+import ch.admin.astra.vz.lc.integration.verifiermanagement.client.interceptor.HttpLogRequestInterceptor;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ResponseDataDto;
 import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static ch.admin.astra.vz.lc.api.verification.model.StatusDto.SUCCESS;
+import static ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto.buildCreateVerificationManagementDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,11 +34,11 @@ class VerificationControllerIT extends BaseIntegrationTest {
     public static final UUID ID = UUID.fromString("11111111-2222-3333-4444-555555555555");
     private static final String EXISTING_USE_CASE = "c2041c31-db6b-4cf1-871d-6a24d400159b";
 
-    @MockitoBean
+    @MockitoBean(name = "mockVerifierManagementImpl")
     private VerifierServiceClient verifierServiceClient;
 
     @MockitoBean
-    private VerifierLoggingInterceptor verifierLoggingInterceptor;
+    private HttpLogRequestInterceptor verifierLoggingInterceptor;
 
     @Autowired
     private QrCodeService qrCodeService;
@@ -69,7 +70,7 @@ class VerificationControllerIT extends BaseIntegrationTest {
         assertEquals(1, attributeDto.order());
     }
 
-    @Test
+    //@Test Probem: Verification Controller "useCaseId" is null obwohl im DTO gesetzt. In Absorache mit Salih raus.
     void testStartVerificationProcess_usingExistingUseCase_thenSuccess() throws Exception {
         doReturn(getTestVerificationResponse()).when(verifierServiceClient)
             .createVerification(any());

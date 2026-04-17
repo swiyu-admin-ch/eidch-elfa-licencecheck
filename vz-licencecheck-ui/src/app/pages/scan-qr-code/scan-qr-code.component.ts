@@ -12,7 +12,6 @@ import {VerificationStore} from '@app/_services/verification.store';
   selector: 'app-scan-qr-code',
   templateUrl: './scan-qr-code.component.html',
   styleUrls: ['./scan-qr-code.component.scss'],
-  standalone: true,
   imports: [CommonModule, TranslateModule, MatButtonModule, ObButtonModule]
 })
 export class ScanQrCodeComponent {

@@ -4,7 +4,9 @@ spring:
 
 verifier:
   use-case-folderPath: "use-cases"
-
-verifier-service:
   logging:
-    level: NONE
+    # "NONE", "BASIC", "HEADERS", "BODY"
+    # Sensible Daten
+    #  - Headers und Body können sensible Daten enthalten. Dies muss man abwägen bevor man zum Debuggen den HttpLogRequestInterceptor einsetzt.
+    #  - jEAP Logging löst dieses Problem, deswegen wurde es als Alternative aufgenommen.
+    level: "NONE"
