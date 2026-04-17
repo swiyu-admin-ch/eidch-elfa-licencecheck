@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = AttributeMapper.class)
 public interface AttributeGroupMapper {
 
     @Mapping(source = "attributes", target = "attributes")

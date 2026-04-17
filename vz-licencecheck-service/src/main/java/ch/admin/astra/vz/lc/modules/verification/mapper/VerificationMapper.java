@@ -2,8 +2,8 @@ package ch.admin.astra.vz.lc.modules.verification.mapper;
 
 import ch.admin.astra.vz.lc.api.verification.model.HolderAttributesDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationStateDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ResponseDataDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ResponseDataDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -3,6 +3,8 @@ import {PolicyGuard} from '@app/_guards/policy.guard';
 import {HomeComponent} from '@app/pages/home/home.component';
 import {verificationResultGuard} from '@app/_guards/verification-result.guard';
 import {scanQrCodeGuard} from '@app/_guards/scan-qr-code.guard';
+import {useCaseGuard} from '@app/_guards/use-case.guard';
+import {mdlFeatureGuard} from '@app/_guards/mdl-feature.guard';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
@@ -10,6 +12,13 @@ export const routes: Routes = [
     path: 'use-case',
     loadComponent: () => import('./pages/use-case/use-case.component').then(m => m.UseCaseComponent),
     canActivate: [PolicyGuard],
+    pathMatch: 'full'
+  },
+  {
+    path: 'input-selection',
+    loadComponent: () =>
+      import('./pages/input-selection/input-selection.component').then(m => m.InputSelectionComponent),
+    canActivate: [PolicyGuard, useCaseGuard, mdlFeatureGuard],
     pathMatch: 'full'
   },
   {

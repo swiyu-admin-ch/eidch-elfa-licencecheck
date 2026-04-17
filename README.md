@@ -82,7 +82,7 @@ If a new verification process is started, there will always be successful verifi
 been mocked. To change the mock response, the [application-local.yml](vz-licencecheck-service/src/main/resources/application-local.yml)
 file can be modified at line 5 or 6 to get different responses. 
 If you want a successful verification, set `failResponse: false`, otherwise set `failResponse: true`. 
-To test various error codes, set the expected error code in line 6. See all possible error codes in [VerificationErrorResponseCodeDto.java](vz-licencecheck-service/src/main/java/ch/admin/astra/vz/lc/integration/verifiermanagement/client/model/VerificationErrorResponseCodeDto.java).  
+To test various error codes, set the expected error code in line 6. See all possible error codes in [VerificationErrorResponseCodeDto.java](vz-licencecheck-service/src/main/java/ch/admin/astra/vz/lc/integration/verifierservice/client/model/VerificationErrorResponseCodeDto.java).  
 
 ## Contributions and feedback
 

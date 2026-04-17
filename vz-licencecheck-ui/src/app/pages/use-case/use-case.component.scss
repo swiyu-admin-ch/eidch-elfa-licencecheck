@@ -13,3 +13,12 @@
   cursor: pointer;
   font-size: 30px;
 }
+
+.type-selector {
+  margin-bottom: 20px;
+
+  mat-form-field {
+    width: 100%;
+    min-width: 200px;
+  }
+}

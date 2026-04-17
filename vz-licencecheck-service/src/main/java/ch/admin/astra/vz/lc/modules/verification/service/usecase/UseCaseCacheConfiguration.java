@@ -30,7 +30,7 @@ public class UseCaseCacheConfiguration {
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public UseCaseCache getUseCaseCache(@Value("${verifier.use-case-folderPath}") String folderPath) {
+    public UseCaseCache getUseCaseCache(@Value("${verifier-service.use-case-folderPath}") String folderPath) {
         List<Resource> useCaseResourceList = findAllFilesInDirectory(folderPath);
         ConcurrentMap<UUID, UseCase> useCaseCache = mapToUseCases(useCaseResourceList);
         return new UseCaseCache(useCaseCache);
@@ -44,7 +44,7 @@ public class UseCaseCacheConfiguration {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
 
         try {
-            Resource[] useCaseResources = resolver.getResources("classpath:" + folderPath + "/*.json");
+            Resource[] useCaseResources = resolver.getResources("classpath:" + folderPath + "/**/*.json");
             Collections.addAll(useCaseResourceList, useCaseResources);
         }
         catch (IOException e) {

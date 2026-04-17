@@ -1,7 +1,7 @@
 package ch.admin.astra.vz.lc.core.logging;
 
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationErrorResponseCodeDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationErrorResponseCodeDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
 import lombok.experimental.UtilityClass;
 import org.slf4j.MDC;
 

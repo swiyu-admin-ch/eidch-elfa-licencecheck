@@ -24,11 +24,11 @@ class UseCaseCacheTest {
     private static final UUID EXISTING_USE_CASE = UUID.fromString("c2041c31-db6b-4cf1-871d-6a24d400159b");
 
     @Autowired
-    private UseCaseCache fileService;
+    private UseCaseCache useCaseCache;
 
     @Test
     void testGetUseCases_existingFile_isReturned() {
-        List<UseCase> useCaseList = fileService.getUseCases();
+        List<UseCase> useCaseList = useCaseCache.getUseCases();
         assertNotNull(useCaseList);
         assertEquals(1, useCaseList.size());
         assertEquals(EXISTING_USE_CASE, useCaseList.getFirst().getId());
@@ -36,7 +36,7 @@ class UseCaseCacheTest {
 
     @Test
     void testGetUseCaseById_existingFile_isReturned() {
-        UseCase useCase = fileService.getUseCaseById(EXISTING_USE_CASE);
+        UseCase useCase = useCaseCache.getUseCaseById(EXISTING_USE_CASE);
         assertNotNull(useCase);
         assertEquals(EXISTING_USE_CASE, useCase.getId());
     }
@@ -44,6 +44,6 @@ class UseCaseCacheTest {
     @Test
     void testGetUseCaseById_UseCaseNotFoundException() {
         UUID useCaseId = UUID.fromString("d9394767-6d8e-4d30-bcd5-1cecb39d8cd4");
-        Assertions.assertThrows(UseCaseNotFoundException.class, () -> fileService.getUseCaseById(useCaseId));
+        Assertions.assertThrows(UseCaseNotFoundException.class, () -> useCaseCache.getUseCaseById(useCaseId));
     }
 }

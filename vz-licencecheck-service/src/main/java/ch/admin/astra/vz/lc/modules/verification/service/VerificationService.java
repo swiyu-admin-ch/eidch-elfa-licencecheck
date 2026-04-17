@@ -4,10 +4,10 @@ import ch.admin.astra.vz.lc.api.verification.model.UseCaseDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
 import ch.admin.astra.vz.lc.api.verification.model.VerificationStateDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.PresentationDefinitionDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.VerifierServiceClient;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.PresentationDefinitionDto;
 import ch.admin.astra.vz.lc.modules.verification.domain.qrcode.QrCode;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.UseCase;
 import ch.admin.astra.vz.lc.modules.verification.mapper.UseCaseMapper;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
 
-import static ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto.buildCreateVerificationManagementDto;
+import static ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto.buildCreateVerificationManagementDto;
 
 @Slf4j
 @Component
@@ -49,8 +49,8 @@ public class VerificationService {
                                VerificationMapper verificationMapper,
                                QrCodeService qrCodeService,
                                LoggingService loggingService,
-                               @Value("${verifier.client-name}") String clientName,
-                               @Value("${verifier.allowed-issuer-did}") String allowedIssuerDid) {
+                               @Value("${verifier-service.client-name}") String clientName,
+                               @Value("${verifier-service.allowed-issuer-did}") String allowedIssuerDid) {
         this.useCaseCache = useCaseCache;
         this.useCaseMapper = useCaseMapper;
         this.verifierServiceClient = verifierServiceClient;

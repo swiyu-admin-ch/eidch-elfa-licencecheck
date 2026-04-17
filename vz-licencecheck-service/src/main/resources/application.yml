@@ -1,6 +1,19 @@
 spring:
   application:
     name: vz-licencecheck-scs
+  security:
+    # OAuth2 Client Configuration for Verifier Service
+    oauth2:
+      client:
+        registration:
+          licencecheck:
+            provider: keycloak
+            client-id: ${VERIFIER_SERVICE_OAUTH2_CLIENT_ID:licencecheck}
+            client-secret: ${VERIFIER_SERVICE_OAUTH2_CLIENT_SECRET:secret}
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            issuer-uri: ${VERIFIER_SERVICE_OAUTH2_KEYCLOAK_URI}
 
 jeap:
   swagger:
@@ -22,16 +35,6 @@ server:
     enabled: true
   #Increase the max header size as token can be quite big. 4MB should be enough for ~100'000 Roles for one user, normally this should be plenty
   max-http-request-header-size: 4MB
-
-verifier:
-  allowed-issuer-did: ${ALLOWED_ISSUER_DID}
-  use-case-folderPath: "use-cases"
-  logging:
-    # "NONE", "BASIC", "HEADERS", "BODY"
-    # Sensible Daten
-    #  - Headers und Body können sensible Daten enthalten. Dies muss man abwägen bevor man zum Debuggen den HttpLogRequestInterceptor einsetzt.
-    #  - jEAP Logging löst dieses Problem, deswegen wurde es als Alternative aufgenommen.
-    level: ${VERIFIER_LOGGING_LEVEL:NONE}
 
 management:
   endpoint:
@@ -56,6 +59,17 @@ logging:
 
 verifier-service:
   endpoint: "${VERIFIER_SERVICE_ENDPOINT}"
+  allowed-issuer-did: ${ALLOWED_ISSUER_DID}
+  use-case-folderPath: "use-cases"
+  logging:
+    # "NONE", "BASIC", "HEADERS", "BODY"
+    # Sensible Daten
+    #  - Headers und Body können sensible Daten enthalten. Dies muss man abwägen bevor man zum Debuggen den HttpLogRequestInterceptor einsetzt.
+    #  - jEAP Logging löst dieses Problem, deswegen wurde es als Alternative aufgenommen.
+    level: ${VERIFIER_SERVICE_LOGGING_LEVEL:HEADERS}
+  oauth2:
+    enable: ${VERIFIER_SERVICE_OAUTH2_ENABLE:false}
+    client-registration-id: ${spring.security.oauth2.client.registration.licencecheck.client-id}
 
 features:
-  USE_SINGLE_VERIFIER_ENABLED: ${FEATURE_USE_SINGLE_VERIFIER:false}
+  ENABLE_MDL: ${FEATURE_ENABLE_MDL:false}

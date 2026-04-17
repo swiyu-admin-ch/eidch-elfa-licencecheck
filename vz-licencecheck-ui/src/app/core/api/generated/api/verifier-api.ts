@@ -243,15 +243,7 @@ export class VerifierApi {
       }
     }
 
-    let localVarPath = `/api/v1/verification/verify/${this.configuration.encodeParam({
-      name: 'verificationId',
-      value: verificationId,
-      in: 'path',
-      style: 'simple',
-      explode: false,
-      dataType: 'string',
-      dataFormat: 'uuid'
-    })}`;
+    let localVarPath = `/api/v1/verification/verify/${this.configuration.encodeParam({name: 'verificationId', value: verificationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid'})}`;
     return this.httpClient.request<VerificationState>('get', `${this.configuration.basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,

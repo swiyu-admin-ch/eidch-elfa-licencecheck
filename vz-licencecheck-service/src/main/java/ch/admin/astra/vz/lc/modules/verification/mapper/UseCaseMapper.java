@@ -7,10 +7,11 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = AttributeGroupMapper.class)
+@Mapper(uses = {AttributeGroupMapper.class, InputElementMapper.class})
 public interface UseCaseMapper {
 
     @Mapping(source = "attributeGroups", target = "attributeGroups")
+    @Mapping(source = "inputElements", target = "inputElements")
     UseCaseDto map(UseCase useCase);
 
     List<UseCaseDto> map(List<UseCase> credentials);

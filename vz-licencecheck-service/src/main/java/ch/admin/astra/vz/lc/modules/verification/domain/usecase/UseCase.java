@@ -18,9 +18,12 @@ public final class UseCase {
     private final UUID id;
     private final String title;
     private final String description;
+    private final String type;
     private final Long order;
     @Singular
     private final List<AttributeGroup> attributeGroups;
+    @Singular
+    private final List<InputElement> inputElements;
 
     public List<String> getSortedAttributes() {
         if (attributeGroups == null || attributeGroups.isEmpty()) {

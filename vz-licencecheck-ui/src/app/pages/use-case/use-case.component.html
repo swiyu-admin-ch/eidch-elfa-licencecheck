@@ -2,8 +2,23 @@
   <div class="content">
     <div class="title">{{ "i18n.verifier.use-case-selector.title" | translate }}</div>
     <div class="description">{{ "i18n.verifier.use-case-selector.description" | translate }}</div>
+
+    <div class="type-selector" *ngIf="isMdlEnabled">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "i18n.verifier.use-case-selector.type-selector.label" | translate }}</mat-label>
+        <mat-select (selectionChange)="onTypeChange($event)">
+          <mat-option *ngIf="!selectedType()" value="">
+            {{ "i18n.verifier.use-case-selector.type-selector.choose" | translate }}
+          </mat-option>
+          <mat-option *ngFor="let type of availableTypes()" [value]="type">
+            {{ "i18n.verifier.use-case-selector.type-selector." + type | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <div id="use-cases" class="ob-grid">
-      <ng-container *ngFor="let item of useCases(); let i = index">
+      <ng-container *ngFor="let item of filteredUseCases(); let i = index">
         <div class="ob-span-12">
           <mat-card id="use-case-{{ i }}">
             <mat-icon class="info-icon" [svgIcon]="'info-circle'" (click)="openInfoDialog(item)"></mat-icon>
@@ -25,7 +40,7 @@
                   (click)="createVerificationRequest(item)"
                   type="button"
                 >
-                  {{ "i18n.verifier.use-cases." + item.title | translate }}
+                  {{ "i18n.verifier.use-cases." + item.title + ".button" | translate }}
                 </button>
               </div>
             </mat-card-content>

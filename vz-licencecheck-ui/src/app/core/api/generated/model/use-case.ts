@@ -9,11 +9,14 @@
  * Do not edit the class manually.
  */
 import {AttributeGroup} from './attribute-group';
+import {InputElement} from './input-element';
 
 export interface UseCase {
   id: string;
   title: string;
   description?: string;
+  type?: string;
   order?: number;
   attributeGroups?: Array<AttributeGroup>;
+  inputElements?: Array<InputElement>;
 }

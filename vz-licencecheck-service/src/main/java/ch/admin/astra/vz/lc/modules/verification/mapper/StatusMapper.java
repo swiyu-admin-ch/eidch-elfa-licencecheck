@@ -1,7 +1,7 @@
 package ch.admin.astra.vz.lc.modules.verification.mapper;
 
 import ch.admin.astra.vz.lc.api.verification.model.StatusDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
 import org.mapstruct.Mapper;
 
 @Mapper

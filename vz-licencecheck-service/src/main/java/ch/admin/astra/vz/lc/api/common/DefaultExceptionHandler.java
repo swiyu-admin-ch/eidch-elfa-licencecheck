@@ -2,7 +2,7 @@ package ch.admin.astra.vz.lc.api.common;
 
 import ch.admin.astra.vz.lc.api.common.model.ErrorResponseDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
+import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileMappingException;
 import ch.admin.astra.vz.lc.modules.verification.exception.FileStorageException;
 import ch.admin.astra.vz.lc.modules.verification.exception.ImageHandlingException;

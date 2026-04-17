@@ -2,11 +2,11 @@ package ch.admin.astra.vz.lc.api.verification.controller;
 
 import ch.admin.astra.vz.lc.BaseIntegrationTest;
 import ch.admin.astra.vz.lc.api.verification.model.*;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.interceptor.HttpLogRequestInterceptor;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ResponseDataDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.VerifierServiceClient;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.interceptor.HttpLogRequestInterceptor;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ResponseDataDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
 import ch.admin.astra.vz.lc.modules.verification.service.qrcode.QrCodeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static ch.admin.astra.vz.lc.api.verification.model.StatusDto.SUCCESS;
-import static ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto.buildCreateVerificationManagementDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -10,6 +10,9 @@ public record AppConfigDto(
     String version,
 
     @NotNull
-    String environment
+    String environment,
+
+    @NotNull
+    FeatureFlagsDto featureFlags
 
 ){}

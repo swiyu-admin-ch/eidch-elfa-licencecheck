@@ -2,11 +2,11 @@ package ch.admin.astra.vz.lc.modules.verification.service;
 
 import ch.admin.astra.vz.lc.api.verification.model.VerificationBeginResponseDto;
 import ch.admin.astra.vz.lc.core.logging.LoggingService;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.VerifierServiceClient;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.CreateVerificationManagementDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.VerifierServiceClient;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.CreateVerificationManagementDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import ch.admin.astra.vz.lc.modules.verification.domain.qrcode.QrCode;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.Attribute;
 import ch.admin.astra.vz.lc.modules.verification.domain.usecase.AttributeGroup;

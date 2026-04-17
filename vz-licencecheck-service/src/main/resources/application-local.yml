@@ -1,9 +1,15 @@
-verifier:
+verifier-service:
   allowed-issuer-did: "MOCK-DID"
   client-name: "LicenceCheck (Local)"
   mock:
     failResponse: false
     errorCode: JWT_PREMATURE
+
+spring:
+  autoconfigure:
+    exclude:
+      # Exclude OAuth2 client autoconfiguration - local profile doesn't use OAuth2 for verifier-service
+      - org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration
 
 jeap:
   swagger:
@@ -19,6 +25,3 @@ cors:
 springdoc:
   swagger-ui:
     enabled: true
-
-features:
-  use-single-verifier-enabled: true

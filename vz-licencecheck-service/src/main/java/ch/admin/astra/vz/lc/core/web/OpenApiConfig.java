@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(
-                version = "1.13.0",
+                version = "2.0.0-SNAPSHOT",
                 title = "LicenceCheck Service API",
                 description = "The API to start a verification process, load use-cases and poll for verification status. "
         )

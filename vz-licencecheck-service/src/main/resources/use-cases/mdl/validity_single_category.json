@@ -1,0 +1,191 @@
+{
+  "id": "43944b49-7643-401f-94ed-619b0b6c9603",
+  "title": "mdl-validity-single-category",
+  "description": "mDL - Mobile Driving Licence",
+  "type": "mdl",
+  "order": 1,
+  "inputElements": [
+    {
+      "type": "selection",
+      "name": "mdlCategory",
+      "inputOptions": [
+        {
+          "key": "categoryA",
+          "value": "A",
+          "imageFilePath": "category-icons/kat_a.png"
+        },
+        {
+          "key": "categoryA1",
+          "value": "A1",
+          "imageFilePath": "category-icons/kat_a1.png"
+        },
+        {
+          "key": "categoryB",
+          "value": "B",
+          "imageFilePath": "category-icons/kat_b.png"
+        },
+        {
+          "key": "categoryB1",
+          "value": "B1",
+          "imageFilePath": "category-icons/kat_b1.png"
+        },
+        {
+          "key": "categoryBE",
+          "value": "BE",
+          "imageFilePath": "category-icons/kat_be.png"
+        },
+        {
+          "key": "categoryC",
+          "value": "C",
+          "imageFilePath": "category-icons/kat_c.png"
+        },
+        {
+          "key": "categoryC1",
+          "value": "C1",
+          "imageFilePath": "category-icons/kat_c1.png"
+        },
+        {
+          "key": "categoryC1E",
+          "value": "C1E",
+          "imageFilePath": "category-icons/kat_c1e.png"
+        },
+        {
+          "key": "categoryCE",
+          "value": "CE",
+          "imageFilePath": "category-icons/kat_ce.png"
+        },
+        {
+          "key": "categoryD",
+          "value": "D",
+          "imageFilePath": "category-icons/kat_d.png"
+        },
+        {
+          "key": "categoryD1",
+          "value": "D1",
+          "imageFilePath": "category-icons/kat_d1.png"
+        },
+        {
+          "key": "categoryD1E",
+          "value": "D1E",
+          "imageFilePath": "category-icons/kat_d1e.png"
+        },
+        {
+          "key": "categoryDE",
+          "value": "DE",
+          "imageFilePath": "category-icons/kat_de.png"
+        },
+        {
+          "key": "categoryF",
+          "value": "F",
+          "imageFilePath": "category-icons/kat_f.png"
+        },
+        {
+          "key": "categoryG",
+          "value": "G",
+          "imageFilePath": "category-icons/kat_g.png"
+        },
+        {
+          "key": "categoryM",
+          "value": "M",
+          "imageFilePath": "category-icons/kat_m.png"
+        }
+      ]
+    }
+  ],
+  "attributeGroups": [
+    {
+      "name": "photoImage",
+      "order": 1,
+      "attributes": [
+        {
+          "name": "photoImage",
+          "type": "image",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "name": "learningPerson",
+      "order": 2,
+      "attributes": [
+        {
+          "name": "lastName",
+          "type": "string",
+          "order": 2
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "order": 3
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "order": 4
+        },
+        {
+          "name": "hometown",
+          "type": "string",
+          "order": 5
+        },
+        {
+          "name": "signatureImage",
+          "type": "image",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "name": "validity",
+      "order": 3,
+      "attributes": [
+        {
+          "name": "issuerEntityDate",
+          "type": "date",
+          "order": 7
+        },
+        {
+          "name": "dateOfExpiration",
+          "type": "date",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "name": "additionalInformation",
+      "order": 4,
+      "attributes": [
+        {
+          "name": "issuerEntity",
+          "type": "string",
+          "order": 9
+        },
+        {
+          "name": "dlNumber",
+          "type": "string",
+          "order": 10
+        },
+        {
+          "name": "licenceCategories",
+          "type": "string",
+          "order": 12
+        },
+        {
+          "name": "restrictionsA",
+          "type": "string",
+          "order": 15
+        },
+        {
+          "name": "restrictionsB",
+          "type": "string",
+          "order": 16
+        },
+        {
+          "name": "policeQRImage",
+          "type": "image",
+          "order": 17
+        }
+      ]
+    }
+  ]
+}

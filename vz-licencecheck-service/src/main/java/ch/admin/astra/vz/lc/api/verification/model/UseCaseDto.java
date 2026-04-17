@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Schema(name = "UseCase")
-public record UseCaseDto(@NotNull UUID id, @NotNull String title, String description, Long order,
-                         @Singular List<AttributeGroupDto> attributeGroups) {
+public record UseCaseDto(@NotNull UUID id, @NotNull String title, String description, String type, Long order,
+                         @Singular List<AttributeGroupDto> attributeGroups, List<InputElementDto> inputElements) {
 }

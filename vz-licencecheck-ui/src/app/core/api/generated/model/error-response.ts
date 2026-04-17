@@ -12,4 +12,8 @@
 export interface ErrorResponse {
   errorCode?: string;
   status?: number;
+  message?: string;
+  traceId?: string;
+  requestUri?: string;
+  timestamp?: string;
 }

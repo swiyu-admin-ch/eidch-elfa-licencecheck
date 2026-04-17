@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {Injectable, signal} from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {AppConfig, AppConfigApi} from '@app/core/api/generated';
 
@@ -7,14 +7,14 @@ import {AppConfig, AppConfigApi} from '@app/core/api/generated';
   providedIn: 'root'
 })
 export class AppConfigService {
-  private readonly _appConfig$ = new BehaviorSubject<AppConfig | undefined>(undefined);
+  private readonly _appConfig = signal<AppConfig | undefined>(undefined);
 
   constructor(private readonly appConfigApi: AppConfigApi) {}
 
   loadAppConfig(): Observable<AppConfig | undefined> {
     return this.appConfigApi.getConfiguration().pipe(
       tap(config => {
-        this._appConfig$.next(config);
+        this._appConfig.set(config);
       }),
       catchError(e => {
         console.error('failed to load app config', e);
@@ -24,6 +24,6 @@ export class AppConfigService {
   }
 
   get appConfig(): AppConfig | undefined {
-    return this._appConfig$.getValue();
+    return this._appConfig();
   }
 }

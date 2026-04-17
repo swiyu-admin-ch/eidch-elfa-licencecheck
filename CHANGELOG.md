@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.0]
+- [EIDRAEDA-1513](https://jira.bit.admin.ch/browse/EIDRAEDA-1513): Adjust LC so that mDLs can be verified
+- [EIDRAEDA-1433](https://jira.bit.admin.ch/browse/EIDRAEDA-1433): Integrate Keycloak - Verifier Service
+
 ## [1.13.0]
 - [EIDRAEDA-1395](https://jira.bit.admin.ch/browse/EIDRAEDA-1395): Improved error handling and logging from verifier-service
 - [EIDRAEDA-1464](https://jira.bit.admin.ch/browse/EIDRAEDA-1464): Fixed handling of new date format in VC verification for expiration dates

@@ -1,6 +1,8 @@
 package ch.admin.astra.vz.lc.api.common.controller;
 
+import ch.admin.astra.vz.lc.api.common.mapper.FeatureFlagsMapper;
 import ch.admin.astra.vz.lc.api.common.model.AppConfigDto;
+import ch.admin.astra.vz.lc.core.features.FeaturesProperties;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +23,17 @@ class AppConfigController {
 
     private final Environment environment;
     private final BuildProperties buildProperties;
+    private final FeaturesProperties featuresProperties;
+    private final FeatureFlagsMapper featureFlagsMapper;
 
     @Operation(summary = "Application configuration")
     @GetMapping
     public AppConfigDto getConfiguration() {
-        return new AppConfigDto(buildProperties.getVersion(), getEnvironmentName());
+        return new AppConfigDto(
+            buildProperties.getVersion(),
+            getEnvironmentName(),
+            featureFlagsMapper.toDto(featuresProperties)
+        );
     }
 
     private String getEnvironmentName() {

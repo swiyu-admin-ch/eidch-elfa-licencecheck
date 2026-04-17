@@ -30,6 +30,7 @@ export class VerificationStore {
 
   // --- STATE (signals)
   private readonly _useCase = signal<UseCase | null>(null);
+  private readonly _selectedCategory = signal<string | null>(null);
   private readonly _verification = signal<VerificationState | null>(null);
   private readonly _verificationId = signal<string | null>(null);
   private readonly _beginResponse = signal<VerificationBeginResponse | null>(null);
@@ -38,6 +39,7 @@ export class VerificationStore {
 
   // --- SELECTORS / COMPUTEDS
   readonly useCase = this._useCase.asReadonly();
+  readonly selectedCategory = this._selectedCategory.asReadonly();
   readonly verification = this._verification.asReadonly();
   readonly status = this._status.asReadonly();
 
@@ -65,7 +67,6 @@ export class VerificationStore {
   });
 
   readonly isTerminal = computed(() => {
-    const status = this._status();
     return [Succeeded, Failed, TimedOut].includes(this._status());
   });
 
@@ -83,6 +84,7 @@ export class VerificationStore {
 
     this._status.set(Idle);
     this._useCase.set(null);
+    this._selectedCategory.set(null);
     this._verification.set(null);
     this._verificationId.set(null);
     this._beginResponse.set(null);
@@ -91,6 +93,10 @@ export class VerificationStore {
 
   setUseCase(useCase: UseCase | null) {
     this._useCase.set(useCase);
+  }
+
+  setSelectedCategory(category: string | null) {
+    this._selectedCategory.set(category);
   }
 
   async beginVerification() {

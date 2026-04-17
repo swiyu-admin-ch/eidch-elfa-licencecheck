@@ -8,8 +8,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import {FeatureFlags} from './feature-flags';
 
 export interface AppConfig {
   version: string;
   environment: string;
+  featureFlags: FeatureFlags;
 }

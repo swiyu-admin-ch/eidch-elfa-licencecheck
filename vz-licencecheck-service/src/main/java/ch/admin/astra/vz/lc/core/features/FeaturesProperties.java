@@ -11,5 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "features")
 public class FeaturesProperties {
 
-    private boolean useSingleVerifierEnabled;
+    private boolean enableMdl;
 }

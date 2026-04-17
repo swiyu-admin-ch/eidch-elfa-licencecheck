@@ -2,7 +2,7 @@ spring:
   application:
     name: vz-licencecheck-scs
 
-verifier:
+verifier-service:
   use-case-folderPath: "use-cases"
   logging:
     # "NONE", "BASIC", "HEADERS", "BODY"

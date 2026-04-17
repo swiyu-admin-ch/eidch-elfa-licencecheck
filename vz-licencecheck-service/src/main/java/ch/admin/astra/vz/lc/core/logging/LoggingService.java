@@ -1,8 +1,8 @@
 package ch.admin.astra.vz.lc.core.logging;
 
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.ManagementResponseDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto;
-import ch.admin.astra.vz.lc.integration.verifiermanagement.exception.VerifierException;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.ManagementResponseDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto;
+import ch.admin.astra.vz.lc.integration.verifierservice.exception.VerifierException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -15,7 +15,7 @@ import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.OPERATION_FINISHED_W
 import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.RequestStatus.ERROR;
 import static ch.admin.astra.vz.lc.core.logging.LoggingUtil.RequestStatus.SUCCESS;
 import static ch.admin.astra.vz.lc.core.logging.Operation.*;
-import static ch.admin.astra.vz.lc.integration.verifiermanagement.client.model.VerificationStatusDto.hasFailed;
+import static ch.admin.astra.vz.lc.integration.verifierservice.client.model.VerificationStatusDto.hasFailed;
 
 
 @Slf4j
